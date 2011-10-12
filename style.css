@@ -1,0 +1,56 @@
+/* Hello, reader. Wonderful to see you like source code! */
+
+
+/* Fancy is in simplicity. */
+
+html {
+  font-family: monospace;
+}
+
+header {
+  margin: 1cm 0px;
+}
+
+header h1, header p {
+  text-align: center;
+}
+
+header h1 {
+  color: #555;
+}
+
+header p {
+  letter-spacing: 0.5em;
+  color: #777;
+}
+
+
+/* By essence, <nav> wants to hold a list of links, so that
+ * the following makes perfect sense. */
+
+nav {
+  display: block;
+  margin-left: 35%;
+  padding-left: 12px;   /* Raw hack. Looked right in most browsers. */
+  list-style-type: square;
+  border-left: 2px solid #147;
+}
+
+nav a {
+  display: list-item;
+  margin-bottom: 4px;
+}
+
+
+/* The default blue in use for anchors <a> is ugly.
+ * I therefore found even worse. */
+
+a {
+  color: #147;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #47a;
+}
+
