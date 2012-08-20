@@ -1,0 +1,139 @@
+@font-face {
+  font-family: 'Londrina';
+  font-style: normal;
+  src: url('LondrinaSketch-Regular.ttf');
+}
+@font-face {
+  font-family: 'Averia Serif GWF';
+  font-style: normal;
+  src: local('Averia Serif GWF'), url(AveriaSerifGWF_Regular.ttf);
+}
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  src: local('Roboto'), url(Roboto_Regular.ttf);
+}
+@font-face {
+  font-family: 'Roboto';
+  font-style: italic;
+  src: local('Roboto'), url(Roboto_Italic.ttf);
+}
+@font-face {
+  font-family: 'Roboto';
+  font-weight: bold;
+  src: local('Roboto'), url(Roboto_Bold.ttf);
+}
+@font-face {
+  font-family: 'Roboto';
+  font-weight: bold;
+  font-style: italic;
+  src: local('Roboto'), url(Roboto_BoldItalic.ttf);
+}
+
+html {
+  font-family: Roboto, sans-serif;
+  font-size: 1.5em;
+  text-align: center;
+  color: hsla(155, 50%, 20%, 0.7);
+  background: url(bg.png), url(bg2.png) fixed, hsl(50,90%,98%);
+}
+
+body {
+  margin: 0;
+}
+
+slide {
+  display: block;
+  width: 70%;
+  margin: 3cm auto;
+  padding: 2cm;
+  border-radius: 10cm / 20cm;
+  border-left: 15px solid hsla(300, 50%, 97%, 0.7);
+  border-right: 15px solid hsla(300, 50%, 97%, 0.7);
+  background: linear-gradient(0deg, hsla(0,0%,100%,0), hsla(0,0%,100%,0.7), hsla(0,0%,100%,0.7), hsla(0,0%,100%,0));
+}
+
+header > h1 {
+  margin: 1cm 0;
+  letter-spacing: 2pt;
+  font-family: 'Londrina', serif;
+  font-variant: small-caps;
+  font-size: 42pt;
+  color: white;
+  text-shadow: 1px  1px 1px rgb(68,0,168),
+              -1px  1px     rgba(168,0,68,0.5),
+               1px -1px     rgba(168,0,68,0.5),
+              -1px -1px     rgba(168,0,68,0.5);
+}
+header > p {
+  font-size: 1.4em;
+  text-shadow: 0 0 1px hsla(155, 50%, 10%, 0.7);
+  color: transparent;
+}
+
+h1 {
+  font-size: 42pt;
+  font-family: 'Averia Serif GWF', serif;
+  color: hsl(40, 20%, 50%);
+}
+
+pre, code {
+  font-family: 'Anonymous Pro', monospace;
+}
+
+img, iframe {
+  border: 5px solid hsla(300, 50%, 97%, 0.7);
+  box-shadow: 0px 0px 10px hsla(300, 50%, 10%, 0.7);
+  border-radius: 10px / 5px;
+  max-height: 500px;
+  max-width: 80%;
+  min-width: 320px;
+}
+img.large, iframe.large {
+  width: 100%;
+  height: 400px;
+}
+figure {
+  margin: 0;
+}
+figcaption {
+  font-style: italic;
+}
+
+ul {
+  margin-left: 50%;
+  text-align: left;
+  padding-left: 0;
+}
+ul > *[class~="good"],
+ul > *[class~="bad"] {
+  list-style-type: none;
+}
+
+.good::before {
+  content: '☺ ';
+  color: green;
+}
+
+.bad::before {
+  content: '☹ ';
+  color: red;
+}
+
+@media (max-width: 500px) {
+  html {
+    font-size: 1em;
+  }
+  slide {
+    margin: 2cm auto;
+    width: 100%;
+    padding: 0;
+    border: 0;
+  }
+  h1 {
+    font-size: 2rem;
+  }
+}
+
+/* vim: ft=css
+ */

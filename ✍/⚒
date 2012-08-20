@@ -1,0 +1,150 @@
+<!doctype html>
+<meta charset=utf-8>
+<link rel=stylesheet href=☙>
+<title> Dev ⚒ Tools </title>
+
+<slide>
+<header>
+  <h1> Everybody Wants DevTools </h1>
+  <p> The Man Who Answered Before The Question. </p>
+</header>
+</slide>
+
+<slide>
+<h1> Who is this guy? </h1>
+
+<style scoped>
+  iframe.short { width: 60%; height: 7cm;}
+</style>
+
+<p> Hi! I'm <strong>espadrine</strong>.
+Or <strong>Yann</strong>. Or <strong>Thaddée</strong>.
+<p> Whichever fits your fancy.
+<p> I do <strong>DevTools</strong> work.
+
+<figure>
+  <iframe class=short src=http://espadrine.github.com></iframe>
+  <figcaption>espadrine.github.com</figcaption>
+</figure>
+</slide>
+
+<slide>
+<h1> You mean Firebug, right? </h1>
+
+<figure>
+  <img src=firebug.png
+       alt='The Firebug UI'>
+  <figcaption> Nope. </figcaption>
+</figure>
+
+<p> Firebug:
+<ul>
+  <li class=good> Lots of pre-existing goodies
+  <li class=good> Honorable and venerable
+  <li class=bad>  Memory-heavy
+  <li class=bad>  Not built-in
+</ul>
+
+<p> DevTools:
+<ul>
+  <li class=good> Innovative tools
+  <li class=good> Pretty (thanks Paul! thanks Shorlander!)
+</ul>
+</slide>
+
+<slide>
+<h1> Sh*t up and take my money! </h1>
+
+<figure>
+  <img src=debugger.png
+       alt='The debugger in action'>
+  <figcaption> The Debugger, the Toolbar </figcaption>
+</figure>
+</slide>
+
+<slide>
+<h1> Edit <strong>ALL</strong> the sources! </h1>
+<figure>
+  <img src=sources.png
+       alt='Editing CSS and JS'>
+  <figcaption> The Style Editor, the Scratchpad </figcaption>
+</figure>
+</slide>
+
+<slide>
+<h1> Using Open Source </h1>
+<figure>
+  <iframe src=http://www.eclipse.org/orion/getstarted.php
+          class=large></iframe>
+  <figcaption> The home page of Orion </figcaption>
+</figure>
+<p><a href=http://orionhub.org/>
+    Try it at orionhub.org.
+   </a>
+<p><a href=http://wiki.eclipse.org/Orion/How_Tos/Install_Orion_on_Localhost>
+    Install it on localhost.
+   </a>
+<p><a href=http://aniefer.blogspot.com/2011/02/embedding-orion-editor_02.html>
+    Use the embedded version. Contribute.
+   </a>
+</p>
+</slide>
+
+<slide>
+<h1> Orion Code Editor </h1>
+<img src=http://cdn.memegenerator.net/instances/400x/25114961.jpg
+     alt='Orion: Y U AMD?'>
+<p> Alternatives: <a href=http://codemirror.net/>CodeMirror</a>,
+    <a href=https://github.com/ajaxorg/ace>Ace</a>.
+</p>
+</slide>
+
+<slide>
+<h1> The Quest for Autocompletion </h1>
+<figure>
+  <iframe src=http://contraptionsforprogramming.blogspot.com/2012/02/better-javascript-content-assist-in.html
+          class=large>
+  </iframe>
+  <figcaption> Andrew Eisenberg's blog. </figcaption>
+</figure>
+</slide>
+
+<slide>
+<h1> Welcome to Dependency Hell </h1>
+<p> Surely this is the fastest way to implement autocompletion?
+<ul>
+  <li><a href=https://github.com/ariya/esprima/pull/94> Esprima </a>
+  <li><a href=https://bugzilla.mozilla.org/show_bug.cgi?id=759351>
+      Orion update
+    </a>
+  <li> Require.js
+  <li> A bunch of files from Orion…
+</ul>
+</slide>
+
+<slide>
+<h1> Look, ma, no hands! </h1>
+<img src=no-hands.jpg alt='No hands on the clock!'>
+<p> I've still got time, right?
+<p> When does this internship thing end?
+<p> Ok, it's time to start from scratch. </p>
+</slide>
+
+<slide>
+<h1> The User Experience </h1>
+
+<figure>
+  <img src=notebook.jpg alt='Autocompletion UI'>
+  <figcaption> Going modeless </figcaption>
+</figure>
+<p> Heuristics: because users find features by accident. </p>
+</slide>
+
+<slide>
+<h1> Thanks for watching! </h1>
+<p> I'm sure you have questions. </p>
+</slide>
+
+<script src=☕></script>
+<!-- vim: ft=html
+-->
