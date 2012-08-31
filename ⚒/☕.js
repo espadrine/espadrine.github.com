@@ -3,11 +3,11 @@ var slideTime = 100;    // duration in ms.
 var minTimeSlice = 17;  // ← 60fps.
 
 // Controls for the slides: right = forward, left = back.
-window.addEventListener('keypress', function(e) {
+window.addEventListener('keydown', function(e) {
   var slide = visibleSlide();
-  if (e.keyCode === e.DOM_VK_RIGHT && (slide = nextSlide(slide))) {
+  if (e.keyCode === 39 && (slide = nextSlide(slide))) {
     slide.slideIntoView();
-  } else if (e.keyCode === e.DOM_VK_LEFT && (slide = prevSlide(slide))) {
+  } else if (e.keyCode === 37 && (slide = prevSlide(slide))) {
     slide.slideIntoView();
   }
 });
