@@ -92,8 +92,7 @@ Or <strong>Yann</strong>. Or <strong>Thaddée</strong>.
 
 <slide>
 <h1> Orion Code Editor </h1>
-<img src=http://cdn.memegenerator.net/instances/400x/25114961.jpg
-     alt='Orion: Y U AMD?'>
+<img src=yuno.jpg alt='Orion: Y U AMD?'>
 <p> Alternatives: <a href=http://codemirror.net/>CodeMirror</a>,
     <a href=https://github.com/ajaxorg/ace>Ace</a>.
 </p>
@@ -131,20 +130,73 @@ Or <strong>Yann</strong>. Or <strong>Thaddée</strong>.
 </slide>
 
 <slide>
-<h1> The User Experience </h1>
-
+<h1> <s>Esprima</s> Reflect.parse() </h1>
 <figure>
+  <img src=jsreflect.png alt='The code for Reflect.parse.'>
+  <figcaption>Because non-JITted JS is not yet as fast as C++.</figcaption>
+</figure>
+</slide>
+
+<slide>
+<h1> The User Experience </h1>
+<div class=halves>
+<figure class=half>
   <img src=notebook.jpg alt='Autocompletion UI'>
   <figcaption> Going modeless </figcaption>
 </figure>
+<div class=half>
+  <ol>
+    <li> Be discoverable.
+    <li> Be unobtrusive.
+    <li> Be familiar.
+  </ol>
+</div>
+</div>
 <p> Heuristics: because users find features by accident. </p>
 </slide>
 
 <slide>
-<h1> Thanks for watching! </h1>
-<p> I'm sure you have questions. </p>
+<h1> The Engine </h1>
+<div class=halves>
+<img src=babbage.jpg alt="Babbage's differential engine" class=half>
+<div class=half>
+  <p> Three levels
+  <ol>
+    <li> Keywords
+    <li> Dynamic lookup
+    <li> Static analysis
+  </ol>
+  <p> Static analysis:
+  <ul>
+    <li> Tokenizer
+    <li> Parse tree visitor
+  </ul>
+</div>
+</div>
 </slide>
 
-<script src=☕></script>
+<slide>
+<h1> The future is now </h1>
+<p> And pretty soon…
+<ul>
+  <li> CSS autocompletion
+  <li> Better static analysis
+  <li> Unifying with the WebConsole's autocompletion
+</ul>
+</slide>
+
+<slide>
+<h1> Thanks for watching! </h1>
+<h2> I'm sure you have questions. </h2>
+<p> My thanks to
+<ul>
+  <li> <em>Rob Campbell</em> for his outstanding mentoring abilities!
+  <li> <em>Mihai Sucan</em> for his magnifiscent reviewing skills!
+  <li> <em>Dave Camp</em> for revamping the DOM tree (boy was it ugly)!
+  <li> <em>Nick Fitzgerald</em>, fellow intern, for supporting me!
+  <li> And all of our amazing team!
+</slide>
+
+<script src=☕.js></script>
 <!-- vim: ft=html
 -->

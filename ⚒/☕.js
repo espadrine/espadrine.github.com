@@ -1,19 +1,32 @@
-// Remove the context menu.
-window.oncontextmenu = function() { return false; };
-
 // Configuration for the animation.
 var slideTime = 100;    // duration in ms.
 var minTimeSlice = 17;  // ← 60fps.
 
-// Controls for the slides: left click = forward, right click = back.
-window.addEventListener('click', function(e) {
+// Controls for the slides: right = forward, left = back.
+window.addEventListener('keypress', function(e) {
   var slide = visibleSlide();
-  if (e.buttons === 1 && slide.nextElementSibling) {
-    slide.nextElementSibling.slideIntoView();
-  } else if (e.buttons === 2 && slide.previousElementSibling) {
-    slide.previousElementSibling.slideIntoView();
+  if (e.keyCode === e.DOM_VK_RIGHT && (slide = nextSlide(slide))) {
+    slide.slideIntoView();
+  } else if (e.keyCode === e.DOM_VK_LEFT && (slide = prevSlide(slide))) {
+    slide.slideIntoView();
   }
 });
+
+function nextSlide(slide) {
+  while (slide.nextElementSibling &&
+         slide.nextElementSibling.tagName !== 'SLIDE') {
+    slide = slide.nextElementSibling;
+  }
+  return slide.nextElementSibling;
+}
+
+function prevSlide(slide) {
+  while (slide.previousElementSibling &&
+         slide.previousElementSibling.tagName !== 'SLIDE') {
+    slide = slide.previousElementSibling;
+  }
+  return slide.previousElementSibling;
+}
 
 // Keep track of the current slide.
 // Returns the first slide below the top of the viewport.
@@ -49,6 +62,7 @@ Element.prototype.slideIntoView = function() {
     count += jumpNPixels;
     if (count >= total) {
       clearInterval(intervalid);
+      window.scroll(0, endy);
     }
   }, timeSlice);
 };

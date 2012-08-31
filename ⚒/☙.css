@@ -100,7 +100,7 @@ figcaption {
   font-style: italic;
 }
 
-ul {
+ul, ol {
   margin-left: 50%;
   text-align: left;
   padding-left: 0;
@@ -120,6 +120,16 @@ ul > *[class~="bad"] {
   color: red;
 }
 
+.halves {
+  margin: auto;
+  display: table;
+}
+.half {
+  display: table-cell;
+  vertical-align: middle;
+  width: 50%;
+}
+
 @media (max-width: 500px) {
   html {
     font-size: 1em;
@@ -132,6 +142,10 @@ ul > *[class~="bad"] {
   }
   h1 {
     font-size: 2rem;
+  }
+  .half {
+    display: block;
+    width: inherit;
   }
 }
 
