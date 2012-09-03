@@ -36,9 +36,14 @@ nav {
   border-left: 2px solid #147;
 }
 
-nav a {
+nav > * {
   display: list-item;
   margin-bottom: 4px;
+  color: #147;
+}
+nav p {
+  color: #666;
+  font-style: italic;
 }
 
 
@@ -54,3 +59,11 @@ a:hover {
   color: #47a;
 }
 
+
+/* Talks may contain video. */
+
+video {
+  border-radius: 4px / 10px;
+  border: 1px solid black;
+  box-shadow: 0px 0px 4px #335;
+}
