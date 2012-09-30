@@ -47,8 +47,8 @@ Element.prototype.slideIntoView = function() {
   var rect = this.getBoundingClientRect();
   var endy = window.scrollY + rect.top
            - (window.innerHeight - this.offsetHeight) * 0.5;
+  var jumpNPixels = 20;
   var signy = endy - window.scrollY > 0? 1: -1;
-  var jumpNPixels = 1;
   var count = 0;
   var total = Math.abs(window.scrollY - endy);
   var timeSlice = slideTime / Math.abs(window.scrollY - endy) * jumpNPixels;
