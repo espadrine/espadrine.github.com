@@ -1,0 +1,89 @@
+<!doctype html>
+<meta charset=utf-8>
+<title> My Favorite Projections </title>
+
+<hgroup>
+  <h1> My Favorite Projections </h1>
+  <h2> And Why </h2>
+</hgroup>
+
+<hr>
+
+<section>
+<h1> Lambert Cylindrical </h1>
+<img alt='Lambert Cylindrical Projection' src='./i/lambert.jpg'>
+<p>
+This exceedingly simple projection <strong>preserves the area</strong> of
+continents. That is the most important property when glancing at a map of the
+whole Earth. The first instinct we have is to compare the size of geographic
+features of the planet. While things are squeezed and amorph near the poles,
+<strong>shapes are accurate near the Equator</strong>.
+</p>
+</section>
+
+<section>
+<h1> Mercator </h1>
+<img alt='Mercator Projection' src='./i/mercator.jpg'>
+<p>
+This one <strong>preserves angles</strong>, which means that shapes are
+accurate. However, everything near the poles is <strong>exceedingly
+  inflated</strong>. So much so that the poles are actually infinite and
+cannot be represented.
+</p>
+</section>
+
+<section>
+<h1> Equirectangular </h1>
+<img alt='Equirectangular Projection' src='./i/equirectangular.jpg'>
+<p>
+Notice how <em>meridians</em> (vertical) and <em>parallels</em> (horizontal)
+form squares? This projection maintains <strong>heights</strong>. A distance
+measured vertically corresponds to the same number of kilometers everywhere on
+the map. Of course, a horizontal distance is only the same along the parallel:
+as the ruler goes closer to the poles, that distance represents a smaller and
+smaller amount of kilometers. (Also, this is a good middle ground of pole
+squishiness between Lambert Cylindrical and Mercator.)
+</p>
+</section>
+
+<section>
+<h1> Interrupted Sinusoidal </h1>
+<img alt='Sinusoidal Projection' src='./i/sinusoidal.png'>
+<p>
+This one is a complement to the Equirectangular. It maintains
+<strong>widths</strong>. A horizontal ruler measuring a distance will
+correspond to the same number of kilometers throughout the map! Since the
+default rendering of this projection makes the map converge to a single dot at
+the poles, I favour this interrupted projection (or "<em>gore map</em>"),
+which does not distort shapes quite as much. As a bonus, this projection also
+<strong>preserves areas</strong>, although it is arguably not as readable as
+the Lambert Cylindrical.
+</p>
+</section>
+
+<section>
+<h1> Winkel Tripel </h1>
+<img alt='Winkel Tripel Projection' src='./i/winkel.jpg'>
+<p>
+We have a lot of maps with many incompatible properties. This projection gives
+an approximation of all desirable properties in a map. Hence, the name, German
+for "triple": it tries to preserve
+<strong>areas, angles and distances</strong>.
+</p>
+</section>
+
+<footer>
+Edited by Thaddée Tyl. Images under CC BY-SA 3.0, based on images by Eric Gaba
+and Strebe. Interrupted sinusoidal projection map based on an image copyright
+Carlos A. Furuti.
+</footer>
+
+<style>
+* { text-align: center; font-family: Clear Sans Light,LMSans10,Source Sans Pro,Purisa,DejaVu Sans, sans-serif; }
+hr { width: 44%; height: 1px; background-color: #345048; border: none;
+  margin-bottom: 1cm; }
+section>h1 { width: 50%; padding: 3px; margin: 3mm auto; font-size: 1.3em; border: 1px solid black; }
+section>img { width: 50%; padding: 3px; border: 1px solid black; }
+section>p { width: 50%; margin: auto; margin-bottom: 1cm; }
+footer { font-size: 0.7em; }
+</style>
