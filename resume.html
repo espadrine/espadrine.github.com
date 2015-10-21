@@ -19,8 +19,6 @@ html {
 }
 @font-face {
   font-family: 'Open Sans';
-  font-style: normal;
-  font-weight: 400;
   src: local('Open Sans'), local('OpenSans'), url(http://themes.googleusercontent.com/static/fonts/opensans/v7/cJZKeOuBrn4kERxqtaUH3T8E0i7KZn-EPnyo3HZu7kw.woff) format('woff');
 }
 h1 {
@@ -50,7 +48,9 @@ a:hover {
   clear: both;
 }
 .sechead {
-  font-family: serif;
+  margin-top: 0;
+  text-align: center;
+  font-weight: normal;
   font-variant: small-caps;
 }
 #age, #loc {
@@ -71,7 +71,8 @@ th, td {
   vertical-align: top;
 }
 th {
-  background-color: #eee;
+  background-color: #fafafa;
+  padding: 5px;
   text-align: center;
   vertical-align: middle;
   font-weight: normal;
@@ -81,8 +82,16 @@ table {
   font-size: inherit;
   border-spacing: 2mm;
 }
+section {
+  margin: 2mm;
+}
+.box {
+  padding: 10px 15px;
+  background-color: #fafafa;
+}
 ul { list-style-type: none; padding-left:0px; margin:0px; }
 ul li:before { content: "- "; }
+ul li { text-indent: -5px; }
 </style>
 
 <body itemscope itemtype="http://schema.org/Person">
@@ -107,12 +116,27 @@ ul li:before { content: "- "; }
 <br class="big clear">
 
 <h2>EXPERIENCE</h2>
+<section class=box>
+  <ul>
+    <li>Interest in <strong>language design</strong>, <strong>tooling</strong>
+    and <strong>compilers</strong>.
+    <li>Fan of JS' event loop, Ruby's metaprogramming, C's BYOBuffer
+      efficiency, Lisp's interactive programming.
+    <li>The <strong>HTML / JS / CSS</strong> combination works admirably.
+    <li>The Web's APIs are my bedtime stories:
+      <a href=https://platform.html5.org/>platform.html5.org</a>
+    <li>Dev is eased by <strong>orthogonal cooperative tools</strong>. Linux and
+      Vim are a good start.
+    <li>Contributed to CodeMirror, Esprima, ShareJS, TabAtkins' CSS
+      parser, node-canvas, Emscripten, Opera's Dragonfly, Firefox' DevTools, …
+  </ul>
+</section>
 <table><tbody>
   <tr><th>August 2014 - Present
       <td>Full-stack developer at
-        <a href='http://www.capitainetrain.com'>Capitaine Train</a>.
-        Work on carrier integration, backend API, invoice generation, made
-        the card store page across the stack. <br>
+        <a href='https://www.captaintrain.com'>Captain Train</a>.
+        Work on carrier integration, backend API, invoice generation, payment
+        systems, made the card store page across the stack. <br>
         Ember.js website, Ruby on Rails server.
   <tr><th>May 2014
       <td>Implemented an <a href='http://ace.c9.io/'>Ace</a> to
@@ -131,8 +155,8 @@ ul li:before { content: "- "; }
         Front-end Web development with d3.js to visualize optimal patterns in
         RTS games through PrefixSpan.
   <tr><th>July - Sept 2013
-      <td>Designed a flexible CSS and JS autocompletion system called
-        <a href='https://github.com/espadrine/aulx'>Aulx</a>.
+      <td>Designed a flexible CSS and JS <strong>autocompletion system</strong>
+        called <a href='https://github.com/espadrine/aulx'>Aulx</a>.
         Includes static and dynamic type analysis.
   <tr><th>Feb - July 2013
       <td>Master project at EPFL on Supervised learning of
@@ -164,19 +188,6 @@ ul li:before { content: "- "; }
       <td>Built the website ze-artboutique.com
         (now <a href="http://zeartgalerie.com">zeartgalerie.com</a>)
         for an art company.
-  <tr><th colspan=2 class=sechead>SKILLS</th>
-  <tr><td colspan=2>
-    <ul>
-      <li>JS (<strong>node.js</strong> enthousiast), Ruby, C, C++, Objective-C,
-      Go, Java and Scheme.
-      <li>Expertise in <strong>web development</strong> (HTML, JS including ES6,
-      CSS2.1 and 3);
-      <li>Preferred dev environment: Linux, Vim, orthogonal cooperative tools.
-      <li>Interest in <strong>language design</strong>, <strong>tooling</strong>
-      and <strong>compilers</strong>.
-      <li>Contributed to CodeMirror, Esprima, ShareJS, TabAtkins' CSS
-      parser, node-canvas, Emscripten, Opera's Dragonfly, Firefox' DevTools, …
-    </ul></td>
   </tr>
 </tbody></table>
 
@@ -202,19 +213,22 @@ ul li:before { content: "- "; }
        <td>Passed the scientific "Baccalauréat" diploma in Paris
            with the highest academic distinction, and a specialization in
            mathematics.</td>
-   <tr><th colspan=2 class=sechead>LANGUAGES</th>
-   <tr><td colspan=2>
-     <ul>
-      <li>English &ndash; FCE, IELTS, TOEFLI, TOEIC.
-      <li>French (mother tongue).
-      <li>Spanish: written and spoken.
-     </ul>
-    </td>
+   </tr>
 </tbody></table>
+<section class=box>
+  <h3 class=sechead>LANGUAGES</h3>
+  <ul>
+    <li>English &ndash; FCE, IELTS, TOEFLI, TOEIC.
+    <li>French (mother tongue).
+    <li>Spanish: written and spoken.
+  </ul>
+</section>
 
 <h2>EXTRA-CURRICULAR ACTIVITIES</h2>
+<section>
 <p>Tennis (7 years), Volley Ball (4 years), Hiking (4 years, mainly in the
 Alps).
 </p>
+</section>
 
 </body>
