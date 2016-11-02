@@ -30,8 +30,8 @@ header p {
 
 nav {
   display: block;
-  margin-left: 35%;
-  padding-left: 11px;   /* Raw hack. Looked right in most browsers. */
+  margin-left: 42%;
+  padding-left: 9px;   /* Raw hack. Looked right in most browsers. */
   list-style-type: square;
   border-left: 2px solid #147;
 }
