@@ -53,17 +53,22 @@ a:hover {
   font-weight: normal;
   font-variant: small-caps;
 }
-#age, #loc {
+nav, #loc {
   color: #999;
 }
-#loc {
+nav {
  float: left;
  width: 49%;
 }
-#age {
+#loc {
  float: right;
  text-align: right;
  width: 49%;
+}
+.emoji {
+  display: inline-block;
+  width: 1.2em;
+  text-align: center;
 }
 dl dt { margin-top: 5pt; }
 th, td {
@@ -97,19 +102,20 @@ ul li { text-indent: -5px; }
 <body itemscope itemtype="http://schema.org/Person">
 
 <h1 itemprop=name>Thaddée Yann TYL</h1>
+<nav>
+  <p>
+    <span class=emoji>☏</span> <span itemprop=telephone>+33 6 85 74 50 31</span><br>
+    <span class=emoji>🔖</span> <a href='https://espadrine.github.io/'>https://espadrine.github.io</a><br>
+    <span class=emoji>✉</span> <a href="mailto:thaddee.tyl@gmail.com"
+      itemprop="email">thaddee.tyl@gmail.com</a><br>
+  </p>
+</nav>
 <div id=loc itemprop="address" itemscope
   itemtype="http://schema.org/PostalAddress">
   <p>
   <span itemprop="streetAddress">19, rue Vavin<br>
   75 006 Paris</span><br>
-  <span itemprop=telephone>+33 6 85 74 50 31</span><br>
-  <a href="mailto:thaddee.tyl@gmail.com"
-    itemprop="email">thaddee.tyl@gmail.com</a>
-  </p>
-</div>
-<div id=age>
-  <p>25 years old<br>
-  <strong>Passionate about the Web</strong>
+  France
   </p>
 </div>
 
@@ -118,31 +124,29 @@ ul li { text-indent: -5px; }
 <h2>EXPERIENCE</h2>
 <section class=box>
   <ul>
-    <li>Interest in <strong>language design</strong>, <strong>tooling</strong>
-    and <strong>compilers</strong>.
+    <li>Interest in <strong>computer language tooling</strong>,
+      <strong>synchronization</strong>, <strong>distributed networks</strong>
+      and <strong>machine learning</strong>.
     <li>Fan of JS' event loop, Ruby's metaprogramming, C's BYOBuffer
-      efficiency, Lisp's interactive programming.
+      efficiency, Lisp's interactivity.
     <li>The <strong>HTML / JS / CSS</strong> combination works admirably.
     <li>The Web's APIs are my bedtime stories:
       <a href=https://platform.html5.org/>platform.html5.org</a>
-    <li>Dev is eased by <strong>orthogonal cooperative tools</strong>. Linux and
-      Vim are a good start.
+    <li>Dev is eased by <strong>orthogonal cooperative tools</strong>.
     <li>Contributed to CodeMirror, Esprima, ShareJS, TabAtkins' CSS
-      parser, node-canvas, Emscripten, Opera's Dragonfly, Firefox' DevTools, …
+      parser, node-canvas, Emscripten, Firefox' DevTools, …
   </ul>
 </section>
 <table><tbody>
   <tr><th>August 2014 - Present
       <td>Full-stack developer at
-        <a href='https://www.captaintrain.com'>Captain Train</a>.
-        Work on carrier integration, backend API, invoice generation, payment
-        systems, made the card store page across the stack. <br>
+        <a href='https://www.trainline.eu/'>Trainline</a> (previously Captain
+        Train).
+        Work on carrier integration (SNCF maintainer), backend APIs, protocol
+        evolution, invoice generation, payment systems.
+        Made the discount card store page across the stack.
+        <br>
         Ember.js website, Ruby on Rails server.
-  <tr><th>May 2014
-      <td>Implemented an <a href='http://ace.c9.io/'>Ace</a> to
-        <a href='http://codemirror.net/'>CodeMirror</a>
-        syntax highlighter
-        <a href='https://github.com/espadrine/ace2cm'>converter</a>.
   <tr><th>2014
       <td>Started and wrote the
         <a
@@ -150,15 +154,15 @@ ul li { text-indent: -5px; }
         API,
         providing badges (esp. in SVG) for Travis CI, Coveralls,
         Gemnasium, many others. 100 contributors, 100 million requests / month.
-  <tr><th>Oct - Dec 2013
+  <tr><th>Q4 2013
       <td>INSA. Management classes.
         Front-end Web development with d3.js to visualize optimal patterns in
         RTS games through PrefixSpan.
-  <tr><th>July - Sept 2013
+  <tr><th>Q1 2013
       <td>Designed a flexible CSS and JS <strong>autocompletion system</strong>
         called <a href='https://github.com/espadrine/aulx'>Aulx</a>.
         Includes static and dynamic type analysis.
-  <tr><th>Feb - July 2013
+  <tr><th>2013<br>2012
       <td>Master project at EPFL on Supervised learning of
         <strong>Scala</strong> coding style. Machine Learning and compiler
         work.
@@ -166,7 +170,7 @@ ul li { text-indent: -5px; }
       <td>Software Intern at <strong>Mozilla</strong> on the
         <strong>DevTools</strong> team.
        Worked on autocompletion of JS and CSS.
-  <tr><th>2013 <br> 2010
+  <tr><th>2013<br>2010
      <td>Project leader of <a
          href="https://github.com/espadrine/tree">TheFileTree</a>, a
        collaborative, web-based file system in node. <br>
@@ -180,7 +184,7 @@ ul li { text-indent: -5px; }
      <td>Co-founder of award-winning start-up
         <a href="http://winker.fr">Winker.fr</a>,
         20,000 members at its peak.
-  <tr><th>2010 <br> 2009
+  <tr><th>2010<br>2009
      <td>Wrote iDoc (<strong>Google Chrome extension</strong>
        that edits hypertext documents inside the browser).
        1000 registered users.
@@ -193,19 +197,20 @@ ul li { text-indent: -5px; }
 
 <h2 class="clear">EDUCATION</h2>
 <table><tbody>
-   <tr><th>2013 <br> 2012</th>
+   <tr><th>2013<br>2012</th>
        <td>5<sup>th</sup> year at <strong>EPFL</strong>, Computer Science.<br>
          Distributed algorithms, information theory, foundation of software,
          machine learning, HCI.</td>
-   <tr><th>2012 <br> 2010</th>
+   <tr><th>2012<br>2010</th>
        <td>3<sup>rd</sup> and 4<sup>th</sup> year at
        <strong>INSA de Lyon</strong> &ndash;
          Computer Science major.<br>
          C, C++, Java, SQL, Linux, computer networks.</td>
-   <tr><th>2010 <br> 2008</th>
+   <tr><th>2010<br>2008</th>
        <td>First two years at INSA de Lyon, <strong>english
-            section</strong> (classes in english).</td>
-   <tr><th>2008 <br> 2007</th>
+           section</strong> (classes in english).<br>
+         Maths, physics, chemistry, thermodynamics, …</td>
+   <tr><th>2008<br>2007</th>
        <td>Intensive one-year University foundation course preparing for the
          competitive entrance examinations to "Grandes Écoles",
          at Lycée Sainte-Geneviève.
