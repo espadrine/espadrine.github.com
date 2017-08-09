@@ -1,0 +1,88 @@
+<!doctype html><meta charset=utf-8>
+<title> Language Contradictions </title>
+<h1>Language Contradictions</h1>
+<p>Nobody notices how absurd programming languages are until you try and build a new one.</p>
+<p>Cat-and-mouse questions spring everywhere. Here's a few.</p>
+<h2>Overloading</h2>
+<p>Back in the 1960s, overloading meant overhead for compiler writers, so they threw it out of their language. Back then, floating-point implemented in hardware was still a thing! Then came Ada and C++, which featured function overloading. For completeness' sake, C++ added operator overloading. After all, operators behave much like functions, don't they?</p>
+<p>Do you want overloading?</p>
+<p>This question is still relevant today. Proof is, the Go language <a href="http://golang.org/doc/go_faq.html#overloading">forbids it</a>. How old is Go? It was unveiled in 2008. Bummer.</p>
+<p>The thing is, overloading takes a lot of language constructs for granted.
+You cannot have overloading without types and functions.
+Those are pretty common, but that condemns languages such as Lisp, JavaScript, Python and Lua from ever overloading anything.
+Rather, since those languages have weak typing, all functions are systematically overloaded to all existing types.
+However, if you <em>do</em> want the behaviour of your function to match the type of your parameters, you have two choices:</p>
+<ul>
+<li>You can, C-style, create functions with different names. What a wonderful world!
+Now you have two problems. What naming rule to follow?
+Lisp has those weird <code>string-</code> functions (such as <code>string-equal</code>)
+which both look ugly and are harder to find, for they stack up real fast.</li>
+<li>You can construct your only function in a <code>switch</code> fashion.
+You check for the type of the parameter, and you have one code block for each choice.
+Of course, this option is unacceptable.
+What if you define a brand new type?
+You would have to modify the source files of such fundamental functions as <code>equal</code>.
+No, this is bad.
+(Yet such bright examples as <a href="http://mitpress.mit.edu/sicp/full-text/book/book-Z-H-26.html#%25_sec_4.1">SICP itself</a> showcase an <code>eval</code> function with a huge type check at its core, hence forbidding the creation of new types.)</li>
+</ul>
+<p>At least, the limited possibilities of C makes this choice simple.
+You have to create a new name. Yet, you have a single namespace.
+You are effectively out of luck.</p>
+<p>Look at <a href="http://shootout.alioth.debian.org/u64q/program.php?test=pidigits&amp;lang=gcc&amp;id=4">those pretty algorithms</a>, filled with <code>mpz_add(tmp2, tmp2, numer)</code> instead of <code>+</code> and <code>mpz_cmp(tmp2, denom)</code> instead of <code>&lt;</code>.</p>
+<p>I once read a blog post that Brendan Eich pointed to. The author was very unhappy with this kind of syntax in Java. One of the commenters told the amazing story of some Wall Street code that contained <code>BigDecimal total = new BigDecimal( subA.doubleValue() + subB.doubleValue() );</code>. The + in there could have been the doom of mankind.</p>
+<p>While C had an excuse (it was created at a prehistoric time), Go deserves some spite. They argue that…</p>
+<blockquote>
+<p>Experience with other languages told us that having a variety of methods with the same
+name but different signatures was occasionally useful but that it could also be
+confusing and fragile in practice.</p>
+</blockquote>
+<p>Oh, boy. Do they really believe that?</p>
+<p>I'll tell you what. This is all nonsense.
+Integers are a type. Floating-point numbers are a different type.
+You can use the <code>+</code> operator with both.
+All operators are effectively deeply overloaded, even in C, even in Go.
+Is <em>that</em> so confusing? If so, take a page from Caml's book. Caml has distinct operators for floating-point arithmetic.</p>
+<hr />
+<p>Java, on the other hand, argues that overloading is good, because using different names for things that do the exact same thing on slightly different types is silly at best. On the other hand, <em>operator overloading</em> is deemed bad.</p>
+<p>Right. You can remember that <em>methods</em> have multiple meanings, but not <em>operators</em>.<br />
+Besides, <code>x.Add(Number.ONE).Mult(y)</code> is sooo much prettier.</p>
+<p>Java is partially wrong. (I guess I'll surprise some readers with this assertion. What? Java isn't <em>completely</em> wrong for once?)</p>
+<p>Let me state why Java is wrong first.</p>
+<p>Overloading being good has nothing to do with types being very similar (ie, on the same type hierarchy branch).
+Overloading should sometimes be applied to types which are miles away from each other.
+Overloading allows a namespace mechanism. A function named <code>draw</code> can either paint a shape, or remove a certain amount from an account.</p>
+<p>On the other hand, Java is right that overloading operators isn't the same.
+Until now, I've implicitly assumed that operators behave like functions, but unless you are using Lisp, this simply isn't true.
+Nonetheless, they could have allowed overloading, with a word of warning etched beneath in the brightest red: BEWARE OF THE PRECEDENCE!</p>
+<h2>Precedence</h2>
+<p>All modern programming languages have built-in types.</p>
+<p>All modern programming languages allow users to define their own types.</p>
+<p>There should be nothing special between the former and the latter. Yet, there is.</p>
+<p>Python has had this issue for quite some time, wherein builtin types did not behave like user-defined classes.
+You could not subclass a builtin type, for instance.
+They strove to <a href="http://www.python.org/dev/peps/pep-0253/">fix this</a>.
+They were right. Why should the user expect builtins to be more important than the code <em>they</em> write?
+Why should their types be second-class?</p>
+<p>Java was strongly overwhelmed by this issue. Wait, my mistake: it still is!
+There are those &quot;primitive data types&quot; like <code>int</code> and arrays that you cannot subclass. These troublesome builtins were such a thorn under programmers' feet that they wrote <a href="http://download.oracle.com/javase/tutorial/java/data/numberclasses.html">class equivalents</a> and extraterrestrial things such as <code>BigDecimal</code>!
+But operators don't work on them.</p>
+<p>Operators make built-in types forever special.</p>
+<p>I understand the purpose of operators.
+They make maths look like maths.
+Otherwise, they are completely useless.
+But still, they also make builtins more special than your own code! That is <em>not nice</em>!</p>
+<p>In turn, why did maths do this?
+They had a functional notation that was a perfect fit.
+It turns out that infix notation is one inch shorter. Yes, one inch is the size of two parentheses and a comma. At least on a blackboard.</p>
+<p>The associativity properties of some operators meant that we could chain operations together without caring about bracketing them.</p>
+<p>Mathematicians pushed wrist laziness as far as to devise a way to remove even more parentheses. They chained non-associative operations such as addition and multiplication. They invented precedence. May God forgive us.</p>
+<p>Does that mean that arithmetic should forever be special?
+Lisp proves that there are other ways.
+You can make operators behave just like functions.
+You can refuse precedence.
+You might have every mathematician throwing rocks at you for the rest of your life, though, when they realize that <code>1 + 2 * 4</code> is a syntax error. At least it doesn't yield 12.</p>
+<p>You can also have faith in your users. You can expect them to use operators for arithmetic only. You can hope that they won't use <code>+</code> for string concatenation.</p>
+<p>Java, on the other hand, has no faith in its users. Wise decision.
+By expecting Java programmers to be dumb, they attracted exactly that portion of the programming world. (Mind you, they attracted wise people, too.)</p>
+<p>What I meant to do by writing this article is to make you aware of the fact that your programming tools behave counter-intuitively.</p>
+<p>I have yet to see a consistent and productive programming language.</p>
