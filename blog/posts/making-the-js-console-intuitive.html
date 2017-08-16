@@ -1,0 +1,51 @@
+<!doctype html><meta charset=utf-8>
+<title> Making the JS console intuitive </title>
+<h1>Making the JS console intuitive</h1>
+<p>The most familiar tool that DevTools put in your belt is a JavaScript console.
+And you know how it should work, right? Just like that Firebug console we had for so many years.</p>
+<p>Except that most JS consoles actually suffer from what Joel Spolsky called <a href="http://www.joelonsoftware.com/articles/LeakyAbstractions.html">leaky abstraction</a>. Let's go through the edge-cases.</p>
+<p><strong>When I press ENTER</strong></p>
+<p>You may wonder, what happens behind the covers, when I press Enter in the console?</p>
+<p>Let's look at <em>Firefox</em>. We have an API for <a href="https://developer.mozilla.org/en-US/docs/Components.utils.Sandbox">sandboxes</a> in the browser. A sandbox has its own global object, but it is linked to what we call a compartment. For simplicity's sake, let's consider that a compartment is a web page. When we evaluate code in the sandbox, it acts just as if the page was running it, except that the page cannot access (and run code in) the sandbox itself.</p>
+<p>However, the duplication of global objects has undesirable side-effects.</p>
+<pre><code>document instanceof Object  // false, should be true.
+var foo = 5;
+window.foo  // undefined, should be 5.
+</code></pre>
+<p>The sandbox has a distinct global object, so <code>var foo = 5</code> adds a <code>foo</code> property to its global object. However, <code>window</code> is the web page's global object, which does not see <code>foo</code>. Similarly, <code>document</code> belongs to the web page, while <code>Object</code> is attached to the sandbox.</p>
+<p>You may think this is bad. Let me show you what <em>Google Chrome</em> <a href="https://github.com/WebKit/webkit/blob/5c21b924213ce72bb53af15baca6ae31ed9542b0/Source/WebCore/inspector/InjectedScript.cpp#L70">does</a>.</p>
+<p>What is the simplest solution you can come up with? The web page's global object already has a function to run arbitrary JavaScript. <code>eval()</code>, right? But this is a security hazard. Copy and paste this URL in your omnibar:</p>
+<pre><code>data:text/html,&lt;title&gt;&lt;/title&gt;&lt;script&gt;window.eval = function (e) { console.log('sending ' + e + ' to a malicious website!'); };&lt;/script&gt;
+</code></pre>
+<p>(Don't worry, it isn't really malicious). Open the JS console, type something in.</p>
+<p>Why do you get everything you enter sent to a malicious website (not really)? Because the web page redefines <code>eval()</code> to be whatever they want, along their sinister agenda.</p>
+<p>(This has been <a href="https://bugs.webkit.org/show_bug.cgi?id=96559">filed</a>, and it has been fixed in Chromium.)</p>
+<p>I have to say, <em>Opera</em>'s implementation seems spotless. None of the issues raised above are to be found. They <a href="https://github.com/operasoftware/dragonfly/blob/master/src/repl/repl_service.js#L419">call</a> an <code>Eval</code> binding which is documented <a href="http://operasoftware.github.com/scope-interface/EcmascriptDebugger.6.14.html#Eval">here</a>, and which takes care of all possibilities (running the code in the stack frame when the debugger is on a breakpoint, etc.) without getting disturbed if the web page modifies the <code>eval()</code> function. Magic!</p>
+<p><strong>Special cases ($0 and friends)</strong></p>
+<p>The set of all special variables and functions you get in the JS console is what Firebug calls the Command Line API.
+It has <a href="http://getfirebug.com/wiki/index.php/Command_Line_API">some kind of spec</a>. It is a plain simple documentation of their behaviour, written in Fall 2009. When Google Chrome started their own DevTools, they copied a lot of the behaviour that Firebug had, and the same goes for Opera Dragonfly. Thus far, that spec has been very uncontroversial.</p>
+<p>Only recently did Paul Irish suggest changing <code>$()</code> from the old <code>document.getElementById</code> (inherited from prototype.js) <a href="https://docs.google.com/spreadsheet/viewform?formkey=dHA5RjFzbF9tcElCa3VXYm13ZTctdkE6MQ">to</a> <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=778732">a</a> <a href="https://bugs.webkit.org/show_bug.cgi?id=92648">more</a> <a href="https://plus.google.com/113127438179392830442/posts/Bo1zdF4X9mp">intuitive</a> (jQuery-inspired) <code>document.querySelector</code>. Everybody liked the idea, it got re-implemented everywhere (I contributed the Opera Dragonfly <a href="https://github.com/operasoftware/dragonfly/pull/53">change</a>).</p>
+<p><em>Opera</em> calls them <a href="https://github.com/operasoftware/dragonfly/blob/cf46806f747067825c66142a6869c54b36f17d68/src/repl/commandtransformer.js#L237">Host commands</a>. As you can tell from looking at their code, they replace the matched token that their parser gives them with a string of JS code.
+For example, <code>$</code> is first parsed as a token, which is replaced on the fly with <code>&quot;(typeof $ == 'function' &amp;amp;&amp;amp; $ || function(e) { return document.getElementById(e); })&quot;</code>. Then, all tokens get concatenated, and evaluated. The simplest monkey-patching can do the trick.</p>
+<p>(They even take care of recursive commands, by re-flowing the post-processed code through their tokenizer, although I don't believe they actually use recursive host commands!)</p>
+<p>While Opera's host commands operate just like pre-processor macros, <em>Firefox</em>, on the other hand, injects <a href="http://hg.mozilla.org/integration/fx-team/file/5650196a8c7d/browser/devtools/webconsole/HUDService-content.js#l518">all those special functions</a> in <a href="http://hg.mozilla.org/integration/fx-team/file/5650196a8c7d/browser/devtools/webconsole/HUDService-content.js#l1005">the sandbox' global object</a>.</p>
+<p>Finally, <em>WebKit</em> has the most infamous solution of all. You can easily notice that, upon entering the following code in the console, as you may have noticed while trying the &quot;malicious&quot; web page:</p>
+<pre><code>(function() { debugger; }())
+</code></pre>
+<p>… a new script called <code>(program)</code> will pop up in the debugger and show <a href="https://github.com/WebKit/webkit/blob/5c21b924213ce72bb53af15baca6ae31ed9542b0/Source/WebCore/inspector/InjectedScriptSource.js#L448">the following content</a>:</p>
+<pre><code>with ((window &amp;amp;&amp;amp; window.console &amp;amp;&amp;amp; window.console._commandLineAPI) || {}) {
+(function() { debugger; }())
+}
+</code></pre>
+<p>You can probably guess what <code>window.console._commandLineAPI</code> contains. It's an object that maps identifiers like <code>$</code> and <code>$$</code> to defined functions. Evaluating <code>console._commandLineAPI.$.toString()</code> yields &quot;function () { [native code] }&quot;: yep, all those functions are native, all written in C++.</p>
+<p>We don't really see a performance impact from the use of the with statement, but injecting all window variables, console variables, and the command line API, using this frown-upon construct, feels wrong in some subconscious way.</p>
+<p><em>Firebug</em> <a href="https://github.com/firebug/firebug/blob/af1d74102de2cd2f2f9202f18d1d4c02439aa16a/extension/content/firebug/console/commandLine.js#L1050">defines real functions</a>, and then tries to do <a href="https://github.com/firebug/firebug/blob/af1d74102de2cd2f2f9202f18d1d4c02439aa16a/extension/content/firebug/console/commandLine.js#L274">the right thing</a>, inserting the API <a href="https://github.com/firebug/firebug/blob/af1d74102de2cd2f2f9202f18d1d4c02439aa16a/extension/content/firebug/console/commandLine.js#L274">into the JS frame</a> if available, but <a href="https://github.com/firebug/firebug/blob/master/extension/content/firebug/js/debugger.js#L84">it ends up not doing anything with it</a>, which explains why you don't get to use <code>$</code> and friends in the console, while on a breakpoint.</p>
+<p>The backup plan <a href="https://github.com/firebug/firebug/blob/af1d74102de2cd2f2f9202f18d1d4c02439aa16a/extension/content/firebug/console/commandLine.js#L180">will sound familiar</a>.</p>
+<pre><code>expr = &quot;with(_FirebugCommandLine){\n&quot; + expr + &quot;\n};&quot;;
+</code></pre>
+<p><strong>Future changes</strong></p>
+<p>In order to erase the issues I talk about in Firefox' WebConsole, we are working on a tighter integration with our Debugger. You can read all about it on <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=774753">this lengthy thread</a>. The basic idea is, instead of a sandbox, use the debugger to run code dynamically, while adding bindings (the command line API) that are not accessible from the web page. Shout out to Jim Blandy for adding <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=785174">this functionality</a> to the Debugger recently.</p>
+<p>Obviously, there is more work to be done. We are careful about not making this change cause performance regressions, or security problems. No rush, but we are on the right path!</p>
+<p><strong>Wrapping up</strong></p>
+<p>We arrive at the end of our journey. All in all, tool developers have proven very ingenious, twisting every part of the JS language to meld it to their needs. However, the resulting disparate toolboxes can have rough, incompatible edges (think Opera's host commands, <code>$</code> and <code>$$</code> for example, which cannot be used as function references).</p>
+<p>Yet, this is one of the most functional cross-browser API that I ever saw. The magic happens by discussing your implementation with fellow tool hackers. Thank you Internet!</p>
