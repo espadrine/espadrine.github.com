@@ -1,0 +1,53 @@
+<!doctype html><meta charset=utf-8>
+<title> Close to the metal </title>
+<h1>Close to the metal</h1>
+<p>What a strange expression. It is very much used by Go (the language) advocates (and by its authors; both titles overlap).</p>
+<p>My understanding of &quot;<strong>close to the metal</strong>&quot; was that I knew at any point of the program when the memory I manipulate is on the stack or in the heap. As a result, I can reason about the memory layout and the efficiency of the data structures I create.</p>
+<p>In fact, just like many fancy terms that I hear about programming languages, such as &quot;Write once, run everywhere&quot;, &quot;Native&quot;, &quot;App-scale&quot;, and so on, this is just another expression of which I have yet to find the meaning.</p>
+<p>A couple of days ago, I came across <a href="http://talks.golang.org/2012/splash.article">the following talk</a>. One sentence really stood out in my head: &quot;it is legal (encouraged even) to take the address of a stack variable&quot;.</p>
+<p>Obviously, in most languages whose compiler I would call &quot;close to the metal&quot;, taking the address of a stack variable is a very common operation. However, those languages have the habit of making the program crash if you are not careful about where data is freed, and what pointers point to. Yet, one of Go's redeeming qualities is to guarantee that pointer manipulation is safe (most of the time). What does it do to prevent the worst from happening?</p>
+<p>I wrote the following program with the intention of understanding how the compiler avoided a crash under the hood:</p>
+<pre><code>package main
+
+import &quot;fmt&quot;
+
+func f() *int {
+  i := 5
+  pi := &amp;amp;i
+  *pi ++
+  fmt.Println(&quot;i = &quot;, i)
+  fmt.Println(&quot;pi = &quot;, *pi)
+  return pi
+}
+
+func main() {
+  pi := f()
+  fmt.Println(&quot;result = &quot;, *pi)
+}
+</code></pre>
+<p>I return a pointer that points to what I consider to be a stack variable, but really is simply a local variable. Then I dereference that pointer. If this was C, the stack variable would get destroyed upon returning from the function, and therefore the pointer would point to a forbidden address in memory. That should cause a crash.</p>
+<p>You probably guessed at that point that this program doesn't crash. It returns the correct answer.
+Here goes the start of the generated assembly code for the function <code>f</code>, obtained with <code>go tool 6g -S program.go</code>:</p>
+<pre><code>0000 (program.go:5) TEXT    f+0(SB),$152-8
+0001 (program.go:6) MOVQ    $type.int+0(SB),(SP)
+0002 (program.go:6) CALL    ,runtime.new+0(SB)
+0003 (program.go:6) MOVQ    8(SP),CX
+0004 (program.go:6) MOVL    $5,(CX)
+0005 (program.go:7) MOVQ    CX,&amp;amp;i+-72(SP)
+0006 (program.go:8) MOVL    $1,AX
+0007 (program.go:8) MOVQ    CX,pi+-112(SP)
+0008 (program.go:8) MOVL    (CX),BP
+0009 (program.go:8) ADDL    AX,BP
+0010 (program.go:8) MOVL    BP,(CX)
+</code></pre>
+<p>The local variable <code>i</code> corresponds to the CX register. In it is placed the address of a freshly allocated heap slot the size of an <code>int</code>. We put 5 in the slot it points to, then we put CX to a slot on the stack which we say is the address of <code>i</code> (<code>&amp;amp;i+-72(SP)</code>), so that <code>i</code> is never conceptually on the stack.</p>
+<p>Obviously, I then tried to make the function return <code>i</code> (the integer), instead of <code>pi</code> (the pointer to an integer). Then, the assembly clearly allocated memory for <code>i</code> on the stack, and <code>pi</code> did hold the address of a stack variable. In other words, the compiler tries to put the variable on the stack, and if that can hurt memory safety, it puts it on the heap.</p>
+<p>Consequence: in Go, knowing whether a variable is on the stack is non-trivial. The very same variable declaration can either occur on the stack or on the heap.</p>
+<p>I find this design great, but it does make me wonder what the authors mean by saying that the language is &quot;close to the metal&quot;. This being said, knowing where the variable is stored doesn't matter, as long as we know the compiler does its best, and as long as we have tools to let us know where we can optimize, and what we can optimize.</p>
+<p>Which brings me to <strong>optimizing JavaScript</strong>. I have had an interesting discussion last summer with the great Benjamin Peterson, who did outstanding work on Firefox' JS engine. We were talking about the availability (or lack thereof) of tail-call optimization in interpreters and compilers.
+His comment on implementing it was that the programmer should be able to state his/her intention, in order to get feedback of the following kind: &quot;We're sorry, we were unable to perform tail-call optimization because…&quot;</p>
+<p>I feel like programmers should be able to know whenever an optimization they hope to achieve doesn't get performed. In Go, the case of knowing whether the variable is on the stack is a contrived example. In JavaScript, where the same kinds of tricks as discussed above are found everywhere, knowing where a function gets deoptimized because an argument was assumed to be an integer, and the function suddenly gets called with a string, is a valuable piece of information. Why was a string passed in? It might even be a bug.</p>
+<p>In EcmaScript, there is a valid statement, <a href="http://es5.github.com/#x12.15"><code>debugger</code></a>, which probably does what you think it does. Nothing, unless you're debugging. Adding syntax to help programmers is a natural thing to do. There needs to be syntax to warn the programmer when an optimization he/she hoped for doesn't get triggered, without having him/her look at bytecode or assembly code.</p>
+<p>There are some attempts in the wild. V8 comes with a switch, <code>--trace-deopt</code>, which will give you all information about deoptimizations in a format of dubious legibility. Firefox has some primitives that give information about things that could have been optimized. The great Brian Hackett even made an <a href="https://addons.mozilla.org/en-US/firefox/addon/jit-inspector/">addon</a> which highlights in shades of red pieces of code that couldn't get boosted by the JIT engine. However, the information it gives is quite cryptic; it is unclear to mere mortals how they should change their code to get the boost. Also, it is quite hard to navigate, since it tracks all JS code throughout the browser. Programmers want to know how <em>their code</em> does, and they don't want to jump through hoops to get that information. However, the idea of painting your code in red is one step closer to being told, &quot;Hey, this piece of code should be rewritten this way&quot;.</p>
+<p>On the standards front, the closest thing you get is something they call <a href="http://wiki.ecmascript.org/doku.php?id=strawman:guards">Guards</a>. This strawman amounts to type annotations that you can put anywhere you have a binding. However, it specifies that the code should throw if the type we specify for a variable isn't that of the data we feed it. That isn't quite the same thing as having a way to check for an optimization at all. Yet, the syntax itself would be valuable to request information about a certain class of bailouts.</p>
+<p>There is a lot yet to do to help programmers write code closer to the metal. What I do know is that current tools are only a glimpse of what we could have. The &quot;Profiles&quot; tab in WebKit's DevTools is notoriously seldom used, compared to any other tab. The information it gives is a struggle to work with. <a href="http://www.cs.brown.edu/~dap/agg-flamegraph.svg">Flame graphs</a> are the beginning of an answer. The question being not &quot;where is my code slow&quot; but &quot;what can I do to make it faster&quot;, making tools that give you clues on how to improve that <a href="http://jsperf.com/">jsperf</a> score is an art that is yet to harness.</p>
