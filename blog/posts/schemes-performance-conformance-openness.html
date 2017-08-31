@@ -1,0 +1,34 @@
+<!doctype html><meta charset=utf-8>
+<title> Schemes: Performance, Conformance, Openness </title>
+<h1>Schemes: Performance, Conformance, Openness</h1>
+<p>As <a href="http://lists.gnu.org/archive/html/info-gnu/2014-03/msg00006.html">Guile 2.0.10</a> just rolled out, I wished to re-acquaint myself with the status of Schemes. I downloaded the new version, compiled it (boy, is it slow to compile), installed it. It is designed as a language to extend existing programs, much like Lua. One goal is obviously to make the interpreter as fast as can be. Ideally, it should be the LuaJIT of Scheme-land.</p>
+<p>The other approach used to make Scheme run fast is to compile it. Other projects, such as Chicken Scheme, compile the code to C, and the result tends to have reasonable performance. They do also cut corners, as we'll see.</p>
+<p>Let's make one of the most simple non-trivial program. A looped factorial.</p>
+<pre><code>(define (fact n)
+  (let ((acc 1))
+    (let loop ()
+      (set! acc (* acc n))
+      (set! n (- n 1))
+      (if (zero? n) acc
+        (loop)))))
+</code></pre>
+<p>Guile has a number of handy helpers in REPL mode. Notably, <code>,h</code> will list all special commands that are available. That includes <code>,describe</code>, which gives documentation. For instance, <code>,describe get-internal-real-time</code> will tell you that it &quot;returns the number of time units since the interpreter was started&quot;. Let's use that.</p>
+<pre><code>(define (time-fact n)
+  (let ((t (get-internal-real-time)))
+    (fact n)
+    (display (- (get-internal-real-time) t))
+    (newline)))
+</code></pre>
+<p>The results of running <code>(time-fact 50000)</code> in the REPL are not astounding. About 2.62 seconds.</p>
+<p>Faced with <code>(fact 50000)</code> defined with recursion, Guile threw an error, which is more that can be said of Chicken Scheme, which caused a segmentation fault and died.</p>
+<p>Chicken Scheme (or <code>csi</code> for short) does not follow the so-called numerical tower by default. For instance, numbers are converted to a floating-point representation when they go beyond the limit. As a result, the same code as before (adapted using its <code>time</code> function, which does the same thing as Common Lisp's, that is, it computes the time needed to perform some operation given as an argument) seems very fast: &quot;0.021s CPU time&quot;. However, it returns a mere <code>+inf.0</code>.</p>
+<p>Fortunately, what seems great about Chicken is its wealth of downloadable packages (called &quot;eggs&quot;). The first one you'll want to download is readline, to make the interpreter that much easier to use (it includes autocompletion and bracket highlighting).</p>
+<pre><code>chicken-install readline
+</code></pre>
+<p>(You should <a href="http://wiki.call-cc.org/eggref/4/readline">read more here</a> to see how to set it up for <code>csi</code>. Also, to be fair, Guile does one better and has readline support by default, although for some unfathomable reason, you need to input <code>(use-modules (ice-9 readline) (activate-readline)</code> to get it.)</p>
+<p>You can also install the numerical tower with <code>chicken-install numbers</code> (a concept which I find mind-boggling, although certainly not ideal from a language design perspective: having bignums shouldn't be a switch-on feature (especially considering that there is no switch-off), but a data structure choice) and use it with <code>(use numbers)</code>. Of course, when using bignums, <code>csi</code> is quite slower: 2.86 seconds, with a whole second dedicated to garbage collection. As a side-note, printing the number takes about 20 seconds. All other players do it nearly instantly. Then again, not that much of a surprise: Chicken Scheme is not designed for interpreted situations. It is the worst result of the bunch, although not that far behind Guile.</p>
+<p>Petite Chez Scheme (or <code>petite</code> for short) is a fairly well optimized interpreter. It has a <code>(real-time)</code> procedure that works similarly to Guile's <code>(get-internal-real-time)</code>. With it, I could declare it the winner, with an average of 1.90 seconds. What is interesting, however, and shows how optimized it is, is that the recursive version doesn't blow up the stack. I can only assume that it has some curious engineering that detects that it can convert it to a loop. What is amazing is that, although slower than the looped version, the recursive version does far better than Guile's looped version, with an average of 2.22 seconds.</p>
+<p>However, <code>petite</code> is not open-source. The code is not for you to see. I would love the best Scheme interpreter to be open-source. Because reading software is my bedtime story.</p>
+<p>Of course, Common Lisp's SBCL does no compromise, and blows everyone away, with 1.044 seconds of real time (2,296,459,842 processor cycles, it also says, and I wonder with awe how it got that information). And the recursive version is about 1.26 seconds.</p>
+<p>Sure, this is a contrived example. It is more of a stress-test of the bignum code. It is also roughly what I expected, and it might actually be representative of the level of optimization involved in each project. I'm sure there'll be a lot more work in the future, and that makes me hopeful.</p>
+<p>Here's to Guile becoming the new SBCL!</p>
