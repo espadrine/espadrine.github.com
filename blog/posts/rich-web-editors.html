@@ -1,0 +1,159 @@
+<!doctype html><meta charset=utf-8>
+<title> Rich Web Editors </title>
+<h1>Rich Web Editors</h1>
+<p>Here is what I wish to see in a rich Web editor.</p>
+<h2>Features</h2>
+<p>First, <strong>formatting</strong>. At this point, I feel we all agree that there are two major types of formatting currently in use: block and inline. Here are all the corresponding formatting options a light editor should offer, by order of importance.</p>
+<ul>
+<li>Block</li>
+<li>Paragraph</li>
+<li>Six heading levels</li>
+<li>Lists (ordered and unordered, with nesting)</li>
+<li>Embedded resource (image, audio, video, iframe?)</li>
+<li>Blockquote</li>
+<li>Horizontal ruler</li>
+<li>Code block (optional: could be implemented as a paragraph with code and line breaks)</li>
+<li>Inline</li>
+<li>Italic</li>
+<li>Bold</li>
+<li>Link</li>
+<li>Code</li>
+<li>Line break</li>
+<li>Strikethrough</li>
+</ul>
+<p>Second, <strong>toolbars</strong> are the bane of my existence. User interfaces should be as clean as they can afford to be. All I should see when editing text is the text I write and a discreet button on the side to click when I am done editing.</p>
+<p>The <strong>editor</strong> should not be a tiny window surrounded by bells and whistles. Ideally, all you should see is your text. If you are editing markup, you should see a live rendering of what you are typing on the side, centered on the equivalent location that your cursor is at.</p>
+<p>Most importantly, editing is a <strong>linear process</strong>. It must be possible to specify what we want to write in the order in which we think it. For instance, if I know that the next word is italic, I ought to set italic <em>before</em> I actually write the word. Being forced to first type text, then format it, requires me to keep in mind all the formatting I want as I write, in order to enforce it later. Writing already demands that I strain my memory into preparing what I will write later; no need to strain it further. This is what most makes me enjoy Markdown editing: typing a star, for example, naturally occurs before typing the italic word.</p>
+<p>Finally, <strong>performance</strong>: there should never be a moment when we can type faster than text appears on the screen.</p>
+<p>Nice-to-haves:</p>
+<ol>
+<li>Automatic conversion of text to the right codepoint (such as quotes <code>&quot;</code> to <code>“</code> and <code>--</code> to <code>—</code>), although you ought to be able to undo that.</li>
+<li>Choosing the flow of blocks, between:
+<ul>
+<li>Normal</li>
+<li>Centered</li>
+<li>Half-width; text flows on the right</li>
+<li>Half-width; text flows on the left</li>
+</ul>
+</li>
+<li>Tables, as a new block type.</li>
+<li>Checklist, as a new block type (which Slack provides).</li>
+</ol>
+<h2>Solutions</h2>
+<p>Formatting options should only appear in <strong>contextual modeless popup</strong>. That means it should not force you out of your editing experience. Typing should dismiss the popup. In total, all we need are three distinct popups:</p>
+<ol>
+<li>Inline formatting</li>
+<li>Block formatting</li>
+<li>Embedding</li>
+</ol>
+<p>While editing, there is no need for any popup. <strong>When selecting text</strong>, that popup has three purposes: contextually indicate that you can format that text inline, provide buttons to do so, and hint at the ability to do so in linear editing by providing the shortcuts.</p>
+<ul>
+<li><code>Ctrl+I</code> → Italic</li>
+<li><code>Ctrl+B</code> → Bold</li>
+<li><code>Ctrl+K</code> → Link (Medium, Tumblr, Slack, Google Docs, Word)</li>
+<li><code>Ctrl+Shift+K</code> → Code (Slack)</li>
+<li><code>Shift+Enter</code> → Line break</li>
+<li><code>Ctrl+Shift+X</code> → Strikethrough (Slack)</li>
+<li><code>Alt+Shift+5</code> → Strikethrough (Google Docs)</li>
+<li><code>Ctrl+Shift+6</code> → Strikethrough (Tumblr)</li>
+</ul>
+<p><strong>When creating a new block</strong>, a different popup should appear, giving you the option to select the block type (along with hinting at keyboard shortcuts). By default, a block should be a paragraph.</p>
+<p>Changing the type of an existing block is obvious in hindsight. We are used to double-click to select a word, and to triple-click to select a block. Just like the double-click, the <strong>triple-click</strong> should also show the block formatting popup.</p>
+<p>(I thought I was the only one to figure that idea out. To some extent, I am. Medium does rely on triple-click to hide one button: the drop cap.)</p>
+<p>Unlike the inline formatting popup, the block one features exclusive options. We can therefore omit the current one, reducing the number of buttons.</p>
+<p>Similarly, when embedding a resource, the resource type can be inferred from the link, which avoids unnecessarily asking what its type is. In fact, a resource embedding-specific popup can appear <strong>whenever we paste a URL</strong>, suggesting either to produce a link, or to embed its target. Ideally, pasting or dropping documents from the desktop should also be supported, and that does not require a popup, as the type can be inferred.</p>
+<p>Because the block popup appears upon creating a new block, it is not as critical to having a linear editing process. Shortcuts are therefore optional. However, the following can ease the most common operations.</p>
+<ul>
+<li><code>Ctrl+Alt+0</code> → Paragraph (Google Docs)</li>
+<li><code>Ctrl+Alt+1</code> to <code>6</code> → Heading (Google Docs, Word, ~Medium, ~Slack)</li>
+<li><code>Ctrl+Shift+2</code> → Heading (Tumblr)</li>
+<li><code>Ctrl+Shift+7</code> → Ordered list (Google Docs, Slack, Tumblr)</li>
+<li><code>Ctrl+Shift+8</code> → Unordered list (Google Docs, Slack, Tumblr)</li>
+<li><code>Tab</code>, <code>Shift+Tab</code> → Increase / decrease nesting in lists</li>
+<li><code>Ctrl+]</code>, <code>Ctrl+[</code> → Same as above (when Tab needs to be used)</li>
+<li><code>Ctrl+Shift+9</code> → Blockquote (Tumblr)</li>
+<li><code>Ctrl+Alt+K</code> → Code block (Slack)</li>
+<li><code>Ctrl+R</code> → Horizontal ruler (Stack Overflow)</li>
+</ul>
+<p>However, a much greater idea in my opinion is to have <strong>Markdown-like automatic conversion</strong>. It is not a novel idea (Slack did it first, and ProseMirror followed suit).</p>
+<ul>
+<li><code>#+Space</code> → Heading (the number of # determines the header level)</li>
+<li><code>*+Space</code>, <code>-+Space</code> → Unordered list</li>
+<li><code>1.+Space</code> → Ordered list</li>
+<li><code>&gt;+Space</code> → Blockquote</li>
+<li><code>```+Space</code> → Code block</li>
+<li><code>----</code> → Horizontal ruler</li>
+<li><code>![]</code> → Embedded resource (not part of Slack, but would it not be fancy?)</li>
+<li><code>:emoji:</code> → Emoji (based on the name). A nice-to-have, most certainly.</li>
+</ul>
+<p>General shortcuts that ought to be supported as well:</p>
+<ul>
+<li><code>Ctrl+C</code>, <code>Ctrl+X</code>, <code>Ctrl+V</code>: copy, cut, paste</li>
+<li><code>Ctrl+Z</code>, <code>Ctrl+Shift+Z</code>, <code>Ctrl+Y</code>: undo, redo</li>
+<li><code>Ctrl+Backspace</code>: delete previous word</li>
+<li><code>Ctrl+Delete</code>: delete next word</li>
+<li><code>Ctrl+Home</code>, <code>Ctrl+End</code>: go to the start / end of the whole document</li>
+<li><code>Ctrl+F</code>, <code>Ctrl+G</code>: find, find next occurrence</li>
+<li><code>Ctrl+S</code>: if there is no auto-saving, this should save the document</li>
+<li><code>Ctrl+/</code>: show shortcuts (Medium, Slack)</li>
+</ul>
+<h2>What I have used</h2>
+<p>I will only point out what is wrong or missed in each implementation.</p>
+<ul>
+<li><a href="https://www.blogger.com">Blogger</a>
+<ul>
+<li>Ugly toolbar</li>
+<li>Too many formatting options: inline background color for text, inline font change, font size and text justification!</li>
+</ul>
+</li>
+<li><a href="https://www.wikipedia.org/">Wikipedia</a>
+<ul>
+<li>Ugly toolbar</li>
+<li>Not WYSIWYG, with an impenetrable syntax</li>
+<li>No live preview</li>
+</ul>
+</li>
+<li><a href="https://www.reddit.com/">Reddit</a>
+<ul>
+<li>Not WYSIWYG, and a custom Markdown that is not CommonMark</li>
+<li>No live preview</li>
+<li>Only images can be embedded</li>
+</ul>
+</li>
+<li><a href="https://stackoverflow.com/">Stack Overflow</a>
+<ul>
+<li>Ugly toolbar</li>
+<li>Only images can be embedded</li>
+</ul>
+</li>
+<li><a href="https://www.tumblr.com/">Tumblr</a>
+<ul>
+<li>The editor is a tiny window in the middle of the screen, with the full app (updating blogs) running in the background — and you can see it by transparency!</li>
+<li>Single-level heading</li>
+<li>Illogical separation between block and inline formatting (the block formatter doesn't include block quotes or headings: those are in the inline formatter)</li>
+<li>Automatic conversion of quotes, but no way to undo that conversion.</li>
+<li>Audio cannot be embedded</li>
+<li>Markdown mode: Should use CommonMark (ideally with tables added)</li>
+<li>Markdown mode: No selection of formatting options appear when selecting text</li>
+<li>Markdown mode: Only images can be embedded</li>
+<li>Markdown mode: Only 1-level nesting (guess how I learned that?)</li>
+</ul>
+</li>
+<li><a href="https://slack.com/">Slack</a>
+<ul>
+<li>Slow and Buggy: on Firefox at least, the cursor frequently breaks, appears at two places, …</li>
+<li>3-level heading</li>
+</ul>
+</li>
+<li><a href="https://medium.com/">Medium</a>
+<ul>
+<li>3-level heading</li>
+<li>Illogical separation between block and inline formatting (the block formatter doesn't include block quotes or headings: those are in the inline formatter)</li>
+<li>Automatic conversion of quotes, but no way to undo that conversion</li>
+<li>Audio cannot be embedded</li>
+</ul>
+</li>
+</ul>
+<p>I'd rather not include <a href="http://prosemirror.net/">ProseMirror</a> here yet, as it is a beta product. It fares fairly well, although I'd rather not have inline formatting options in the block formatting options (they are present to be used for linear editing (switch to italic before writing the italic word), but the keyboard shortcut is not hinted at). Besides, the always-present hamburger icon used for block formatting could be thrown away. Finally, nested lists are very awkward at the moment (neither tab nor <code>Ctrl+]</code> works, for instance).</p>
+<p>The biggest issue facing ProseMirror, however, is the fact that <em>it does not have a block-level resource embedding object</em>. Images are only inline. It is convenient to enable emojis, I suppose, but definitely not for most publications. Most images in rich text are a block element, usually centered, sometimes with text flowing on the left or on the right. Almost never is having text aligned with the bottom of the image desirable.</p>
+<p>What other improvements would you like to see in user experience?</p>
