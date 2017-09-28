@@ -1,0 +1,43 @@
+<!doctype html><meta charset=utf-8>
+<title> TheFileTree Design Log 2 </title>
+<h1>TheFileTree Design Log 2</h1>
+<p>I have implemented the core API, which powers the folder app.</p>
+<h1>API</h1>
+<p>I tried to stay close to WebDAV, even though I will differ from it in one significant fashion: no file locks.</p>
+<ul>
+<li><code>GET /</code>: loads the file type's app (eg, a text editor, or a file browser).</li>
+<li><code>GET /file?app=data</code>: downloads file content.</li>
+<li><code>GET /?app=data</code>: gets a JSON list of the folder's contained file names. A <code>Depth: 0</code> HTTP header makes it get a map from file names to <code>{meta: …}</code>, which contains its metadata. Further depths also include a <code>{files: …}</code> key, which is yet again a map from file names to <code>{meta: …, [files: …]}</code>. I rely on the depth for fuzzy matching file names in the file browser.</li>
+<li><code>GET /?app=metadata</code>: obtains the file's metadata as JSON.</li>
+<li><code>PUT /?app=metadata Content-Type: application/json</code>: replace the file's metadata.</li>
+<li><code>PUT /foo</code>: upload a file, creating it if necessary.</li>
+<li><code>POST /?op=append&amp;content=… Content-Type: multipart/form-data</code>: upload several files, creating them if needed.</li>
+<li><code>MKCOL /</code>: create a folder.</li>
+<li><code>DELETE /</code>: remove a file.</li>
+</ul>
+<p>I will implement <code>COPY</code> and <code>MOVE</code> in the future; those operations were not supported in the past.</p>
+<p>Metadata information is autosaved every 5 seconds when it changed.</p>
+<p>I am afraid this whole reimplementation went faster than planned, leaving me in front of the difficult choice that I hoped to delay…</p>
+<h1>Synchronized Editing</h1>
+<p>I wish to support synchronized editing for text and JSON, with index rebasing to preserve intentions. I see it as a WebSocket JSON stream over <code>/file?op=edit&amp;app=text</code>. But what library should I use, and with which protocol? Canop is functional and efficient, although it requires centralization (which will remain unavoidable), but full-JSON is not implemented yet, nor are compound atomic transactions, only text. Meanwhile, jsonsync is functional and mostly relies on the JSON Patch standard (and also peer-to-peer, but this is useless in our case), but index rebasing is not implemented yet, and not as efficient as it is for Canop.</p>
+<p>(Given proper index rebasing, there is no reason for which we could not support binary editing. However, if you are modifying a binary file, the synchronization cannot know whether the file gets corrupted, as it does not know its semantics, only its serialized form. For instance, a PNG file edited simultaneously may be synchronized to a state where the index rebasing results in an invalid file. To avoid file corruption, I won't provide binary synchronization.)</p>
+<h1>Accounts</h1>
+<p>One of the large, long-term changes I wanted to include for a long time was <strong>accounts</strong>. In the former implementation of TheFileTree, everyone was anonymous, which both made it implausibly hard to scale (for instance, having private files necessitated passwords, one for each file, and giving access to a file meant sharing that password, which if the password is used on another file, means remembering a lot of passwords,etc…) and hard to sell (I wouldn't pay a subscription for a service that can't remember that I paid it).</p>
+<p>However, I am unsure of the exact layout I want for the root folder. My initial thoughts:</p>
+<ul>
+<li>app (contains trusted apps, like &quot;folder&quot; for file exploration, &quot;text&quot; for editing, &quot;markdown&quot;, &quot;html&quot;, etc.),</li>
+<li>lib (shared libraries and assets used by app and the system, like a 404 page),</li>
+<li>api (fake inaccessible directory; used for actions like api/1/signup; I can probably make it hold manual pages upon GETting),</li>
+<li>demo (anonymous public access),</li>
+<li>about (help, manuals, owner information),</li>
+<li>One of the following:
+<ul>
+<li>Users are stored at the root (eg. thefiletree.com/espadrine), they cannot use the existing root file names as nick, and that potentially blocks me from creating new root files in the future (unless I reserve all 3-letter alphabetic words). There is no visual clutter though, as you only see folders you can enter.</li>
+<li>@nick (Twitter syntax, slightly ugly but popular: thefiletree.com/@espadrine). Other options I considered are ~nick (as per httpd, but it just looks ugly, take a look: thefiletree.com/~espadrine), u (storing nicks, for instance thefiletree.com/u/espadrine, the Reddit way; but it encourages calling nicks /u/nick instead of @nick, and it doesn't make it feel like I am treated first-class as a user), usr (but it is 2 chars longer than u), and finally, the comfy unixy home (oh, thefiletree.com/home/espadrine), but it is even longer!.</li>
+</ul>
+</li>
+<li>~ (reserved to allow redirection to user directory, eg. thefiletree.com/~/my/content),</li>
+<li>favicon.ico,</li>
+<li>robots.txt,</li>
+<li>humans.txt.</li>
+</ul>
