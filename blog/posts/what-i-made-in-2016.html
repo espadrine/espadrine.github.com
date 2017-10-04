@@ -1,0 +1,17 @@
+<!doctype html><meta charset=utf-8>
+<title> @hat I Made In 2016 </title>
+<h1>@hat I Made In 2016</h1>
+<p>This year, the company I work for, Captain Train, was purchased by its English equivalent, Trainline. I added support for American Express BTA lodged cards, upgraded the SNCF integration to support their new fare systems, and worked on the common format for carriers.</p>
+<p>In open-source, I made the following.</p>
+<ul>
+<li>A natural-language-processing bot library <a href="https://github.com/espadrine/queread">queread</a>, in order to power <a href="https://github.com/espadrine/travelbot">travelbot</a>, a CLI and Slack bot system which you can ask for travel information across Europe. It uses <a href="https://github.com/espadrine/travel-scrapper">travel-scrapper</a>, which relies on the Trainline websites for data.</li>
+<li>A multiplayer musical editor on top of TheFileTree, as a flexible textual editor. See <a href="https://thefiletree.com/david/audio/test.abc">this example</a>.</li>
+<li><a href="https://github.com/espadrine/email-login">Email-Login</a> is now robust and ready to use.</li>
+<li><a href="https://espadrine.github.io/spash/">Spash</a>, a <a href="https://en.wikipedia.org/wiki/Geohash">geohash</a>-inspired Spacetime locator.</li>
+<li>The <a href="https://github.com/espadrine/json-diff">json-diff</a> gem offers a brand-new algorithm for diffing JSON content, with support for in-array object move operations as a first-class citizen, unlike existing LCS-based approaches, resulting in better output. I even published a <a href="https://engineering.thetrainline.com/2016/10/05/how-we-switched-without-a-hitch-to-a-new-api/">blog post</a> on Trainline's blog.</li>
+<li>The <a href="https://github.com/espadrine/json-api-vanilla">json-api-vanilla</a> gem parses <a href="http://jsonapi.org/">JSONAPI</a> payloads (ie. JSON with references, to support object graphs with reference cycles, etc.) and converts it to vanilla Ruby objects, with references correctly hooked up, without <em>any class definition needed</em>, unlike what existed before that.</li>
+<li>The <a href="https://github.com/espadrine/canop/blob/master/doc/protocol.md">Canop protocol</a> was finalized and implemented. <a href="https://github.com/espadrine/canop/commit/b0f37b2cc789513e9c8bd1986e113bed6580328f">This commit</a> in particular finally implemented proper index shifting for intention preservation, so that people can edit the same text file simultaneously without losing their changes.</li>
+<li>The <a href="https://github.com/espadrine/json-sync">json-sync</a> project sprung out of the Canop effort. Unlike Canop, it cannot yet perform intention preservation. However, its design supports peer-to-peer networks, unlike Canop which is centralized.</li>
+</ul>
+<p>I took greater concern in explaining my projects. People wouldn't understand the schematics for the first automobile, but a simple demonstration is enough to blow everybody's mind.</p>
+<p><a href="http://espadrine.tumblr.com/post/138229350686/what-i-did-in-2015">Previously</a>.</p>
