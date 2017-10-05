@@ -1,6 +1,6 @@
-# @hat I Made In 2016
+# What I Made In 2016
 
-This year, the company I work for, Captain Train, was purchased by its English equivalent, Trainline. I added support for American Express BTA lodged cards, upgraded the SNCF integration to support their new fare systems, and worked on the common format for carriers.
+This year, the company I work for, Captain Train, was purchased by its English counterpart, Trainline. I added support for American Express BTA lodged cards, upgraded the SNCF integration to support their new fare systems, and worked on the common format for carriers.
 
 In open-source, I made the following.
 
