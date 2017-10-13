@@ -1,5 +1,8 @@
 <!doctype html><meta charset=utf-8>
 <title> Schemes: Performance, Conformance, Openness </title>
+<link href=../blog.css rel=stylesheet>
+<main>
+  <article>
 <h1>Schemes: Performance, Conformance, Openness</h1>
 <p>As <a href="http://lists.gnu.org/archive/html/info-gnu/2014-03/msg00006.html">Guile 2.0.10</a> just rolled out, I wished to re-acquaint myself with the status of Schemes. I downloaded the new version, compiled it (boy, is it slow to compile), installed it. It is designed as a language to extend existing programs, much like Lua. One goal is obviously to make the interpreter as fast as can be. Ideally, it should be the LuaJIT of Scheme-land.</p>
 <p>The other approach used to make Scheme run fast is to compile it. Other projects, such as Chicken Scheme, compile the code to C, and the result tends to have reasonable performance. They do also cut corners, as we'll see.</p>
@@ -32,6 +35,8 @@
 <p>Of course, Common Lisp's SBCL does no compromise, and blows everyone away, with 1.044 seconds of real time (2,296,459,842 processor cycles, it also says, and I wonder with awe how it got that information). And the recursive version is about 1.26 seconds.</p>
 <p>Sure, this is a contrived example. It is more of a stress-test of the bignum code. It is also roughly what I expected, and it might actually be representative of the level of optimization involved in each project. I'm sure there'll be a lot more work in the future, and that makes me hopeful.</p>
 <p>Here's to Guile becoming the new SBCL!</p>
-<footer>
-  Published <time itemprop=datePublished datetime="2014-03-18T16:53:00Z">18 March 2014</time>.
-</footer>
+    <footer>
+      Published <time itemprop=datePublished datetime="2014-03-18T16:53:00Z">18 March 2014</time>.
+    </footer>
+  </article>
+</main>

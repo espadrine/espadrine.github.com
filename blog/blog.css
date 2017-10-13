@@ -1,0 +1,115 @@
+html {
+  font-family: Helvetica Neue, Arial, sans-serif;
+  color: #616566;
+  background-color: #e6ebea;
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAwIiBoZWlnaHQ9IjEwMDAiPjxmaWx0ZXIgaWQ9ImEiPjxmZVR1cmJ1bGVuY2UgYmFzZUZyZXF1ZW5jeT0iLjIiIG51bU9jdGF2ZXM9IjEiIHN0aXRjaFRpbGVzPSJzdGl0Y2giLz48ZmVDb2xvck1hdHJpeCB2YWx1ZXM9IjEgMCAwIDAgMCAxIDAgMCAwIDAgMSAwIDAgMCAwIDAgMCAwIDAgMC4wNyIvPjwvZmlsdGVyPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbHRlcj0idXJsKCNhKSIvPjwvc3ZnPg==);
+  background-attachment:fixed;
+}
+
+h1 {
+  text-align: center;
+  margin: 1rem 0 2rem;
+}
+nav > ul { list-style: none; }
+a {
+  color: #f55b2c;
+  text-decoration: none;
+}
+a:hover {
+  color: #616566;
+  background-color: #fff7a5;
+}
+
+body {
+  max-width: 17cm;
+  margin: 1rem auto;
+  padding: 0 8px;
+}
+
+/* Article and Markdown */
+
+main {
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(0,0,0,0.03) inset,0 0 0 1px rgba(0,0,0,0.15);
+  padding: 2rem;
+}
+
+article blockquote {
+  margin: 0;
+  padding-left: 1.4rem;
+  position: relative;
+}
+article blockquote::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: #dadada;
+  border-radius: 2px / 4px;
+}
+article pre, article code { font-family: monospace; }
+article pre {
+  padding: 10px;
+  background-color: #eee;
+  border-radius: 3px;
+  overflow: auto;
+}
+article hr {
+  border: 0;
+  margin: 2rem auto;
+  text-align: center;
+}
+article hr::before {
+  content: '⁂';
+  color: gray;
+  font-size: 1.5rem;
+}
+article a { color: #f55b2c; }
+article a:hover {
+  color: #616566;
+  background-color: #fff7a5;
+}
+article ul li:before {
+  content: "\25CF";
+  font-weight: 400;
+  padding-right: 10px;
+  margin-left: -18px;
+}
+article li:before {
+  color: #f55b2c;
+  margin: 0.4em 0;
+}
+article h1 {
+  text-align: center;
+  margin: 1rem 0 2rem;
+}
+article h1, article h2, article h3, article h4,
+article h5, article h6 { color: black; }
+article p { text-align: justify; }
+article p > img {
+  max-height: 90vh;
+  max-width: 17cm;
+}
+article p > img.center {
+  display: block;
+  margin: auto;
+  border: 1px solid #dadada;
+  padding: 5px;
+  max-width: calc(17cm - 12px);
+}
+@media (max-width: 17cm) {
+  article p > img {
+    /* 16px for the markdown padding. */
+    max-width: calc(100vw - 16px);
+  }
+  article p > img.center {
+    max-width: calc(100vw - 12px - 16px);
+  }
+}
+article footer {
+  font-style: italic;
+  font-size: small;
+  margin-top: 3rem;
+  text-align: right;
+}

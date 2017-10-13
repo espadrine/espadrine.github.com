@@ -1,5 +1,8 @@
 <!doctype html><meta charset=utf-8>
 <title> Don’t be eval() </title>
+<link href=../blog.css rel=stylesheet>
+<main>
+  <article>
 <h1>Don’t be eval()</h1>
 <p>[TLDR: <a href="https://github.com/espadrine/localeval">https://github.com/espadrine/localeval</a>]</p>
 <p>We JS programmers know how evil <code>eval()</code> is. An attempt at copying the fancy concept of Lisp's metacircular evaluator, it takes a string instead of Lisp's homoiconic quoted syntax tree. Beyond that, unlike Scheme (which allows to specify your own environment), it evaluates the code in the current lexical environment. Consequently, it can mess with all variable bindings in scope, and will leak to the outside world all variables it defines.</p>
@@ -25,6 +28,8 @@ while (obj !== null) {
   globals = Object.getOwnPropertyNames(obj);
   for (var i = 0; i &lt;/https:&gt;
 </code></pre>
-<footer>
-  Published <time itemprop=datePublished datetime="2013-06-12T22:21:00Z">13 June 2013</time>.
-</footer>
+    <footer>
+      Published <time itemprop=datePublished datetime="2013-06-12T22:21:00Z">13 June 2013</time>.
+    </footer>
+  </article>
+</main>

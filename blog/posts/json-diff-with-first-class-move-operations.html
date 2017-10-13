@@ -1,5 +1,8 @@
 <!doctype html><meta charset=utf-8>
 <title> JSON Diff With First-Class Move Operations </title>
+<link href=../blog.css rel=stylesheet>
+<main>
+  <article>
 <h1>JSON Diff With First-Class Move Operations</h1>
 <p><em>(This was first posted <a href="https://blog.trainline.fr/12389-algorithme-diff-json">here</a> in French and <a href="https://engineering.thetrainline.com/2016/10/05/how-we-switched-without-a-hitch-to-a-new-api/">there</a> in English.)</em></p>
 <p>Back in January, here at Trainline Europe, we learnt that SNCF, the main French railway company, wanted to update their fare system — that is, the set of rules which determine their ticket prices. The plan was to scrap congestion pricing on TGVs (France’s high-speed trains), reduce sudden price increases, introduce so many offers to discount card owners that it would feel like Christmas!</p>
@@ -72,6 +75,8 @@
 <h2>Epilogue</h2>
 <p>This diffing algorithm allowed me to detect three problematic bugs which therefore never impacted anyone. When we switched to the new search engine, we gradually increased the proportion of users that it impacted. The higher it went, the more confident we were, until we reached 100%.</p>
 <p>We changed the engine with the train at full throttle. Nobody noticed a thing!</p>
-<footer>
-  Published <time itemprop=datePublished datetime="2016-10-26T21:34:00Z">26 October 2016</time>.
-</footer>
+    <footer>
+      Published <time itemprop=datePublished datetime="2016-10-26T21:34:00Z">26 October 2016</time>.
+    </footer>
+  </article>
+</main>

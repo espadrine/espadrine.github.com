@@ -1,5 +1,8 @@
 <!doctype html><meta charset=utf-8>
 <title> TheFileTree Design Log 3 </title>
+<link href=../blog.css rel=stylesheet>
+<main>
+  <article>
 <h1>TheFileTree Design Log 3</h1>
 <p>I finally implemented the following API:</p>
 <ul>
@@ -18,6 +21,8 @@
 <p>My plan: save the revision number so that local changes can be applied without a sweat when the file wasn't concurrently modified.</p>
 <p>If it was, download a diffing library, and perform a diff. Display a visualization of the changes that would be applied to the local document (with local changes) if upstream changes were applied, and local changes rebased on top of them.</p>
 <p>&quot;Do you want to apply remote changes?&quot; Yes / No, save my document at a new location.</p>
-<footer>
-  Published <time itemprop=datePublished datetime="2017-04-02T19:19:00Z">2 April 2017</time>.
-</footer>
+    <footer>
+      Published <time itemprop=datePublished datetime="2017-04-02T19:19:00Z">2 April 2017</time>.
+    </footer>
+  </article>
+</main>

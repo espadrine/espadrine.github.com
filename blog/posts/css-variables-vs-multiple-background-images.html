@@ -1,5 +1,8 @@
 <!doctype html><meta charset=utf-8>
 <title> CSS Variables vs. Multiple Background Images </title>
+<link href=../blog.css rel=stylesheet>
+<main>
+  <article>
 <h1>CSS Variables vs. Multiple Background Images</h1>
 <p>I was working on <a href="https://github.com/garden/tree">Tree</a> today. While in the process of adding file selection, I realized I was duplicating a lot of code for no good reason but the limitations of CSS3.</p>
 <p>Tree is a collaborative file system. As such, it needs a file explorer. So far, that file explorer, dubbed Gateway, lacks the UI to delete files. Since there are many operations that work on one or more files, I needed to create a system to select multiple files. As it stands, files currently have a number of backgrounds: one image to indicate what type of file it is, and a background color to show which file is currently focused.</p>
@@ -68,6 +71,8 @@
 </code></pre>
 <p>Partial backgrounds only mix together: a normal background image declaration clears all partial backgrounds currently on, and plays by its own rules. However, partial backgrounds should work with <code>background-color</code>.</p>
 <p>I don't have a strong opinion of what should happen when two z-index collide. One declaration could overwrite the other, or the behaviour could be undefined. In my case, we can't really have a file be a folder or vice-versa, and in general, having collisions should only happen by mistake. </box></attachment></repeat-style></bg-size></position></bg-image></bg-z-index></p>
-<footer>
-  Published <time itemprop=datePublished datetime="2013-11-25T20:33:00Z">25 November 2013</time>.
-</footer>
+    <footer>
+      Published <time itemprop=datePublished datetime="2013-11-25T20:33:00Z">25 November 2013</time>.
+    </footer>
+  </article>
+</main>
