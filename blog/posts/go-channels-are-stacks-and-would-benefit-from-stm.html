@@ -73,28 +73,28 @@ Of course, that isn’t atomic, and this is the reason why we get issues.</li>
 <p>So, locks are not composable. Can we do better than this?</p>
 <p>Go is famous for the following saying.</p>
 <blockquote>
-<p>Don't communicate by sharing memory, share memory by communicating.</p>
+<p>Don’t communicate by sharing memory, share memory by communicating.</p>
 </blockquote>
-<p>Indeed, you can solve the philosophers' problem by communicating.
+<p>Indeed, you can solve the philosophers’ problem by communicating.
 That is the <em>Chandy / Misra solution</em>. Each philosopher but one takes the fork on his right.
 The one that can takes the fork on his left.
 Then, whenever they need a fork, they request it to its owner,
 which gives it if he is done eating.
-This brilliant solution doesn't stop by
-avoiding deadlocks, it also avoids livelocks by adding a &quot;dirty fork&quot; system.
+This brilliant solution doesn’t stop by
+avoiding deadlocks, it also avoids livelocks by adding a “dirty fork” system.
 Philosophers give forks that they have used, and the new user of a fork cleans it.
 On the other hand, philosophers cannot give a clean fork.
 That way, there is a guarantee that forks are really used.</p>
-<p>I actually wonder how Tony Hoare didn't think of that solution when writing
+<p>I actually wonder how Tony Hoare didn’t think of that solution when writing
 <a href="http://www.usingcsp.com/cspbook.pdf">his famous CSP paper</a>.</p>
 <p>I believe you can use channels for any concurrency problem, but sometimes the solution
 can be hard to find. Maybe this is the reason why the Go authors feature slides
 that use mutexes, or why they have a mutex package in the standard library to begin with.</p>
-<p>If channels are hard, don't fallback to a dangerous primitive such as mutexes,
+<p>If channels are hard, don’t fallback to a dangerous primitive such as mutexes,
 use an equally powerful one!</p>
 <p>Lately, there has been an interesting project, called <strong>STM</strong>
 (Software Transactional Memory),
-which has been pioneered by Haskell's GHC compiler. It uses three primitives,
+which has been pioneered by Haskell’s GHC compiler. It uses three primitives,
 <code>atomically</code>, <code>retry</code> and <code>orElse</code>, and encapsulates sensitive data in an STM shell,
 to ensure that this variable is protected from all issues related to deadlocks.
 Within an <code>atomically</code> block, modifications to those variables are logged. All operations

@@ -6,7 +6,7 @@
 <h1>TheFileTree Design Log 3</h1>
 <p>I finally implemented the following API:</p>
 <ul>
-<li><code>GET /file?op=edit&amp;app=text</code> (WebSocket): use the <a href="https://github.com/espadrine/canop">Canop</a> protocol to synchronize the file's content and autosave it.</li>
+<li><code>GET /file?op=edit&amp;app=text</code> (WebSocket): use the <a href="https://github.com/espadrine/canop">Canop</a> protocol to synchronize the file’s content and autosave it.</li>
 </ul>
 <p>To get there, I improved Canop to finalize its protocol and survive disconnections. I made it more resilient to edge-cases and streamlined its API. I even added the ability to create brand new fundamental operations as a Canop user.</p>
 <p>I chose to go with <a href="https://github.com/espadrine/canop">Canop</a> instead of <a href="https://github.com/espadrine/jsonsync">jsonsync</a>, even though I appeared to lean towards the latter in previous design logs, because implementing index rebasing is non-trivial (especially for jsonsync), and I had already mostly done so with Canop.</p>
@@ -15,12 +15,12 @@
 <p>I have designed Canop with certain events to allow for the display of the synchronization state (unsyncable (ie, offline), syncing, and synced).</p>
 <p>This was problematic in thefiletree.com previously, as it was not at all clear whether we had suddenly been disconnected, and there were no reconnection. Closing the tab could therefore cause us to lose our changes… Yet there was no save button.</p>
 <h1>Details</h1>
-<p>I don't save the edit history server-side, so local operations after a disconnection won't be able to rebase on top of other operations. I get the feeling that past a few seconds of disconnection, concurrent editing can severely damage the user's intended edition, as rebased operation may lose what the user entered without them having seen someone's cursor arrive.</p>
+<p>I don’t save the edit history server-side, so local operations after a disconnection won’t be able to rebase on top of other operations. I get the feeling that past a few seconds of disconnection, concurrent editing can severely damage the user’s intended edition, as rebased operation may lose what the user entered without them having seen someone’s cursor arrive.</p>
 <p>(Of course, nothing precludes someone from deleting the whole file, removing your changes, but that is malice, not accident. What we want to forbid are accidental loss. Malicious changes are inevitable; or rather, being resistant to them requires complex graph synchronization, solving the byzantine generals problem, and saving the full non-linear edit history.)</p>
-<p>I don't even save the file's revision number, so the client cannot tell whether there has been zero changes since the disconnection and apply local changes from there.</p>
-<p>My plan: save the revision number so that local changes can be applied without a sweat when the file wasn't concurrently modified.</p>
+<p>I don’t even save the file’s revision number, so the client cannot tell whether there has been zero changes since the disconnection and apply local changes from there.</p>
+<p>My plan: save the revision number so that local changes can be applied without a sweat when the file wasn’t concurrently modified.</p>
 <p>If it was, download a diffing library, and perform a diff. Display a visualization of the changes that would be applied to the local document (with local changes) if upstream changes were applied, and local changes rebased on top of them.</p>
-<p>&quot;Do you want to apply remote changes?&quot; Yes / No, save my document at a new location.</p>
+<p>“Do you want to apply remote changes?” Yes / No, save my document at a new location.</p>
     <footer>
       Published <time itemprop=datePublished datetime="2017-04-02T19:19:00Z">2 April 2017</time>.
     </footer>

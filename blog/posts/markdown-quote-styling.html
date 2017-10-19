@@ -59,7 +59,7 @@ border-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAFCAYAAABi
 <p>One last hope is to rely on the ::before pseudo-element. We can style it as if it was a block, and make it float on the left.</p>
 <blockquote>
 <p>.markdown blockquote::before {
- content: '';
+ content: ‘’;
  display: block;
  float: left;
  width: 4px;
@@ -73,7 +73,7 @@ border-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAFCAYAAABi
 <p>But it turns out we can force one to be created. All we need is a common trick: we force the blockquote (the parent element) to have a relative position, and force the ::before (the child) to have an absolute position.</p>
 <blockquote>
 <p>.markdown blockquote::before {
- content: '';
+ content: ‘’;
  position: absolute;
  left: 0;
  width: 4px;

@@ -31,7 +31,7 @@ Comments, maps in lists, simplicity: pick two.
 Did I mention it is simple? It is <em>very simple</em>.
 You have a dictionary map at the top level, and in there, another map.
 Each keys of that second map have string values.</p>
-<p>Are the keys case-sensitive? Maybe. Does it have comments? Maybe, either hashed <code>#</code> or Lisp-like <code>;</code>. What is the delimiter between keys and values? I don't know, it's usually <code>=</code>, but sometimes <code>:</code>. See the problem? It is non-standard. Even if it was, you can't do much with it.
+<p>Are the keys case-sensitive? Maybe. Does it have comments? Maybe, either hashed <code>#</code> or Lisp-like <code>;</code>. What is the delimiter between keys and values? I don’t know, it’s usually <code>=</code>, but sometimes <code>:</code>. See the problem? It is non-standard. Even if it was, you can’t do much with it.
 Limited data structures are limited.</p>
 <p>DotProperties are even simpler than INI files, if you can believe it. (I cannot.) You are left with a single map from string keys to string values, and you have comments. On the plus side, it is pretty standard…</p>
 <p>Plists used to be a <a href="https://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/PropertyLists/OldStylePlists/OldStylePLists.html#//apple_ref/doc/uid/20001012-BBCBDBJE">beautiful, lightweight format</a>: simple, easy to read, it has all the data structures of JSON, or close enough. It even has easy binary data as hexadecimal sequences, and dates! Truly, if Apple had worked to make it ubiquitous, JSON would never have been needed. It has all of its power, and all of its irritating things.</p>
@@ -50,39 +50,39 @@ Too bad, the XML form is <a href="https://github.com/search?q=.plist">here to st
 <ol>
 <li>Starting on an XML-based project is usually a nightmare,</li>
 <li>All by itself, XML is actually <em>more limited</em> than our old friend plist.
-It's just text, you have to build your own format on top of it,
+It’s just text, you have to build your own format on top of it,
 which in turn adds complexity and cruft and makes #1 worse!</li>
 <li>Namespaces are unintuitive, hard to use, and make #1 and #2 even worse…</li>
 </ol>
 <p>To support its complexity, XML has developed satellite sublanguages of its own to configure it: XPATH, SAX, XSLT, XSD, DTD…
 Can XML data crash a browser or worse? <a href="http://en.wikipedia.org/wiki/Billion_laughs">Of course it can</a>. Is it Turing-complete? It can be…</p>
-<p>In the end, it all boils down to one thing: it is too complex. It is hard to read, hard to parse, and because of draconian error handling, you'd better not have made a mistake. But remember, spotting a mistake is hard, better use a validator. Or an external GUI that will make the source ugly.
-A wise man once said: &quot;it combines the space-efficiency of text-based formats, and the readability of binary.&quot;</p>
+<p>In the end, it all boils down to one thing: it is too complex. It is hard to read, hard to parse, and because of draconian error handling, you’d better not have made a mistake. But remember, spotting a mistake is hard, better use a validator. Or an external GUI that will make the source ugly.
+A wise man once said: “it combines the space-efficiency of text-based formats, and the readability of binary.”</p>
 <p>In a world dominated by XML, JSON was a gasp of fresh air.
 Its syntax is minimal. It has all the data structures you look for. Writing a parser is a matter of a couple of hours; not that you need to. Reading it is easy too. Just like <a href="http://asmjs.org/">asm.js</a>, it fitted perfectly as a natural extension to the Web platform, because it was already there.</p>
 <p>JSON gains ground. It has both a <a href="http://www.ietf.org/rfc/rfc4627.txt?number=4627">lot</a> <a href="https://npmjs.org/doc/json.html">of</a> <a href="https://ftp.mozilla.org/pub/mozilla.org/firefox/nightly/latest-ux/firefox-21.0a1.en-US.linux-x86_64.json">acceptance</a> and good press.</p>
 <p>Yet, everything has bad parts, and JSON is no exception:</p>
 <ul>
 <li>It feels painfully draconian in its handling of errors for one simple reason: people forget to remove the trailing comma in <code>[1, 2, 3,]</code></li>
-<li>It doesn't have comments, which makes it unsuitable for readable configuration.</li>
+<li>It doesn’t have comments, which makes it unsuitable for readable configuration.</li>
 </ul>
 <p>Aware of those small annoyances, I had privately started to work on my own replacement.</p>
 <p>Then, one drunk night, a week ago, Tom Preston-Werner, fed up as I was about the status quo, decided to take no more, and created TOML.</p>
 <p><a href="https://github.com/mojombo/toml/">TOML</a> is meant to be solidly standardized, unlike INI. However, it is meant to be just as limited. It does have JSON arrays, and it thought to authorize trailing commas (which I like to believe I had something to do with).</p>
-<p>I wrote about TOML's shortcomings <a href="https://gist.github.com/espadrine/5028426">there</a>, let me rewrite those here:</p>
+<p>I wrote about TOML’s shortcomings <a href="https://gist.github.com/espadrine/5028426">there</a>, let me rewrite those here:</p>
 <ul>
-<li>The primary issue is that you can't have dictionary maps inside of arrays.
+<li>The primary issue is that you can’t have dictionary maps inside of arrays.
 I see this pattern in many configuration files, from Sublime Text to server configuration. That is just sad. First-class maps are more useful than first-class dates.</li>
-<li>Having homogeneous arrays is an artificial restriction that doesn't actually serve a higher purpose. I believe the hope is that static languages will benefit from it. They won't.</li>
+<li>Having homogeneous arrays is an artificial restriction that doesn’t actually serve a higher purpose. I believe the hope is that static languages will benefit from it. They won’t.</li>
 <li>The way you edit the main dictionary map is quite limited itself. Keys need to be grouped in a strange, sometimes counter-intuitive way. I say that from the experience of trying to convert JSON settings file to TOML. Frustration.</li>
 <li>Even if the file is encoded in UTF-16, every string must be encoded in UTF-8 — I repeat, inside of a UTF-16 file. Text editors will love this, if the standard is applied to the letter.</li>
 </ul>
-<p>In short, TOML isn't as good as the OpenStep plist format, but it has its niceties. And no, it didn't invent first-class Dates.</p>
+<p>In short, TOML isn’t as good as the OpenStep plist format, but it has its niceties. And no, it didn’t invent first-class Dates.</p>
 <p>It felt unfortunate to see a new format fail to be greater than its historic predecessors.
 They say history is repeated as farce first, then as tragedy; the plist switch to XML was the farce, switching from JSON to TOML would be tragedy.</p>
 <p>As a response, I published <a href="https://github.com/espadrine/dotset">DotSet</a>, the Settings File Format I pioneered.</p>
 <p>The data structures are so close to JSON that they are interchangeable. I <a href="http://espadrine.github.com/dotset/">had fun</a> with that. <a href="http://espadrine.github.com/dotset/">Really</a>.</p>
-<p>However, remember JSON's shortcomings that I mentioned above?
+<p>However, remember JSON’s shortcomings that I mentioned above?
 I erased them. I ended up with a language as pleasant to read as Python,
 as easy to write as plain text, and very simple. Simpler than TOML, with more power. I made a <code>node</code> <a href="https://npmjs.org/package/dotset">parser / stringifier</a> for it. It was easy. And fun.</p>
 <hr />
@@ -94,7 +94,7 @@ as easy to write as plain text, and very simple. Simpler than TOML, with more po
 </ul>
 <p>Funny thought: the <a href="http://lua.org/">Lua</a> programming language was initially meant to be a configuration file format. Ha ha ha.</p>
 <p>Ok, not <em>that</em> funny.</p>
-<p>All this to end there: TOML doesn't fit in the picture. It will one day, but then, it will have the complexity of YAML and awkwardly combined features. You will need whiskey to ignore that.</p>
+<p>All this to end there: TOML doesn’t fit in the picture. It will one day, but then, it will have the complexity of YAML and awkwardly combined features. You will need whiskey to ignore that.</p>
     <footer>
       Published <time itemprop=datePublished datetime="2013-03-05T13:03:00Z">5 March 2013</time>.
     </footer>

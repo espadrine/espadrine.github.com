@@ -6,7 +6,7 @@
 <h1>CSS Variables vs. Multiple Background Images</h1>
 <p>I was working on <a href="https://github.com/garden/tree">Tree</a> today. While in the process of adding file selection, I realized I was duplicating a lot of code for no good reason but the limitations of CSS3.</p>
 <p>Tree is a collaborative file system. As such, it needs a file explorer. So far, that file explorer, dubbed Gateway, lacks the UI to delete files. Since there are many operations that work on one or more files, I needed to create a system to select multiple files. As it stands, files currently have a number of backgrounds: one image to indicate what type of file it is, and a background color to show which file is currently focused.</p>
-<p>So far, that hasn't caused any issue, since for some reason, setting the background color and a background image isn't considered a multiple background. However, adding another background image to indicate that the file is selected, and another to hint, while hovering over a file, that you can click it to select it, forces it to go into multiple-background mode, and that distinction is no longer valid. As a result, I now have four backgrounds.</p>
+<p>So far, that hasn’t caused any issue, since for some reason, setting the background color and a background image isn’t considered a multiple background. However, adding another background image to indicate that the file is selected, and another to hint, while hovering over a file, that you can click it to select it, forces it to go into multiple-background mode, and that distinction is no longer valid. As a result, I now have four backgrounds.</p>
 <p>One part of the issue is that those backgrounds are either present or absent on any particular file. The other part is that when you change a multiple background, you have to include all the different backgrounds at the same time, so that the CSS engine can figure out the depth order between them from the order they have in the comma notation.</p>
 <p>(For the sake of readability, I am only writing <code>bgfile</code> instead of a long background image declaration.)</p>
 <pre><code>#filelist li.file {
@@ -51,7 +51,7 @@
 }
 /* etc. */
 </code></pre>
-<p>However, the example above has only <code>2^3 = 8</code> rules, but in order to add a visual hint upon hover that you can select a file, I should actually write <code>2^4 = 16</code> rules! And that exponentially increasing number of rules isn't solved by using CSS variables.</p>
+<p>However, the example above has only <code>2^3 = 8</code> rules, but in order to add a visual hint upon hover that you can select a file, I should actually write <code>2^4 = 16</code> rules! And that exponentially increasing number of rules isn’t solved by using CSS variables.</p>
 <p>Fundamentally, the issue with it is that you cannot make partial background declarations. What would we need to make it happen? Introduce a z-index to backgrounds.</p>
 <pre><code>partial-background: &lt;bg-z-index&gt; , &lt;bg-image&gt; || &lt;position&gt; [ / &lt;bg-size&gt; ]? || &lt;repeat-style&gt; || &lt;attachment&gt; || &lt;box&gt;{1,2}
 </code></pre>
@@ -70,7 +70,7 @@
 }
 </code></pre>
 <p>Partial backgrounds only mix together: a normal background image declaration clears all partial backgrounds currently on, and plays by its own rules. However, partial backgrounds should work with <code>background-color</code>.</p>
-<p>I don't have a strong opinion of what should happen when two z-index collide. One declaration could overwrite the other, or the behaviour could be undefined. In my case, we can't really have a file be a folder or vice-versa, and in general, having collisions should only happen by mistake. </box></attachment></repeat-style></bg-size></position></bg-image></bg-z-index></p>
+<p>I don’t have a strong opinion of what should happen when two z-index collide. One declaration could overwrite the other, or the behaviour could be undefined. In my case, we can’t really have a file be a folder or vice-versa, and in general, having collisions should only happen by mistake. </box></attachment></repeat-style></bg-size></position></bg-image></bg-z-index></p>
     <footer>
       Published <time itemprop=datePublished datetime="2013-11-25T20:33:00Z">25 November 2013</time>.
     </footer>

@@ -12,7 +12,7 @@ post_links=
     time=$(date +'%-d %B %Y' -d "$isotime")
     markdown=$(cat "$dir"/src/"$name".md)
     title=$(echo "$markdown" | head -1 | sed 's/^# //')
-    content=$(echo "$markdown" | commonmark)
+    content=$(echo "$markdown" | commonmark --smart)
     echo -n "$template" \
       | sed '
         sTITLE'"$title"'

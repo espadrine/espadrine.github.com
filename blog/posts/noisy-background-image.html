@@ -20,8 +20,8 @@
   background: url(./img.png);
 }
 </code></pre>
-<p>However, it is of better form to include it as base64 data. Having to wait for the browser to notice the image and start downloading it gives the appearance of a slow page load experience. Downloading everything on the go is better, even if base64 data is bigger than raw data, at least until the glorious days of HTTP 2.0 Push (where you'll be able to send the image alongside the web page in a single HTTP response cycle).</p>
-<p>Here's a command that outputs your base64 data.</p>
+<p>However, it is of better form to include it as base64 data. Having to wait for the browser to notice the image and start downloading it gives the appearance of a slow page load experience. Downloading everything on the go is better, even if base64 data is bigger than raw data, at least until the glorious days of HTTP 2.0 Push (where you’ll be able to send the image alongside the web page in a single HTTP response cycle).</p>
+<p>Here’s a command that outputs your base64 data.</p>
 <pre><code>node -p 'fs = require(&quot;fs&quot;); fs.writeFileSync(&quot;img.png.base64&quot;, fs.readFileSync(&quot;img.png&quot;, &quot;base64&quot;));'
 </code></pre>
 <p>Copy and paste the data here:</p>
@@ -34,8 +34,8 @@
 <h1>Prime Numbers</h1>
 <p>Having a large image download is very sad. Fortunately, we can achieve a similar level of pixel noise with two or three small images. A single smaller image gives poor results:</p>
 <p><img src="https://31.media.tumblr.com/be0f58c9bd3e7e2c6f1def334e2ceb6c/tumblr_inline_ndcfaeaFO01qmhxug.png" alt="" /></p>
-<p>But relying on two or three square images whose width is a prime number guarantees that the pattern won't repeat for a very long time. Given two images of size MxM and NxN, with M and N prime numbers, the resulting image won't repeat until MxN. Let's try with M = 13 and N = 23. Then the repetition will only happen at 299. Add to that a 11x11 pixels image and you will get something of size 3289x3289 pixels.</p>
-<p>Of course, that is only true of truly random data, which is definitely not the case of Gimp's Hurl, unfortunately. To achieve a better result with better compression, I use a baseline of grey <code>0x808080</code>, add an RGB noise (since I use a grayscale color profile, it only changes colors in shades of gray), and put the opacity somewhere close to 5%.</p>
+<p>But relying on two or three square images whose width is a prime number guarantees that the pattern won’t repeat for a very long time. Given two images of size MxM and NxN, with M and N prime numbers, the resulting image won’t repeat until MxN. Let’s try with M = 13 and N = 23. Then the repetition will only happen at 299. Add to that a 11x11 pixels image and you will get something of size 3289x3289 pixels.</p>
+<p>Of course, that is only true of truly random data, which is definitely not the case of Gimp’s Hurl, unfortunately. To achieve a better result with better compression, I use a baseline of grey <code>0x808080</code>, add an RGB noise (since I use a grayscale color profile, it only changes colors in shades of gray), and put the opacity somewhere close to 5%.</p>
 <p><img src="https://31.media.tumblr.com/ccadec989bdfa0453f36dd49910d2955/tumblr_inline_ndcl0tqAmT1qmhxug.png" alt="" /></p>
 <p>Here is what we get with 3 images of sizes 11, 13 and 23, all set at 5% opacity:</p>
 <p><a href="http://jsbin.com/senaqu/1"><img src="https://31.media.tumblr.com/8669d610caa71c02bbeb929fc9e807cc/tumblr_inline_ndckv1MUBP1qmhxug.png" alt="" /></a></p>
@@ -53,13 +53,13 @@
 </code></pre>
 <p><a href="http://jsbin.com/qihagu/1"><img src="https://31.media.tumblr.com/2254b3b5adc177e271fdbb76a9f5fe22/tumblr_inline_ndcmfiVzI41qmhxug.png" alt="" /></a></p>
 <p>I tend to favor using JS to produce this effect, because this way, we can generate a unique seed on every page load. That said, it is entirely possible to put it in a data URL, as we have done before.</p>
-<p>The <a href="http://jsbin.com/qihagu/1">resulting page</a> costs a mere 912 bytes, far smaller than our previous experiments with PNG images. And that's with a random seed; it is even smaller (although, not by much, 736 bytes) when inserted directly in the CSS as base64 data.</p>
+<p>The <a href="http://jsbin.com/qihagu/1">resulting page</a> costs a mere 912 bytes, far smaller than our previous experiments with PNG images. And that’s with a random seed; it is even smaller (although, not by much, 736 bytes) when inserted directly in the CSS as base64 data.</p>
 <p>Of course, the picture above is just an example. There are many more possibilities based on this technique. For instance, here, I use turbulence; I could go for fractal noise. Playing with the number of octaves at high level exposes IEEE-754 errors in the mandatory algorithm, which gives interesting dotted results…</p>
 <p><img src="https://31.media.tumblr.com/118c2ae294926513240f9f7e3b72ecd2/tumblr_inline_ndcn0fjpyi1qmhxug.png" alt="" /></p>
 <p>Using different base frequencies between the X and Y coordinates gives more surprises. We can further combine this with a rotation to get visible random diagonals. Of course we can also get raw random pixels, as we had before, using a very small base frequency (somewhere around 0.4). Experimenting with the Color Matrix can give stellar results as well, despite its scary appearance.</p>
 <hr />
 <p>Here you go! Everything you needed to know about noisy background images, including the state-of-the-art in terms of small image download with perfect result.</p>
-<p>I already started using this here (which the astute reader will surely have noticed), and on <a href="http://espadrine.github.io/aulx">Aulx</a>, the autocompletion engine for the Web which I'll continue improving in the future. </insert></p>
+<p>I already started using this here (which the astute reader will surely have noticed), and on <a href="http://espadrine.github.io/aulx">Aulx</a>, the autocompletion engine for the Web which I’ll continue improving in the future. </insert></p>
     <footer>
       Published <time itemprop=datePublished datetime="2014-10-22T20:11:00Z">22 October 2014</time>.
     </footer>

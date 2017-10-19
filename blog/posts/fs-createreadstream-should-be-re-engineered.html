@@ -7,18 +7,18 @@
 <p>I just had a strange WTF moment with node.</p>
 <p>To avoid the state of dismay I went in, just remember this:</p>
 <p>In node, streams have a <code>on('error', function(err) {})</code> method which they run when some errors happen.
-Usually, node's default APIs hook a callback to the error, and give you information about this error in the continuation, like so:</p>
+Usually, node’s default APIs hook a callback to the error, and give you information about this error in the continuation, like so:</p>
 <pre><code>fs.readFile(file, function(err, data) { /* you have access to err here */ });
 </code></pre>
-<p>Unfortunately, <code>fs.createReadStream</code> doesn't work like that.
-Since there is no listener for the 'error' event on the stream, node crashes loudly, and you cannot try/catch that, because it doesn't happen in the same event loop cycle as the call.</p>
+<p>Unfortunately, <code>fs.createReadStream</code> doesn’t work like that.
+Since there is no listener for the ‘error’ event on the stream, node crashes loudly, and you cannot try/catch that, because it doesn’t happen in the same event loop cycle as the call.</p>
 <pre><code>try {
  var stream = fs.createReadStream('./bogus-file');
 } catch (e) {
  // Not caught!
 }
 </code></pre>
-<p>My advice: if a stream doesn't give you error information, listen to its 'error's.</p>
+<p>My advice: if a stream doesn’t give you error information, listen to its ‘error’s.</p>
 <pre><code>stream.on('error', function(err) { ... });
 </code></pre>
 <hr />
@@ -31,12 +31,12 @@ function onerror(er) {
   }
 }
 </code></pre>
-<p>If nothing listens to the 'error' event, it crashes. Obviously, this kind of construct fails to work with try/catch.</p>
+<p>If nothing listens to the ‘error’ event, it crashes. Obviously, this kind of construct fails to work with try/catch.</p>
 <p>As a result, I wish <em>all</em> node API calls used the usual node error handling.</p>
 <pre><code>fs.createReadStream(file, function (err) { ... }, options);
 </code></pre>
-<p>Why wasn't it designed this way originally?</p>
-<p>APIs are hard. At least they're not copyrightable now.</p>
+<p>Why wasn’t it designed this way originally?</p>
+<p>APIs are hard. At least they’re not copyrightable now.</p>
     <footer>
       Published <time itemprop=datePublished datetime="2012-06-04T14:48:00Z">4 June 2012</time>.
     </footer>

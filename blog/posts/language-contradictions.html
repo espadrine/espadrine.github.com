@@ -5,9 +5,9 @@
   <article>
 <h1>Language Contradictions</h1>
 <p>Nobody notices how absurd programming languages are until you try and build a new one.</p>
-<p>Cat-and-mouse questions spring everywhere. Here's a few.</p>
+<p>Cat-and-mouse questions spring everywhere. Here’s a few.</p>
 <h2>Overloading</h2>
-<p>Back in the 1960s, overloading meant overhead for compiler writers, so they threw it out of their language. Back then, floating-point implemented in hardware was still a thing! Then came Ada and C++, which featured function overloading. For completeness' sake, C++ added operator overloading. After all, operators behave much like functions, don't they?</p>
+<p>Back in the 1960s, overloading meant overhead for compiler writers, so they threw it out of their language. Back then, floating-point implemented in hardware was still a thing! Then came Ada and C++, which featured function overloading. For completeness’ sake, C++ added operator overloading. After all, operators behave much like functions, don’t they?</p>
 <p>Do you want overloading?</p>
 <p>This question is still relevant today. Proof is, the Go language <a href="http://golang.org/doc/go_faq.html#overloading">forbids it</a>. How old is Go? It was unveiled in 2008. Bummer.</p>
 <p>The thing is, overloading takes a lot of language constructs for granted.
@@ -40,22 +40,22 @@ name but different signatures was occasionally useful but that it could also be
 confusing and fragile in practice.</p>
 </blockquote>
 <p>Oh, boy. Do they really believe that?</p>
-<p>I'll tell you what. This is all nonsense.
+<p>I’ll tell you what. This is all nonsense.
 Integers are a type. Floating-point numbers are a different type.
 You can use the <code>+</code> operator with both.
 All operators are effectively deeply overloaded, even in C, even in Go.
-Is <em>that</em> so confusing? If so, take a page from Caml's book. Caml has distinct operators for floating-point arithmetic.</p>
+Is <em>that</em> so confusing? If so, take a page from Caml’s book. Caml has distinct operators for floating-point arithmetic.</p>
 <hr />
 <p>Java, on the other hand, argues that overloading is good, because using different names for things that do the exact same thing on slightly different types is silly at best. On the other hand, <em>operator overloading</em> is deemed bad.</p>
 <p>Right. You can remember that <em>methods</em> have multiple meanings, but not <em>operators</em>.<br />
 Besides, <code>x.Add(Number.ONE).Mult(y)</code> is sooo much prettier.</p>
-<p>Java is partially wrong. (I guess I'll surprise some readers with this assertion. What? Java isn't <em>completely</em> wrong for once?)</p>
+<p>Java is partially wrong. (I guess I’ll surprise some readers with this assertion. What? Java isn’t <em>completely</em> wrong for once?)</p>
 <p>Let me state why Java is wrong first.</p>
 <p>Overloading being good has nothing to do with types being very similar (ie, on the same type hierarchy branch).
 Overloading should sometimes be applied to types which are miles away from each other.
 Overloading allows a namespace mechanism. A function named <code>draw</code> can either paint a shape, or remove a certain amount from an account.</p>
-<p>On the other hand, Java is right that overloading operators isn't the same.
-Until now, I've implicitly assumed that operators behave like functions, but unless you are using Lisp, this simply isn't true.
+<p>On the other hand, Java is right that overloading operators isn’t the same.
+Until now, I’ve implicitly assumed that operators behave like functions, but unless you are using Lisp, this simply isn’t true.
 Nonetheless, they could have allowed overloading, with a word of warning etched beneath in the brightest red: BEWARE OF THE PRECEDENCE!</p>
 <h2>Precedence</h2>
 <p>All modern programming languages have built-in types.</p>
@@ -67,8 +67,8 @@ They strove to <a href="http://www.python.org/dev/peps/pep-0253/">fix this</a>.
 They were right. Why should the user expect builtins to be more important than the code <em>they</em> write?
 Why should their types be second-class?</p>
 <p>Java was strongly overwhelmed by this issue. Wait, my mistake: it still is!
-There are those &quot;primitive data types&quot; like <code>int</code> and arrays that you cannot subclass. These troublesome builtins were such a thorn under programmers' feet that they wrote <a href="http://download.oracle.com/javase/tutorial/java/data/numberclasses.html">class equivalents</a> and extraterrestrial things such as <code>BigDecimal</code>!
-But operators don't work on them.</p>
+There are those “primitive data types” like <code>int</code> and arrays that you cannot subclass. These troublesome builtins were such a thorn under programmers’ feet that they wrote <a href="http://download.oracle.com/javase/tutorial/java/data/numberclasses.html">class equivalents</a> and extraterrestrial things such as <code>BigDecimal</code>!
+But operators don’t work on them.</p>
 <p>Operators make built-in types forever special.</p>
 <p>I understand the purpose of operators.
 They make maths look like maths.
@@ -83,8 +83,8 @@ It turns out that infix notation is one inch shorter. Yes, one inch is the size 
 Lisp proves that there are other ways.
 You can make operators behave just like functions.
 You can refuse precedence.
-You might have every mathematician throwing rocks at you for the rest of your life, though, when they realize that <code>1 + 2 * 4</code> is a syntax error. At least it doesn't yield 12.</p>
-<p>You can also have faith in your users. You can expect them to use operators for arithmetic only. You can hope that they won't use <code>+</code> for string concatenation.</p>
+You might have every mathematician throwing rocks at you for the rest of your life, though, when they realize that <code>1 + 2 * 4</code> is a syntax error. At least it doesn’t yield 12.</p>
+<p>You can also have faith in your users. You can expect them to use operators for arithmetic only. You can hope that they won’t use <code>+</code> for string concatenation.</p>
 <p>Java, on the other hand, has no faith in its users. Wise decision.
 By expecting Java programmers to be dumb, they attracted exactly that portion of the programming world. (Mind you, they attracted wise people, too.)</p>
 <p>What I meant to do by writing this article is to make you aware of the fact that your programming tools behave counter-intuitively.</p>

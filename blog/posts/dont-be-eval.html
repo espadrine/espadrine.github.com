@@ -5,11 +5,11 @@
   <article>
 <h1>Don’t be eval()</h1>
 <p>[TLDR: <a href="https://github.com/espadrine/localeval">https://github.com/espadrine/localeval</a>]</p>
-<p>We JS programmers know how evil <code>eval()</code> is. An attempt at copying the fancy concept of Lisp's metacircular evaluator, it takes a string instead of Lisp's homoiconic quoted syntax tree. Beyond that, unlike Scheme (which allows to specify your own environment), it evaluates the code in the current lexical environment. Consequently, it can mess with all variable bindings in scope, and will leak to the outside world all variables it defines.</p>
-<p>I sometimes wondered how I would go about making a fast, safe JS evaluator without relying on something as complicated as Brendan Eich's implementation of JS in JS, <a href="https://github.com/mozilla/narcissus">Narcissus</a>.
+<p>We JS programmers know how evil <code>eval()</code> is. An attempt at copying the fancy concept of Lisp’s metacircular evaluator, it takes a string instead of Lisp’s homoiconic quoted syntax tree. Beyond that, unlike Scheme (which allows to specify your own environment), it evaluates the code in the current lexical environment. Consequently, it can mess with all variable bindings in scope, and will leak to the outside world all variables it defines.</p>
+<p>I sometimes wondered how I would go about making a fast, safe JS evaluator without relying on something as complicated as Brendan Eich’s implementation of JS in JS, <a href="https://github.com/mozilla/narcissus">Narcissus</a>.
 I have <a href="https://github.com/espadrine/localeval">figured it out</a> recently.
 Let me tell you how.</p>
-<p>First of all, unlike what many believe, <code>eval()</code> is not the only built-in JS function that takes JS code as a string for evaluation. The <code>Function()</code> constructor does too. Its last argument contains the code for the body of the function, as a string, and the arguments before that one contain the names of the function's parameters.</p>
+<p>First of all, unlike what many believe, <code>eval()</code> is not the only built-in JS function that takes JS code as a string for evaluation. The <code>Function()</code> constructor does too. Its last argument contains the code for the body of the function, as a string, and the arguments before that one contain the names of the function’s parameters.</p>
 <pre><code>var f = Function('a', 'b', 'return a * b');
 console.log(f(6, 7));  // 42
 </code></pre>

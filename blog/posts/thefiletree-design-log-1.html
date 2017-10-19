@@ -17,18 +17,18 @@
 <p>When you fetch a node, it inspects its metadata, and shows you its content using its dedicated app. If there are none, or if you specify it, you can get it raw, with <code>?app=data</code>. You can also get its metadata with <code>?app=metadata</code>. For folders, the data is a list of the file names it contains. You can even submit a <code>Depth</code> header, inspired by WebDAV.</p>
 <p><img src="http://i.imgur.com/SCUT5om.png" alt="Folder data sizes at various depth" /></p>
 <p>Unsurprisingly, the download size scales exponentially with the requested depth.</p>
-<p>I'll talk about other basics we must support in future logs.</p>
+<p>I’ll talk about other basics we must support in future logs.</p>
 <h1>Collaboration</h1>
 <p>The simple fact that a file online can be opened in multiple tabs means that we need edition synchronization.</p>
 <p>I have plans to make <a href="https://github.com/espadrine/jsonsync">jsonsync</a> the first non-Operation Transformation, non-CRDT peer-to-peer synchronization system for JSON with index preservation. It has the benefits of both approaches: implementation simplicity, richness of operations and intention preservation of CRDT, and query speed and memory bounds of OT.</p>
 <p>Any apps can probably maintain its content in a JSON structure, and update its UI according to changes in its data. Is that not reminiscent of the MVC pattern? I expect virtually any application to be built on top of those primitives.</p>
-<p>I am unsure of whether I will rely on it to allow for offline edition. Whatever I do after an offline editing session, it will involve showing the user a diff of the content; as a user, I would not trust a blind merge for long, multiple-second simultaneous edition. But will I use jsonsync's algorithm, requiring it to hold on to its history for ever, or a cold three-way merge? Maybe something in-between?</p>
+<p>I am unsure of whether I will rely on it to allow for offline edition. Whatever I do after an offline editing session, it will involve showing the user a diff of the content; as a user, I would not trust a blind merge for long, multiple-second simultaneous edition. But will I use jsonsync’s algorithm, requiring it to hold on to its history for ever, or a cold three-way merge? Maybe something in-between?</p>
 <h1>Extension</h1>
-<p>Shops are the economy's blood. Marketplaces are its heart.</p>
-<p>I must ensure that anybody can create a new app. They can store it in a folder anywhere, and develop it from within TheFileTree. Anyone can open anything with any app. There is a tricky matter of trust there: we must warn users that they're about to use an app they hav never used before, to avoid information stealing from malicious app developers. It cannot happen from within the folder app, since they may land on a page from a crafted link sent to them. Still, it can be done; I am not too worried.</p>
-<p>Something I am more worried about is whether I should allow apps to execute code on the server. I am leaning towards a &quot;no&quot;, as I don't like taking that security risk. What if they find a way to gain shell access to the server?</p>
+<p>Shops are the economy’s blood. Marketplaces are its heart.</p>
+<p>I must ensure that anybody can create a new app. They can store it in a folder anywhere, and develop it from within TheFileTree. Anyone can open anything with any app. There is a tricky matter of trust there: we must warn users that they’re about to use an app they hav never used before, to avoid information stealing from malicious app developers. It cannot happen from within the folder app, since they may land on a page from a crafted link sent to them. Still, it can be done; I am not too worried.</p>
+<p>Something I am more worried about is whether I should allow apps to execute code on the server. I am leaning towards a “no”, as I don’t like taking that security risk. What if they find a way to gain shell access to the server?</p>
 <p>Even without being allowed to execute code, apps can do anything, by making XHR requests to the server, using the API I will provide. Maybe HTTP2 Server Push will allow me to avoid waiting for the XHR call to send the data over, too, one day.</p>
-<p>I'll talk about identity control in a future log. Obviously an important aspect.</p>
+<p>I’ll talk about identity control in a future log. Obviously an important aspect.</p>
     <footer>
       Published <time itemprop=datePublished datetime="2016-12-20T21:39:00Z">20 December 2016</time>.
     </footer>
