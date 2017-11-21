@@ -11,27 +11,58 @@
 <p>And I needed them to be discrete, so as not to obstruct the view.</p>
 <p><img src="http://upload.wikimedia.org/wikipedia/commons/6/61/Arrowsmith_Oregon_Country.jpg" alt="Another example" /></p>
 <hr />
-<p>First, the shape was <a href="http://i.imgur.com/ytaVdbp.png">blocky</a>, because it is the easiest thing to do with hexes. Then I <a href="http://i.imgur.com/h7omS7w.png">smoothed it out</a> with splines, but even that was too regular. I added <a href="http://i.imgur.com/vVGbIwg.png">irregularities</a>, which was tricky, since a small change in the border (say, a tile added to it) must not change the shape of the rest of the border.</p>
+<p>First, the shape was blocky, because it is the easiest thing to do with hexes:</p>
+<p><img src="http://i.imgur.com/ytaVdbp.png" alt="Block shape" /></p>
+<p>Then I smoothed it out with splines, but even that was too regular.</p>
+<p><img src="http://i.imgur.com/h7omS7w.png" alt="Splined shape" /></p>
+<p>I added irregularities, which was tricky, since a small change in the border (say, a tile added to it) must not change the shape of the rest of the border.</p>
+<p><img src="http://i.imgur.com/vVGbIwg.png" alt="Irregular shapes" /></p>
 <p>I used the algorithm to generate irregularities to draw how far a unit can move in one turn, as well.</p>
-<p>Before: http://i.imgur.com/PaqZAU6.png</p>
-<p>After: http://i.imgur.com/2lIEd3d.png</p>
-<p>(Out of curiosity, here’s what the <a href="http://i.imgur.com/9FjF3oo.png">un-splined version</a> looks like, the irregularities are very apparent: I nudge one vertex out of two.)</p>
+<p>Before:</p>
+<p><img src="http://i.imgur.com/PaqZAU6.png" alt="Move distance" /></p>
+<p>After:</p>
+<p><img src="http://i.imgur.com/2lIEd3d.png" alt="Move distance with irregularities" /></p>
+<p>(Out of curiosity, here’s what the un-splined version looks like, the irregularities are very apparent: I nudge one vertex out of two.)</p>
+<p><img src="http://i.imgur.com/9FjF3oo.png" alt="Shape with random irregularities but no splines" /></p>
 <hr />
-<p>Next, the border color. After a <a href="http://www.reddit.com/r/gamedev/comments/2avffd/4x_which_country_border_is_most_pleasing/">Reddit poll</a> where I presented <a href="http://i.imgur.com/t5JH8ma.png">fairly</a> <a href="http://i.imgur.com/a6yHLqG.png">different</a> <a href="http://i.imgur.com/8t5PLL8.png">options</a>, I settled on this: http://i.imgur.com/HXbAeXu.png.</p>
+<p>Next, the border color. After a <a href="http://www.reddit.com/r/gamedev/comments/2avffd/4x_which_country_border_is_most_pleasing/">Reddit poll</a> where I presented <a href="http://i.imgur.com/t5JH8ma.png">fairly</a> <a href="http://i.imgur.com/a6yHLqG.png">different</a> <a href="http://i.imgur.com/8t5PLL8.png">options</a>, I settled on this:</p>
+<p><img src="http://i.imgur.com/HXbAeXu.png" alt="Border color appearance" /></p>
 <p>The tricky bit, this time, is to ensure that borders don’t overlap when two nations are right next to each other. To achieve this result, I use canvas clipping, drawing only the inside of the border, after having drawn a full border for each opposing camp. Chrome pixelates the edge of clipped painted data, probably because of its Path implementation, but that’s the best solution I found.</p>
-<p>Also, yet again, I ensured that dashed borders didn’t change with a small change in the border. Before: http://i.imgur.com/0YLd1E3.png → http://i.imgur.com/2HAV00k.png. After: http://i.imgur.com/UH17gHd.png → http://i.imgur.com/Qhrk8Ez.png. That was done by putting a dash one out of two consecutive hexagonal edge along the border.</p>
+<p>Also, yet again, I ensured that dashed borders didn’t change with a small change in the border.</p>
+<p>Before:</p>
+<p><img src="http://i.imgur.com/0YLd1E3.png" alt="Dashed border before single cell addition" /> → <img src="http://i.imgur.com/2HAV00k.png" alt="Dashed border after single cell addition" /></p>
+<p>After:</p>
+<p><img src="http://i.imgur.com/UH17gHd.png" alt="Dashed border before single cell addition" /> → <img src="http://i.imgur.com/Qhrk8Ez.png" alt="Dashed border after single cell addition; most of the border stayed pixel-identical" /></p>
+<p>That was done by putting a dash one out of two consecutive hexagonal edge along the border.</p>
 <hr />
-<p>What next? I found the map’s <a href="http://i.imgur.com/z96DxlM.png">shoreline</a> (and all terrain transitions) too harsh and geometric as well. I tried to use the same trick as before, <a href="http://i.imgur.com/u4JKYmU.png">irregular splines</a>, but it doesn’t work this time. I accidentally found out that making my sprite images squares gave <a href="http://i.imgur.com/IlnRUIn.png">a surprisingly good random shoreline</a>. I added <a href="http://i.imgur.com/BzXY7WU.png">some noisy irregularities</a> to the sprite sheet, and added a <a href="http://i.imgur.com/AYbB515.png">beach tile</a> in the sprites, and the result is a lot better!</p>
-<p>Before: http://i.imgur.com/z96DxlM.png</p>
-<p>After: http://i.imgur.com/AYbB515.png</p>
+<p>What next? I found the map’s shoreline (and all terrain transitions) too harsh and geometric as well.</p>
+<p><img src="http://i.imgur.com/z96DxlM.png" alt="Shoreline with blunt transition from grass to water" /></p>
+<p>I tried to use the same trick as before, irregular splines, but it doesn’t work this time.</p>
+<p><img src="http://i.imgur.com/u4JKYmU.png" alt="Smooth shoreline with blunt transition" /></p>
+<p>I accidentally found out that making my sprite images square gave a surprisingly good random shoreline.</p>
+<p><img src="http://i.imgur.com/IlnRUIn.png" alt="Irregular shoreline with blunt transition, made from random rotations of the
+square sprite images" /></p>
+<p>I added some noisy irregularities to the sprite sheet.</p>
+<p><img src="http://i.imgur.com/BzXY7WU.png" alt="Irregular shoreline with noisy transition" /></p>
+<p>I added a beach tile in the sprites, and the result is a lot better!</p>
+<p><img src="http://i.imgur.com/AYbB515.png" alt="Shoreline with beach to transition from grass to water" /></p>
+<p>Before:</p>
+<p><img src="http://i.imgur.com/z96DxlM.png" alt="Before all shoreline changes" /></p>
+<p>After:</p>
+<p><img src="http://i.imgur.com/AYbB515.png" alt="After all shoreline changes" /></p>
 <hr />
-<p>Finally, while it was cool to have <a href="https://www.youtube.com/watch?v=BFSW2FgWQR0">a map the size of a cosmic superbubble</a>, having a game where your enemy can infinitely escape isn’t fun. I enclose each new map in a <a href="http://i.imgur.com/gIuPSQD.png">random continent</a> the size of Corsica.</p>
+<p>Finally, while it was cool to have <a href="https://www.youtube.com/watch?v=BFSW2FgWQR0">a map the size of a cosmic superbubble</a>, having a game where your enemy can infinitely escape isn’t fun. I enclose each new map in a random continent the size of Corsica.</p>
+<p><img src="http://i.imgur.com/gIuPSQD.png" alt="Map of a large island from high above" /></p>
 <hr />
 <p>Did I say “finally”? This is the last item! I improved the look of the map when unzoomed.</p>
-<p>Before: http://i.imgur.com/XST4jt6.png</p>
-<p>More recently: http://i.imgur.com/Ta3FcuU.png</p>
-<p>Now: http://i.imgur.com/GCcRJ7e.png</p>
-<p>Bonus picture, 3D rendering, a fair bit of work with many challenges to come: <img src="http://i.imgur.com/uhyBlTN.png" alt="3D!" /></p>
+<p>Before:</p>
+<p><img src="http://i.imgur.com/XST4jt6.png" alt="Zoomed out map of the island with strange color choices and pixelated hexagonal cells" /></p>
+<p>More recently:</p>
+<p><img src="http://i.imgur.com/Ta3FcuU.png" alt="Zoomed out smooth island with strange color choices" /></p>
+<p>Now:</p>
+<p><img src="http://i.imgur.com/GCcRJ7e.png" alt="Zoomed out smooth island with plausible color choices" /></p>
+<p>Bonus picture, 3D rendering, a fair bit of work with many challenges to come:</p>
+<p><img src="http://i.imgur.com/uhyBlTN.png" alt="Shoreline with mountains casting shadows" /></p>
     <footer>
       Published <time itemprop=datePublished datetime="2014-10-05T22:41:00Z">6 October 2014</time>.
     </footer>
