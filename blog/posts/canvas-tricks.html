@@ -30,9 +30,13 @@
 <p>The tricky bit, this time, is to ensure that borders don’t overlap when two nations are right next to each other. To achieve this result, I use canvas clipping, drawing only the inside of the border, after having drawn a full border for each opposing camp. Chrome pixelates the edge of clipped painted data, probably because of its Path implementation, but that’s the best solution I found.</p>
 <p>Also, yet again, I ensured that dashed borders didn’t change with a small change in the border.</p>
 <p>Before:</p>
-<p><img src="http://i.imgur.com/0YLd1E3.png" alt="Dashed border before single cell addition" /> → <img src="http://i.imgur.com/2HAV00k.png" alt="Dashed border after single cell addition" /></p>
+<p><img src="http://i.imgur.com/0YLd1E3.png" alt="Dashed border before single cell addition" /></p>
+<p>→</p>
+<p><img src="http://i.imgur.com/2HAV00k.png" alt="Dashed border after single cell addition" /></p>
 <p>After:</p>
-<p><img src="http://i.imgur.com/UH17gHd.png" alt="Dashed border before single cell addition" /> → <img src="http://i.imgur.com/Qhrk8Ez.png" alt="Dashed border after single cell addition; most of the border stayed pixel-identical" /></p>
+<p><img src="http://i.imgur.com/UH17gHd.png" alt="Dashed border before single cell addition" /></p>
+<p>→</p>
+<p><img src="http://i.imgur.com/Qhrk8Ez.png" alt="Dashed border after single cell addition; most of the border stayed pixel-identical" /></p>
 <p>That was done by putting a dash one out of two consecutive hexagonal edge along the border.</p>
 <hr />
 <p>What next? I found the map’s shoreline (and all terrain transitions) too harsh and geometric as well.</p>

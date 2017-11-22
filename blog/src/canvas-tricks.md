@@ -52,11 +52,19 @@ Also, yet again, I ensured that dashed borders didn't change with a small change
 
 Before:
 
-![Dashed border before single cell addition](http://i.imgur.com/0YLd1E3.png) → ![Dashed border after single cell addition](http://i.imgur.com/2HAV00k.png)
+![Dashed border before single cell addition](http://i.imgur.com/0YLd1E3.png)
+
+→
+
+![Dashed border after single cell addition](http://i.imgur.com/2HAV00k.png)
 
 After:
 
-![Dashed border before single cell addition](http://i.imgur.com/UH17gHd.png) → ![Dashed border after single cell addition; most of the border stayed pixel-identical](http://i.imgur.com/Qhrk8Ez.png)
+![Dashed border before single cell addition](http://i.imgur.com/UH17gHd.png)
+
+→
+
+![Dashed border after single cell addition; most of the border stayed pixel-identical](http://i.imgur.com/Qhrk8Ez.png)
 
 That was done by putting a dash one out of two consecutive hexagonal edge along the border.
 

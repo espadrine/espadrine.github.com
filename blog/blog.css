@@ -91,9 +91,11 @@ article p > img {
   max-height: 90vh;
   max-width: 17cm;
 }
-article p > img.center {
+article p > img:only-child {
   display: block;
   margin: auto;
+  margin-left: 50%;
+  transform: translateX(-50%);
   border: 1px solid #dadada;
   padding: 5px;
   max-width: calc(17cm - 12px);
@@ -103,7 +105,7 @@ article p > img.center {
     /* 16px for the markdown padding. */
     max-width: calc(100vw - 16px);
   }
-  article p > img.center {
+  article p > img:only-child {
     max-width: calc(100vw - 12px - 16px);
   }
 }
