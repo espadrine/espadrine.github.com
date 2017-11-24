@@ -26,4 +26,29 @@ Now, I'll tackle syntax, which is far nicer to poke fun at. The original reason 
     expandRow r = expandRowAcc r [] where
       expandRowAcc (x:xs) lead = if (multipleChoice x)
         then -- The pivot is x.
-          [lead ++ [[d]] ++ xs | d
+          [lead ++ [[d]] ++ xs | d <- x]
+        else -- The pivot is in xs.
+          expandRowAcc xs (lead ++ [x])
+
+That is obviously invalid Haskell, right? The where keyword should be at the end of the previous line, like so:
+
+    expandRow :: Row Choice -> [Row Choice]
+    expandRow r = expandRowAcc r [] where
+      expandRowAcc (x:xs) lead = if (multipleChoice x)
+        then -- The pivot is x.
+          [lead ++ [[d]] ++ xs | d <- x]
+        else -- The pivot is in xs.
+          expandRowAcc xs (lead ++ [x])
+
+On the other hand, this is obviously valid Haskell, even though the where is at the start of a line:
+
+    expandRow r = expandRowAcc r []
+      where expandRowAcc (x:xs) lead = if (multipleChoice x) then [lead ++ [[d]] ++ xs | d <- x] else expandRowAcc xs (lead ++ [x])
+
+There are many other things that make the syntax awkward, inconsistency such as defining a function normally (optionally with a `case…of`), with a series of clauses, and with guards (each have fundamentally distinct syntax, making the use of two of them impossible in lambda expressions). Some things are made very hard, such as knowing the precedence and therefore when to put a parenthesis. (I end up putting parentheses everywhere, because every time I see an obscure type error, I don’t want to fight with the angst that it might be caused by a precedence error.)
+
+Another example of awkward syntax appears in one of Haskell’s most adorable features, currying. Currying makes the order of the parameters of the function you make matter a lot. You should make it so that the last argument, when removed, makes the curried function be useful. However, using infix notation, the first argument can also be removed for currying. You’re out of luck for all other arguments.
+
+Overall, all of Haskell’s pros make code really easy to write, but its cons make code quite hard to read and maintain. Touching something already authored requires a lot of thought into how every piece fits together, and it can still break things in a way that is both predictable and logical, assuming you know Haskell better than your own mother tongue.
+
+I see Haskell as an amazing project to steer interest in language design, but I am a bigger fan of its offsprings than I am of Haskell itself.
