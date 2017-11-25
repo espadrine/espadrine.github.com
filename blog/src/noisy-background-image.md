@@ -2,7 +2,7 @@
 
 For a long time, I have learned all the techniques to get a random background noise. Now that I believe I master them all and invented a new one, I feel like I can discuss the subject.
 
-# Inserted PNG Image
+## Inserted PNG Image
 
 The most obvious technique is to rely on Gimp (or Photoshop, or <insert your bitmap image doctoring progam>) to perform the image randomization.
 
@@ -50,7 +50,7 @@ html {
 
 I wish I could link this image to a jsbin that shows the code, but the image data is too large for that. Incidentally, this is an excellent introduction to what comes next.
 
-# Prime Numbers
+## Prime Numbers
 
 Having a large image download is very sad. Fortunately, we can achieve a similar level of pixel noise with two or three small images. A single smaller image gives poor results:
 
@@ -72,7 +72,7 @@ Of course, this prime number trick only works for completely random background p
 
 Until I found a way.
 
-# SVG Filters
+## SVG Filters
 
 It turns out browsers already have the Perlin noise code in their SVG engines. All that is needed is to generate an SVG image at load time, and assign it to the background. The trick is to use the [Turbulence filter effect](http://www.w3.org/TR/SVG11/filters.html#feTurbulenceElement) with skill. I recommend combining it with a ColorMatrix filter.
 

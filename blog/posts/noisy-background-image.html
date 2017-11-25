@@ -5,7 +5,7 @@
   <article>
 <h1>Noisy Background Image</h1>
 <p>For a long time, I have learned all the techniques to get a random background noise. Now that I believe I master them all and invented a new one, I feel like I can discuss the subject.</p>
-<h1>Inserted PNG Image</h1>
+<h2>Inserted PNG Image</h2>
 <p>The most obvious technique is to rely on Gimp (or Photoshop, or <insert your bitmap image doctoring progam>) to perform the image randomization.</p>
 <p><img src="https://31.media.tumblr.com/523bb82392d8c333e41f71aa898f1d7b/tumblr_inline_nczepogDve1qmhxug.png" alt="Create image" /></p>
 <p>To get raw random pixels, you can rely on Hurl noise:</p>
@@ -31,7 +31,7 @@
 </code></pre>
 <p><img src="https://31.media.tumblr.com/78a9a9ecdbe5d8e90799c077805c28a5/tumblr_inline_ndcf0yDrcQ1qmhxug.png" alt="" /></p>
 <p>I wish I could link this image to a jsbin that shows the code, but the image data is too large for that. Incidentally, this is an excellent introduction to what comes next.</p>
-<h1>Prime Numbers</h1>
+<h2>Prime Numbers</h2>
 <p>Having a large image download is very sad. Fortunately, we can achieve a similar level of pixel noise with two or three small images. A single smaller image gives poor results:</p>
 <p><img src="https://31.media.tumblr.com/be0f58c9bd3e7e2c6f1def334e2ceb6c/tumblr_inline_ndcfaeaFO01qmhxug.png" alt="" /></p>
 <p>But relying on two or three square images whose width is a prime number guarantees that the pattern won’t repeat for a very long time. Given two images of size MxM and NxN, with M and N prime numbers, the resulting image won’t repeat until MxN. Let’s try with M = 13 and N = 23. Then the repetition will only happen at 299. Add to that a 11x11 pixels image and you will get something of size 3289x3289 pixels.</p>
@@ -42,7 +42,7 @@
 <p>That webpage costs 1978 bytes, compared to 3969 bytes for a single image of 50x50 pixels generated using the same technique, with which repetition would be visible (<a href="http://jsbin.com/pepumo/1">example here</a>).</p>
 <p>Of course, this prime number trick only works for completely random background pixels. I was always dissatisfied that there was no way to have similarly small image downloads for background Perlin noise.</p>
 <p>Until I found a way.</p>
-<h1>SVG Filters</h1>
+<h2>SVG Filters</h2>
 <p>It turns out browsers already have the Perlin noise code in their SVG engines. All that is needed is to generate an SVG image at load time, and assign it to the background. The trick is to use the <a href="http://www.w3.org/TR/SVG11/filters.html#feTurbulenceElement">Turbulence filter effect</a> with skill. I recommend combining it with a ColorMatrix filter.</p>
 <pre><code>(function background() {
   var seed = (Math.random() * 1000)|0;
