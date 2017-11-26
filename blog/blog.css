@@ -91,7 +91,8 @@ article p > img {
   max-height: 90vh;
   max-width: 17cm;
 }
-article p > img:only-child {
+article p > img:only-child,
+article p > a:only-child > img {
   display: block;
   margin: auto;
   margin-left: 50%;
@@ -105,7 +106,8 @@ article p > img:only-child {
     /* 16px for the markdown padding. */
     max-width: calc(100vw - 16px);
   }
-  article p > img:only-child {
+  article p > img:only-child,
+  article p > a:only-child > img {
     max-width: calc(100vw - 12px - 16px);
   }
 }
