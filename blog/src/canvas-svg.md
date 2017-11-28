@@ -6,7 +6,7 @@ I was racing on this roller-coaster of red, green, blue pathways, occasionally j
 
 ## That is when I realized that an effort I had ongoing had a simple and elegant solution.
 
-You may know that I made and maintain the <http:> service. An effort in providing badges for use in GitHub and elsewhere, this website promotes the use of SVG as a means to diminish bandwidth costs for images and solve the zoom / retina / [4x](http://fremycompany.com/BG/2013/Why-Super-Retina-screens-are-worthwhile-172/) / `<picture>` problem that so many web developers are losing hair on. You see, images are either photos, textures, or icons / banners / logos / badges / all this ilk.
+You may know that I made and maintain the <http://shields.io> service. An effort in providing badges for use in GitHub and elsewhere, this website promotes the use of SVG as a means to diminish bandwidth costs for images and solve the zoom / retina / [4x](http://fremycompany.com/BG/2013/Why-Super-Retina-screens-are-worthwhile-172/) / `<picture>` problem that so many web developers are losing hair on. You see, images are either photos, textures, or icons / banners / logos / badges / all this ilk.
 
 - For photos: use JPEG / WebP with `<picture>` and store a 4x version of it.
 - For textures: WebGL is your friend.
@@ -26,7 +26,7 @@ I am serious, by the way, about computing the probabilities. Look at [this issue
 
 How can we get away from this? In general, how can we use many different fonts on many different images?
 
-You may not have noticed this by looking at the <http:> website: [the logo](http://shields.io/logo.svg) is made of [OpenSans](http://en.wikipedia.org/wiki/Open_Sans) text. Whenever we can precompute a subsetted font, we should, and that is what I did: a font that contains only the letters S, h, i, e, l, d, s, I and O. No duplicate letters; this is a worst-case. The logo weighs 8.6KB, and it's all SVG.
+You may not have noticed this by looking at the <http://shields.io> website: [the logo](http://shields.io/logo.svg) is made of [OpenSans](http://en.wikipedia.org/wiki/Open_Sans) text. Whenever we can precompute a subsetted font, we should, and that is what I did: a font that contains only the letters S, h, i, e, l, d, s, I and O. No duplicate letters; this is a worst-case. The logo weighs 8.6KB, and it's all SVG.
 
 How do you do it? Use SIL's [ttfsubset](http://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&id=fontutils#fb138857) (it is brilliantly useful, despite its flawed installation process—I actually had a bit of a struggle to make it work [back in January](http://scripts.sil.org/svn-public/utilities/Font-TTF-scripts/trunk/Changes) but I fixed it).
 
@@ -76,4 +76,4 @@ It isn't merged yet, but I am already excited!
 
 ## Afterword
 
-This was going to be part of a talk I wanted to make at JSConf. Unfortunately, I was not selected as a speaker. There are many more things I wanted to cover — the history of those GitHub badges you see everywhere, the technology used to make each badge, to support both SVG, PNG and the like with exactly the same rendering, some nitty-gritty about caching and the story of our interaction with all those services we support… Maybe another blog post, another time? </picture></path></http:></picture></picture></http:>
+This was going to be part of a talk I wanted to make at JSConf. Unfortunately, I was not selected as a speaker. There are many more things I wanted to cover — the history of those GitHub badges you see everywhere, the technology used to make each badge, to support both SVG, PNG and the like with exactly the same rendering, some nitty-gritty about caching and the story of our interaction with all those services we support… Maybe another blog post, another time?
