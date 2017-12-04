@@ -1,0 +1,15 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "Espadrine’s blog",
+  "description": "Let’s talk about whatever I learn!",
+  "home_page_url": "https://espadrine.github.io/blog/",
+  "feed_url": "https://espadrine.github.io/blog/feed.json",
+  "author": {
+    "name": "Thaddée Tyl",
+    "url": "https://github.com/espadrine"
+  },
+  "favicon": "https://avatars.githubusercontent.com/u/100689?s=64",
+  "items": [
+
+  ]
+}
