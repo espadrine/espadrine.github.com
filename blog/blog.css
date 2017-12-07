@@ -26,6 +26,12 @@ body {
   padding: 0 8px;
 }
 
+.rss {
+  position: relative;
+  float: right;
+  top: -4em;
+}
+
 /* Article and Markdown */
 
 main {
