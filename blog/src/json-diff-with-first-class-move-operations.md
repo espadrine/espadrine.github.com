@@ -4,8 +4,9 @@ _(This was first posted [here](https://blog.trainline.fr/12389-algorithme-diff-j
 
 Back in January, here at Trainline Europe, we learnt that SNCF, the main French railway company, wanted to update their fare system — that is, the set of rules which determine their ticket prices. The plan was to scrap congestion pricing on TGVs (France’s high-speed trains), reduce sudden price increases, introduce so many offers to discount card owners that it would feel like Christmas!
 
-However, those goals were not without challenges. Just as a princess must defeat a dragon to free her Prince Charming, SNCF had to fight the complexity of its current fare system to extract a pearl from its ashes. The blood from this fight had to drip onto their partners: counter agents, travel agencies, [GDS](https://en.wikipedia.org/wiki/Global_Distribution_System)es … and yours truly.
-![](https://78.media.tumblr.com/57fb76ee4b004e708779d1432a3798aa/tumblr_inline_oflowvGtz81qmhxug_540.png)
+However, those goals were not without challenges. Just as a princess must defeat a dragon to free her Prince Charming, SNCF had to fight the complexity of its current fare system to extract a pearl from its ashes. The blood from this fight had to drip onto their partners: counter agents, travel agencies, [GDS](https://en.wikipedia.org/wiki/Global_Distribution_System)es… and yours truly.
+
+![](https://i.imgur.com/dR3cNUW.png)
 
 _Fighting fare systems requires extensive equipment._
 
@@ -19,7 +20,7 @@ This engine converts (carrier-specific) search results into an intermediate form
 
 After working on it for a while, we got the format conversion working. It was then time to ensure that nothing would change for our users. So I tweaked our train search engine to re-execute searches of a subset of our users in production, once the first, original search had been performed with the old engine. Once this was done, I saved the [JSON](https://en.wikipedia.org/wiki/JSON) output of the old and new engines side by side.
 
-I now had a large quantity of “before / after” files, of which each pair was supposedly identical. Of course, those files were not literally identical. Would you expect fate to be so kind? They contained random keys here, newly ordered lists there, such that a trival `[diff](https://en.wikipedia.org/wiki/Diff)` of the files was out of the question.
+I now had a large quantity of “before / after” files, of which each pair was supposedly identical. Of course, those files were not literally identical. Would you expect fate to be so kind? They contained random keys here, newly ordered lists there, such that a trival [`diff`](https://en.wikipedia.org/wiki/Diff) of the files was out of the question.
 
 Had a `diff` been possible, it would still not have helped me understand why the two files were different, since it only sees line changes, not structural ones. I needed a diff which was able to understand the structure of JSON. Each difference was a bug.
 
@@ -40,7 +41,8 @@ Trouble starts with arrays. We could compare their values index-for-index — th
 Most array operations are commonly defined in terms of two fundamental actions: insertion and deletion. Let’s say we compare `[1, 2, 3]` and `[1, 3]`. A diff that describes it as “the 2 was incremented and the 3 was removed” is awkward compared to a simpler explanation, “we added a 2.” Occam’s razor strikes again.
 
 Finding the minimal number of insert / delete operations is equivalent to a classical problem in computer science, the [Longest Common Subsequence](https://en.wikipedia.org/wiki/Longest_common_subsequence_problem) (hereafter LCS). Luckily, it is a perfect match for [dynamic programming](https://en.wikipedia.org/wiki/Dynamic_programming), and one of its redeeming examples! The algorithm that solves it merely scans every pair of elements, one from the “before” list, the other from the “after” list, starting from the left of the lists. It registers identical elements as part of a potential longest common subsequence, and tracks from which pair each subsequence was possible. When it is done, the last cell lets you backtrack to the first cell, feeding you the list of operations needed along the way.
-![](https://78.media.tumblr.com/cbd9ac42a6e90ec3e8283e32cc8eb83c/tumblr_inline_ofloza53xh1qmhxug_540.png)
+
+![](https://i.imgur.com/DIYgH1v.png)
 
 _LCS conversion from αβγ to αγ. The arrows are operations, the circles are pairs of elements and contain sub-sequences._
 
@@ -48,7 +50,7 @@ It is so wonderful that everybody uses it, from `diff` to `git` to numerous DNA 
 
 Fundamentally, LCS only has fundamental operations: insertion and deletion. That is not enough to easily guess that an element has switched places! In fact, we would be better off if moving objects were a fundamental operation as well.
 
-Furthermore, LCS is designed for lists where identity is unambiguous. Even [jsondiffpatch](https://github.com/benjamine/jsondiffpatch) ends up performing a trivial [index-wise](https://github.com/benjamine/jsondiffpatch/blob/b7b7dfe52bbb4e88f3ecb87e2efbbb3af5f9c365/src/filters/arrays.js#L52) comparison when it has nothing else to work with! To be free from that flawed assumption, &nbsp;[hashdiff](https://github.com/liufengyun/hashdiff)’s idea is interesting: let’s compare the similarity of items!
+Furthermore, LCS is designed for lists where identity is unambiguous. Even [jsondiffpatch](https://github.com/benjamine/jsondiffpatch) ends up performing a trivial [index-wise](https://github.com/benjamine/jsondiffpatch/blob/b7b7dfe52bbb4e88f3ecb87e2efbbb3af5f9c365/src/filters/arrays.js#L52) comparison when it has nothing else to work with! To be free from that flawed assumption, [hashdiff](https://github.com/liufengyun/hashdiff)’s idea is interesting: let’s compare the similarity of items!
 
 ## The Similarity
 
@@ -58,17 +60,21 @@ The goal is to compute an arbitrary notion of how probable it is that one object
 
 *   For objects, take the average similarity between key values. We ignore key renames.
 *   For arrays, the most likely match between an element in the old and the new list is presumably the right one, so we take the average of the maximum similarity between each pair of elements of each list.
-*   For atoms, we are fine with value equality.![](https://78.media.tumblr.com/958a7d42ae1ab4b449314ee809b96249/tumblr_inline_oflp02uthm1qmhxug_540.png)
+*   For atoms, we are fine with value equality.
+
+![](https://i.imgur.com/EV63274.png)
 
 ##  Array Pairing
 
 Finding an ideal match between two lists sounds a lot like the [assignment problem for bipartite graphs](https://en.wikipedia.org/wiki/Assignment_problem). Imagine you own a fleet of available taxis. A set of passengers need picking up across town. The assignment problem wants to minimize the overall time that it takes for each taxi to arrive at a passenger’s location.
-![](https://78.media.tumblr.com/f103c5883f404bce81dd17288b5252dd/tumblr_inline_oflp0zUOF41qmhxug_540.png)
+
+![](https://i.imgur.com/8IYXM63.png)
 
 _Above, minimizing the overall time. Below, minimizing the best time._
 
 In our case, we want to minimize the best time, not the overall time. Among two array pairings of size 2, one with similarities 0.9 and 0.1, the other with similarities 0.8 and 0.4, one of the elements doesn’t seem to have been moved; it looks like an element was deleted and another was added. Given that, the pairing with 0.9 is most logical, and that is the one we want. Yet, maximizing the overall similarity would yield the inferior (0.8, 0.4) pairing.
-![](https://78.media.tumblr.com/e0492d98e19d03338c93752272506116/tumblr_inline_oflp1kKJ3k1qmhxug_540.png)
+
+![](https://i.imgur.com/4A28exY.png)
 
 The assignment problem has an O(n^3) polynomial solution, while the array pairing problem has an O(n^2) solution, which means it has the added bonus of being fast.
 
@@ -101,7 +107,7 @@ The [HashDiff](https://github.com/liufengyun/hashdiff) format for paths (eg. `fo
 
 [RFC 6902](http://tools.ietf.org/html/rfc6902) is the go-to standard. Unfortunately, it chose to use [RFC 6901](http://tools.ietf.org/html/rfc6901), aka. JSON pointer, for paths (eg. `/foo/0/bar`).
 
-I have no idea why [RFC 6902](http://tools.ietf.org/html/rfc6902) did not simply use a list of strings and numbers. It is easy for humans to read, easy for machines to traverse (they have to convert the string to that list otherwise), and while it does save a few bytes when serialized, [RFC 6902](http://tools.ietf.org/html/rfc6902) is far from being a dense format to begin with. Finally, JSON pointer is forced to use a quirky escaping system: slashes are converted to `~1 `and tildes to `~0`.
+I have no idea why [RFC 6902](http://tools.ietf.org/html/rfc6902) did not simply use a list of strings and numbers. It is easy for humans to read, easy for machines to traverse (they have to convert the string to that list otherwise), and while it does save a few bytes when serialized, [RFC 6902](http://tools.ietf.org/html/rfc6902) is far from being a dense format to begin with. Finally, JSON pointer is forced to use a quirky escaping system: slashes are converted to `~1` and tildes to `~0`.
 
 But it is the standard… so I accepted its flaws and rolled with it.
 
