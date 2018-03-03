@@ -1,4 +1,4 @@
-# TheFileTree Design Log 3
+# TheFileTree Design Log 3: Collaborative Editing
 
 I finally implemented the following API:
 
@@ -14,13 +14,13 @@ On the other hand, it only supports strings. The protocol is designed to allow f
 
 [jsonsync]: https://github.com/espadrine/jsonsync
 
-# User Interface
+## User Interface
 
 I have designed Canop with certain events to allow for the display of the synchronization state (unsyncable (ie, offline), syncing, and synced).
 
 This was problematic in thefiletree.com previously, as it was not at all clear whether we had suddenly been disconnected, and there were no reconnection. Closing the tab could therefore cause us to lose our changes… Yet there was no save button.
 
-# Details
+## Details
 
 I don't save the edit history server-side, so local operations after a disconnection won't be able to rebase on top of other operations. I get the feeling that past a few seconds of disconnection, concurrent editing can severely damage the user's intended edition, as rebased operation may lose what the user entered without them having seen someone's cursor arrive.
 

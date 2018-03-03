@@ -1,4 +1,4 @@
-# TheFileTree Design Log 2
+# TheFileTree Design Log 2: API
 
 I have implemented the core API, which powers the folder app.
 

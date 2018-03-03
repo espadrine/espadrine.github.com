@@ -1,17 +1,11 @@
-<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
-  <title>Espadrine’s blog</title>
-  <subtitle>Let’s talk about whatever I learn!</subtitle>
-  <link rel="alternate" type="text/html" href="https://espadrine.github.io/blog/"/>
-  <link rel="self" type="application/atom+xml" href="https://espadrine.github.io/blog/feed.xml"/>
-  <id>https://espadrine.github.io/blog/feed.xml</id>
-  <updated>2018-03-01T23:19:58Z</updated>
-      <entry>
-        <id>https://espadrine.github.io/blog/posts/thefiletree-design-log-4.html</id>
-        <link rel="alternate" type="text/html" href="https://espadrine.github.io/blog/posts/thefiletree-design-log-4.html"/>
-        <title>TheFileTree Design Log 4: Accounts</title>
-        <published>2018-03-01T23:19:58Z</published>
-        <content type="html">
-          <![CDATA[ <h1>TheFileTree Design Log 4: Accounts</h1>
+<!doctype html><meta charset=utf-8>
+<title> TheFileTree Design Log 4: Accounts </title>
+<link href=../blog.css rel=stylesheet>
+<link rel="alternate" type="application/atom+xml" title="Atom 1.0" href="feed.xml"/>
+<link rel="alternate" type="application/json" title="JSON Feed" href="feed.json" />
+<main>
+  <article>
+<h1>TheFileTree Design Log 4: Accounts</h1>
 <p>I mentionned needing to add accounts in <a href="./thefiletree-design-log-2.html">design log 2</a>. It is <a href="https://github.com/garden/tree/commit/04a03786d81733aeca35b1ac4fe5b95c57d0e706">now implemented</a>.</p>
 <p>You go to <code>/app/account/</code>, which contains either your account information if you are logged in, or a form to get registered.</p>
 <p><img src="https://i.imgur.com/rlfES3K.png" alt="Create an Account" /></p>
@@ -58,7 +52,9 @@ Carolina, US. There is a subtle bit more latency as a result from France.</p>
 <p>All in all, it was a very interesting choice to have. The website is now much
 more robust than it was before. The only dark spot is the single-node
 CockroachDB server, which dies on a regular basis, seemingly because it does not
-like to be alone. I will have to investigate further later.</p> ]]>
-        </content>
-      </entry>
-</feed>
+like to be alone. I will have to investigate further later.</p>
+    <footer>
+      Published <time itemprop=datePublished datetime="2018-03-01T23:19:58Z">2 March 2018</time>.
+    </footer>
+  </article>
+</main>

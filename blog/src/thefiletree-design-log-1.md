@@ -1,4 +1,4 @@
-# TheFileTree Design Log 1
+# TheFileTree Design Log 1: Metadata
 
 I intend to rethink the ideas behind [TheFileTree](https://thefiletree.com).
 
