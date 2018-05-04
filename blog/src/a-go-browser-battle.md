@@ -116,3 +116,9 @@ There is no planned date for the final confrontation.
 
 The code for the SGF parser, Go engine, and AIs will be [here](https://github.com/espadrine/badukjs), and the UI code will be [there](https://github.com/jankeromnes/metaboard).
 
+<script type="application/ld+json">
+{ "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "datePublished": "2017-06-16T16:53:49Z",
+  "keywords": "baduk" }
+</script>

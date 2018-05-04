@@ -116,3 +116,10 @@ Funny thought: the [Lua](http://lua.org/) programming language was initially mea
 Ok, not *that* funny.
 
 All this to end there: TOML doesn't fit in the picture. It will one day, but then, it will have the complexity of YAML and awkwardly combined features. You will need whiskey to ignore that.
+
+<script type="application/ld+json">
+{ "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "datePublished": "2013-03-05T13:03:00Z",
+  "keywords": "" }
+</script>

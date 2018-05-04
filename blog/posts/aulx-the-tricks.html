@@ -19,6 +19,12 @@
 <p>Of course, no matter what approach you take, you need to organize the information you aggregate, and for that purpose, in JS, you benefit from having some concept of types. In my case, I gather data from every function call, from every assignment, from every property access. Therefore, I have defined my types as being the <em>union of all information related to functions</em>. If a variable was used as a second parameter to a function, that is stored in that variable’s type. If we learned that it is an instance of some constructor, that too is stored. Then, on the other side of the fence, each function accumulates information about properties hold by each of their parameter, by their return value, and by their instances (if it is a constructor). That way, when completing properties, all this information is combined to draw the largest and most accurate picture we can.</p>
 <h1>Not just JS</h1>
 <p>Aulx is meant for the Web, not just JS. That was the goal from the start. It now has a world-class CSS autocompletion system, which Girish Sharma of <a href="https://hacks.mozilla.org/2013/08/new-features-of-firefox-developer-tools-episode-25/">Firefox fame</a> contributed. Expect work on HTML autocompletion too. Imagine receiving autocompletion even for inlined JS and CSS! Imagine combining that information so as to provide some DOM / CSS information in your JS!</p>
+<script type="application/ld+json">
+{ "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "datePublished": "2013-08-20T19:41:00Z",
+  "keywords": "js" }
+</script>
     <footer>
       Published <time itemprop=datePublished datetime="2013-08-20T19:41:00Z">20 August 2013</time>.
     </footer>

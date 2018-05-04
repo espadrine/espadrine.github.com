@@ -2,17 +2,23 @@
 
 dir=$(dirname "$BASH_SOURCE")
 template=$(cat "$dir"/template.html)
-last_month=$(date -I -d 'last month')
+last_year=$(date -I -d 'last year')
 
 post_links=
 jsonfeed_items=
 atomfeed_entries=
 last_publication_date=
 
-< "$dir"/publication tail -n +2 | {
+publications=$(ls src/*.md | sed 's,^src/,,; s,\.md$,,' | \
+  { while read src; do
+    echo $(<"src/$src.md" grep '^  "datePublished"' | \
+      cut -d'"' -f4 | cut -d' ' -f2)$'\t'"$src";
+  done } | sort)
+
+echo "$publications" | {
   while read post; do
-    name=$(echo "$post" | cut -d'	' -f1)
-    isotime=$(echo "$post" | cut -d'	' -f2)
+    name=$(echo "$post" | cut -d$'\t' -f2)
+    isotime=$(echo "$post" | cut -d$'\t' -f1)
     last_publication_date="$isotime"
     time=$(date +'%-d %B %Y' -d "$isotime")
     markdown=$(cat "$dir"/src/"$name".md)
@@ -30,8 +36,8 @@ last_publication_date=
       > "$dir"/posts/"$name".html
     post_links='    <li><a href="posts/'"$name"'.html">'"$title"'</a></li>'$'\n'"$post_links"
 
-    # We expect RSS feed clients to poll at least once a month.
-    if [[ "$isotime" > "$last_month" ]]; then
+    # We expect RSS feed clients to poll at least once a year.
+    if [[ "$isotime" > "$last_year" ]]; then
       jsonfeed_items=$(cat <<EOF
       {
         "id":  "https://espadrine.github.io/blog/posts/$name.html",

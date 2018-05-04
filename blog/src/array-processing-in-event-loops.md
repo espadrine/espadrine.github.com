@@ -170,3 +170,10 @@ Moreover:
 
 - if you are part of the core development team at `node.js`, include it.
 - if you are not, beg them to do so!
+
+<script type="application/ld+json">
+{ "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "datePublished": "2012-01-21T18:29:00Z",
+  "keywords": "" }
+</script>

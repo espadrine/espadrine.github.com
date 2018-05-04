@@ -100,3 +100,10 @@ Using different base frequencies between the X and Y coordinates gives more surp
 Here you go! Everything you needed to know about noisy background images, including the state-of-the-art in terms of small image download with perfect result.
 
 I already started using this here (which the astute reader will surely have noticed), and on [Aulx](http://espadrine.github.io/aulx), the autocompletion engine for the Web which I'll continue improving in the future. </insert>
+
+<script type="application/ld+json">
+{ "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "datePublished": "2014-10-22T20:11:00Z",
+  "keywords": "css svg" }
+</script>

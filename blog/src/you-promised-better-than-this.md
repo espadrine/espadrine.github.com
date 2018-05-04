@@ -119,3 +119,10 @@ Oops, that value is accidentally a thenable. The pipe is prematurely interrupted
 And so I looked at last week's ECMA discussions. Behold, "Why thenables?" was the topic du jour! That issue annoys, but it won't go away… for compatibility reasons. The APIs of the Web were always a bit crufty. 2013 is just another year.
 
 While working ex-cathedra is a fun experience, I wouldn't recommend using my continuations library. The Web doesn't win because it is the best design, it wins because it is the most useful.
+
+<script type="application/ld+json">
+{ "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "datePublished": "2013-12-29T19:29:00Z",
+  "keywords": "js" }
+</script>

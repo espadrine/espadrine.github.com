@@ -14,3 +14,10 @@ Otherwise, I got a diploma in engineering, got hired at https://www.capitainetra
 It's quite fun to no longer be tied to strange decisions and absurd, chronophage school projects.
 
 I hope to do even bigger things this year, many being continuations on this year's achievements, some (hopefully) being outstanding surprises.
+
+<script type="application/ld+json">
+{ "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "datePublished": "2015-01-03T22:51:00Z",
+  "keywords": "retro" }
+</script>

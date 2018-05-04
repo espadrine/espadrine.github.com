@@ -38,3 +38,10 @@ Additionally, while our inorganic AIs have a training phase of decades, our spec
 Even if we did, we pick the fitness landscape — the things that we want those inorganic automata to optimize. While we are optimized for survival on Earth, they would optimize our food supply, our economy, our diplomacy. Designing a fitness landscape that could harm us is as absurd as making double-edged knives with no handles. Just as I do not want to drive in a car whose airbag system could fail, we will replace an AI that fails our economy. And that AI would only replace humans doing a poorer job.
 
 Should we fear intelligence? The gory depiction offered by Hollywood blockbusters only regurgitate the fear of Genesis' forbidden apple. Let us be smarter than that.
+
+<script type="application/ld+json">
+{ "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "datePublished": "2015-05-20T23:40:00Z",
+  "keywords": "ai" }
+</script>

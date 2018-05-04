@@ -77,3 +77,10 @@ It isn't merged yet, but I am already excited!
 ## Afterword
 
 This was going to be part of a talk I wanted to make at JSConf. Unfortunately, I was not selected as a speaker. There are many more things I wanted to cover — the history of those GitHub badges you see everywhere, the technology used to make each badge, to support both SVG, PNG and the like with exactly the same rendering, some nitty-gritty about caching and the story of our interaction with all those services we support… Maybe another blog post, another time?
+
+<script type="application/ld+json">
+{ "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "datePublished": "2014-08-30T13:35:00Z",
+  "keywords": "svg, canvas" }
+</script>

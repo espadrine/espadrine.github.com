@@ -33,3 +33,10 @@ My plan: save the revision number so that local changes can be applied without a
 If it was, download a diffing library, and perform a diff. Display a visualization of the changes that would be applied to the local document (with local changes) if upstream changes were applied, and local changes rebased on top of them.
 
 "Do you want to apply remote changes?" Yes / No, save my document at a new location.
+
+<script type="application/ld+json">
+{ "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "datePublished": "2017-04-02T19:19:00Z",
+  "keywords": "tree" }
+</script>

@@ -49,3 +49,10 @@ Sure, this is a contrived example. It is more of a stress-test of the bignum cod
 Here's to Guile becoming the new SBCL!
 
 [Guile 2.0.10]: http://lists.gnu.org/archive/html/info-gnu/2014-03/msg00006.html
+
+<script type="application/ld+json">
+{ "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "datePublished": "2014-03-18T16:53:00Z",
+  "keywords": "lisp" }
+</script>

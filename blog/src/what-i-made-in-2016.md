@@ -32,3 +32,10 @@ I took greater concern in explaining my projects. People wouldn't understand the
 [canop rebase]: https://github.com/espadrine/canop/commit/b0f37b2cc789513e9c8bd1986e113bed6580328f
 [blog post]: https://engineering.thetrainline.com/2016/10/05/how-we-switched-without-a-hitch-to-a-new-api/
 [Previously]: http://espadrine.tumblr.com/post/138229350686/what-i-did-in-2015
+
+<script type="application/ld+json">
+{ "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "datePublished": "2017-06-16T20:12:00Z",
+  "keywords": "retro" }
+</script>

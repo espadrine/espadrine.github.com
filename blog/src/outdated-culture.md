@@ -37,3 +37,10 @@ What do I forget? Oh, yes, the twisted French elitism ensures that top schools (
 On a lighter note, matadors (you know, the performers who turn animal cruelty into entertainment?) are still a thing in southern France.
 
 But hey, at least we don't believe in fan death!
+
+<script type="application/ld+json">
+{ "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "datePublished": "2015-12-12T20:15:00Z",
+  "keywords": "" }
+</script>

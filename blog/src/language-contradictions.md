@@ -120,3 +120,10 @@ By expecting Java programmers to be dumb, they attracted exactly that portion of
 What I meant to do by writing this article is to make you aware of the fact that your programming tools behave counter-intuitively.
 
 I have yet to see a consistent and productive programming language.
+
+<script type="application/ld+json">
+{ "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "datePublished": "2011-08-30T19:54:00Z",
+  "keywords": "js go" }
+</script>

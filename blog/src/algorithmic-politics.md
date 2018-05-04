@@ -17,3 +17,10 @@ Conservatism stems from the idea that up until now, things have been looking up;
 On the other hand, the *left-wing* is generally afraid of the greedy approach, preferring complex rules and regulations that guarantee global optimality in the end. Unfortunately, those algorithms are usually not efficient, imperfect, and costly. Sometimes, there actually hasn't been any good solutions found on a particular problem. Sometimes, the solution assumes the good will and obedience of all citizens (cough cough, communism). Sometimes, we must compromise so much that we forget what we fight for.
 
 Of course, in politics and in computer science alike, there is no silver bullet. The werewolves always win.
+
+<script type="application/ld+json">
+{ "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "datePublished": "2014-12-13T21:45:00Z",
+  "keywords": "" }
+</script>

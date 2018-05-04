@@ -97,3 +97,10 @@ As an aside, I was not completely satisfied by the 2 pixel border-radius, as it 
 In conclusion, with a bit of trickery, we can render markdown as nicely as we want, without changing the HTML produced by standard tools.
 
 Here is the CSS file I now use:&nbsp;[https://github.com/espadrine/plugs/blob/master/lib/css/markdown.css](https://github.com/espadrine/plugs/blob/master/lib/css/markdown.css). A demo of that file is available here:&nbsp;[https://thefiletree.com/demo/markdown.md?plug=markdown](https://thefiletree.com/demo/markdown.md?plug=markdown).
+
+<script type="application/ld+json">
+{ "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "datePublished": "2016-03-05T17:06:00Z",
+  "keywords": "markdown css" }
+</script>

@@ -27,3 +27,10 @@ Finally, documentation. I see no reason why automatic documentation tools cannot
 If you create a new language, please remember: adding multiline comments is a mistake.
 
 If you use a language with multiline comments that rely on a closing sequence, avoid them like a disease.
+
+<script type="application/ld+json">
+{ "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "datePublished": "2013-02-04T20:22:00Z",
+  "keywords": "js" }
+</script>

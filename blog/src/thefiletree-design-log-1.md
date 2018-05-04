@@ -44,3 +44,10 @@ Something I am more worried about is whether I should allow apps to execute code
 Even without being allowed to execute code, apps can do anything, by making XHR requests to the server, using the API I will provide. Maybe HTTP2 Server Push will allow me to avoid waiting for the XHR call to send the data over, too, one day.
 
 I'll talk about identity control in a future log. Obviously an important aspect.
+
+<script type="application/ld+json">
+{ "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "datePublished": "2016-12-20T21:39:00Z",
+  "keywords": "tree" }
+</script>

@@ -53,3 +53,10 @@ Their answer:
 Sure, their old [FAQ](http://business.opera.com/press/faq/) still insists that they are not planning to go open-source. From a legal standpoint, they can. Chromium is released under the [BSD license](http://src.chromium.org/viewvc/chrome/trunk/src/LICENSE), which allows them to keep their fork proprietary — at least, that is my understanding. But then, don't say [you went open-source](https://twitter.com/opera/status/339658208656375808)!
 
 UPDATE: Opera [responded](https://twitter.com/opera/status/345616182738554883). They didn't delete <opensource> (phew!), but they are moving mail servers. Also, they are still working on packaging the source for the desktop. </opensource></opensource></opensource>
+
+<script type="application/ld+json">
+{ "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "datePublished": "2013-06-14T19:01:00Z",
+  "keywords": "web" }
+</script>

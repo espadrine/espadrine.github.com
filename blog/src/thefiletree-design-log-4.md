@@ -95,3 +95,10 @@ All in all, it was a very interesting choice to have. The website is now much
 more robust than it was before. The only dark spot is the single-node
 CockroachDB server, which dies on a regular basis, seemingly because it does not
 like to be alone. I will have to investigate further later.
+
+<script type="application/ld+json">
+{ "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "datePublished": "2018-03-01T23:19:58Z",
+  "keywords": "tree" }
+</script>

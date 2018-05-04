@@ -17,3 +17,10 @@ One of my failings, however, is how little I explain and advertize my projects. 
 [Canop]: https://github.com/espadrine/canop
 [RegList]: https://github.com/espadrine/reglist
 [Previously]: http://espadrine.tumblr.com/post/106997844921/what-i-made-on-year-2014
+
+<script type="application/ld+json">
+{ "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "datePublished": "2016-01-28T20:20:00Z",
+  "keywords": "retro" }
+</script>

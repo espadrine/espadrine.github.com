@@ -52,3 +52,10 @@ Another example of awkward syntax appears in one of Haskell’s most adorable fe
 Overall, all of Haskell’s pros make code really easy to write, but its cons make code quite hard to read and maintain. Touching something already authored requires a lot of thought into how every piece fits together, and it can still break things in a way that is both predictable and logical, assuming you know Haskell better than your own mother tongue.
 
 I see Haskell as an amazing project to steer interest in language design, but I am a bigger fan of its offsprings than I am of Haskell itself.
+
+<script type="application/ld+json">
+{ "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "datePublished": "2014-07-17T14:09:00Z",
+  "keywords": "haskell" }
+</script>

@@ -156,3 +156,10 @@ The biggest issue facing ProseMirror, however, is the fact that *it does not hav
 [ProseMirror]: http://prosemirror.net/
 
 What other improvements would you like to see in user experience?
+
+<script type="application/ld+json">
+{ "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "datePublished": "2015-09-26T19:42:00Z",
+  "keywords": "web" }
+</script>

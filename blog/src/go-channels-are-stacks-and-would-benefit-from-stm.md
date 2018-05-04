@@ -142,3 +142,10 @@ would make race conditions that harder to debug.
 
 As a result, I really hope they start implementing and advocating for STM
 soon.
+
+<script type="application/ld+json">
+{ "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "datePublished": "2012-07-02T21:44:00Z",
+  "keywords": "go" }
+</script>

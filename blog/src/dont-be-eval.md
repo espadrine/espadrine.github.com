@@ -30,3 +30,10 @@ Beyond that, it gives you the ability to *shadow access to outside global variab
     while (obj !== null) {
       globals = Object.getOwnPropertyNames(obj);
       for (var i = 0; i </https:>
+
+<script type="application/ld+json">
+{ "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "datePublished": "2013-06-12T22:21:00Z",
+  "keywords": "js" }
+</script>

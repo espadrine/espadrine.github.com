@@ -67,3 +67,10 @@ There are some attempts in the wild. V8 comes with a switch, `--trace-deopt`, wh
 On the standards front, the closest thing you get is something they call [Guards](http://wiki.ecmascript.org/doku.php?id=strawman:guards). This strawman amounts to type annotations that you can put anywhere you have a binding. However, it specifies that the code should throw if the type we specify for a variable isn't that of the data we feed it. That isn't quite the same thing as having a way to check for an optimization at all. Yet, the syntax itself would be valuable to request information about a certain class of bailouts.
 
 There is a lot yet to do to help programmers write code closer to the metal. What I do know is that current tools are only a glimpse of what we could have. The "Profiles" tab in WebKit's DevTools is notoriously seldom used, compared to any other tab. The information it gives is a struggle to work with. [Flame graphs](http://www.cs.brown.edu/~dap/agg-flamegraph.svg) are the beginning of an answer. The question being not "where is my code slow" but "what can I do to make it faster", making tools that give you clues on how to improve that [jsperf](http://jsperf.com/) score is an art that is yet to harness.
+
+<script type="application/ld+json">
+{ "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "datePublished": "2012-12-12T16:48:00Z",
+  "keywords": "go" }
+</script>

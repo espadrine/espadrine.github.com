@@ -25,3 +25,10 @@ Of course, no matter what approach you take, you need to organize the informatio
 # Not just JS
 
 Aulx is meant for the Web, not just JS. That was the goal from the start. It now has a world-class CSS autocompletion system, which Girish Sharma of [Firefox fame](https://hacks.mozilla.org/2013/08/new-features-of-firefox-developer-tools-episode-25/) contributed. Expect work on HTML autocompletion too. Imagine receiving autocompletion even for inlined JS and CSS! Imagine combining that information so as to provide some DOM / CSS information in your JS!
+
+<script type="application/ld+json">
+{ "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "datePublished": "2013-08-20T19:41:00Z",
+  "keywords": "js" }
+</script>

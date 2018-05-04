@@ -79,3 +79,10 @@ Obviously, there is more work to be done. We are careful about not making this c
 We arrive at the end of our journey. All in all, tool developers have proven very ingenious, twisting every part of the JS language to meld it to their needs. However, the resulting disparate toolboxes can have rough, incompatible edges (think Opera's host commands, `$` and `$$` for example, which cannot be used as function references).
 
 Yet, this is one of the most functional cross-browser API that I ever saw. The magic happens by discussing your implementation with fellow tool hackers. Thank you Internet!
+
+<script type="application/ld+json">
+{ "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "datePublished": "2012-09-12T23:20:00Z",
+  "keywords": "js" }
+</script>

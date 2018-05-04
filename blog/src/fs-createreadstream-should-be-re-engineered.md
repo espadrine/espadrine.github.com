@@ -43,3 +43,10 @@ As a result, I wish *all* node API calls used the usual node error handling.
 Why wasn't it designed this way originally?
 
 APIs are hard. At least they're not copyrightable now.
+
+<script type="application/ld+json">
+{ "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "datePublished": "2012-06-04T14:48:00Z",
+  "keywords": "js" }
+</script>

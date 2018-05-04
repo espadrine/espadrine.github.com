@@ -46,3 +46,10 @@ However, I am unsure of the exact layout I want for the root folder. My initial 
 - favicon.ico,
 - robots.txt,
 - humans.txt.
+
+<script type="application/ld+json">
+{ "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "datePublished": "2017-01-01T11:05:00Z",
+  "keywords": "tree" }
+</script>

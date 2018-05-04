@@ -21,3 +21,10 @@ Above all, the game mechanic that I am most afraid of, and which a poor attempt 
 However, The Waiting Game interrupts suspension of the player's disbelief and forces them to multitask into chores which were not the actions they wanted to make, nor the game they wanted to play. I won't even go into the paroxysm of this, so-called free to play games that add one layer to the mapping of fake value to real value by offering to exchange wasted player time with fiat money.
 
 Where I am heading with these thoughts is this: just like tools can work together to make a huge variety of outstanding devices and objects, these game mechanics can be combined to make a plethora of games with outstanding behaviors. Unfortunately, most games combine them in the same way, leaving much of the vector space of all possible great games unexplored.
+
+<script type="application/ld+json">
+{ "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "datePublished": "2014-08-14T12:42:00Z",
+  "keywords": "" }
+</script>

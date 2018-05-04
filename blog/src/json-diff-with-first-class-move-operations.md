@@ -126,3 +126,10 @@ There are countless possible improvements we could make. Off the top of my head:
 This diffing algorithm allowed me to detect three problematic bugs which therefore never impacted anyone. When we switched to the new search engine, we gradually increased the proportion of users that it impacted. The higher it went, the more confident we were, until we reached 100%.
 
 We changed the engine with the train at full throttle. Nobody noticed a thing!
+
+<script type="application/ld+json">
+{ "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "datePublished": "2016-10-26T21:34:00Z",
+  "keywords": "sync" }
+</script>

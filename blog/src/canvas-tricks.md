@@ -126,3 +126,10 @@ Now:
 Bonus picture, 3D rendering, a fair bit of work with many challenges to come:
 
 ![Shoreline with mountains casting shadows](http://i.imgur.com/uhyBlTN.png)
+
+<script type="application/ld+json">
+{ "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "datePublished": "2014-10-05T22:41:00Z",
+  "keywords": "game, canvas" }
+</script>

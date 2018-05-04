@@ -15,3 +15,10 @@ An interesting impact of those increases is that there are large chunks of time 
 Surprisingly, we currently are in a Public Domain Shadow which will end in 2019, unless copyright gets extended yet again. Until then, we won't get to remix anything new.
 
 The post-mortem inheritance of copyright has gone too far. 5 years was arguable, but excessive; 70 gives a new meaning to excess. An example of their absurdity: “[Petit Papa Noël](https://www.youtube.com/watch?v=rR5NyGhKQkc)”, a song so anchored in France’s culture that it is practically its “Twinkle, Twinkle, Little Star” (or it would be if that song wasn’t also French), will only come out of copyright in 2055. The composer was born in 1905: he would be 150 years old when it will finally be public domain.
+
+<script type="application/ld+json">
+{ "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "datePublished": "2015-12-27T19:42:00Z",
+  "keywords": "" }
+</script>

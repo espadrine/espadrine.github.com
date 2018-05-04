@@ -78,3 +78,10 @@ And then I would have:
 Partial backgrounds only mix together: a normal background image declaration clears all partial backgrounds currently on, and plays by its own rules. However, partial backgrounds should work with `background-color`.
 
 I don't have a strong opinion of what should happen when two z-index collide. One declaration could overwrite the other, or the behaviour could be undefined. In my case, we can't really have a file be a folder or vice-versa, and in general, having collisions should only happen by mistake. </box></attachment></repeat-style></bg-size></position></bg-image></bg-z-index>
+
+<script type="application/ld+json">
+{ "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "datePublished": "2013-11-25T20:33:00Z",
+  "keywords": "css" }
+</script>
