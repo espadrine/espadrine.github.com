@@ -9,9 +9,9 @@ jsonfeed_items=
 atomfeed_entries=
 last_publication_date=
 
-publications=$(ls src/*.md | sed 's,^src/,,; s,\.md$,,' | \
+publications=$(ls "$dir"/src/*.md | sed 's,^.*/,,; s,\.md$,,' | \
   { while read src; do
-    echo $(<"src/$src.md" grep '^  "datePublished"' | \
+    echo $(<"$dir/src/$src.md" grep '^  "datePublished"' | \
       cut -d'"' -f4 | cut -d' ' -f2)$'\t'"$src";
   done } | sort)
 
@@ -21,7 +21,7 @@ echo "$publications" | {
     isotime=$(echo "$post" | cut -d$'\t' -f1)
     last_publication_date="$isotime"
     time=$(date +'%-d %B %Y' -d "$isotime")
-    markdown=$(cat "$dir"/src/"$name".md)
+    markdown=$(cat "$dir/src/$name".md)
     title=$(echo "$markdown" | head -1 | sed 's/^# //')
     content=$(echo "$markdown" | commonmark --smart)
     echo -n "$template" \
