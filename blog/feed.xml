@@ -10,6 +10,7 @@
         <link rel="alternate" type="text/html" href="https://espadrine.github.io/blog/posts/thefiletree-design-log-4.html"/>
         <title>TheFileTree Design Log 4: Accounts</title>
         <published>2018-03-01T23:19:58Z</published>
+        <category term="tree"/>
         <content type="html">
           <![CDATA[ <h1>TheFileTree Design Log 4: Accounts</h1>
 <p>I mentionned needing to add accounts in <a href="./thefiletree-design-log-2.html">design log 2</a>. It is <a href="https://github.com/garden/tree/commit/04a03786d81733aeca35b1ac4fe5b95c57d0e706">now implemented</a>.</p>
@@ -72,6 +73,7 @@ like to be alone. I will have to investigate further later.</p>
         <link rel="alternate" type="text/html" href="https://espadrine.github.io/blog/posts/what-i-made-in-2016.html"/>
         <title>What I Made In 2016</title>
         <published>2017-06-16T20:12:00Z</published>
+        <category term="retro"/>
         <content type="html">
           <![CDATA[ <h1>What I Made In 2016</h1>
 <p>This year, the company I work for, Captain Train, was purchased by its English counterpart, Trainline. I added support for American Express BTA lodged cards, upgraded the SNCF integration to support their new fare systems, and worked on the common format for carriers.</p>
@@ -101,6 +103,7 @@ like to be alone. I will have to investigate further later.</p>
         <link rel="alternate" type="text/html" href="https://espadrine.github.io/blog/posts/a-go-browser-battle.html"/>
         <title>A Go Browser Battle</title>
         <published>2017-06-16T16:53:49Z</published>
+        <category term="baduk"/>
         <content type="html">
           <![CDATA[ <h1>A Go Browser Battle</h1>
 <p>I learned Go from my Dad — after all, we lived in Japan for a short while when I was little — but DeepMind’s <a href="https://events.google.com/alphago2017/">foray</a> into the venerable board game definitely renewed my interest.</p>

@@ -24,6 +24,9 @@ echo "$publications" | {
     markdown=$(cat "$dir/src/$name".md)
     title=$(echo "$markdown" | head -1 | sed 's/^# //')
     content=$(echo "$markdown" | commonmark --smart)
+    keywords=$(echo "$markdown" |
+      awk '/^<script type="application\/ld/ {keep=1;next} /^<\/script>/ {keep=0} keep' |
+      jq -r .keywords)
     echo -n "$template" \
       | sed '
         sTITLE'"$title"'
@@ -43,6 +46,7 @@ echo "$publications" | {
         "id":  "https://espadrine.github.io/blog/posts/$name.html",
         "url": "https://espadrine.github.io/blog/posts/$name.html",
         "title": $(echo "$title" | jq . -R),
+        "tags": "$keywords",
         "date_published": "$isotime"
         "content_html": $(echo "$content" | jq . -Rs),
       },
