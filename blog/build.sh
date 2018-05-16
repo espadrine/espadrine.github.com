@@ -53,12 +53,16 @@ echo "$publications" | {
 EOF
       )$'\n'"$jsonfeed_items"
 
+      atom_categories=$(for k in "$keywords"; do
+        echo "<category term=\"$k\"/>";
+      done)
       atomfeed_entries=$(cat <<EOF
       <entry>
         <id>https://espadrine.github.io/blog/posts/$name.html</id>
         <link rel="alternate" type="text/html" href="https://espadrine.github.io/blog/posts/$name.html"/>
         <title>$(echo "$title" | sed 's,<,&lt;,g'$'\n''s,>,&gt;,g')</title>
         <published>$isotime</published>
+        $atom_categories
         <content type="html">
           <![CDATA[ $content ]]>
         </content>
