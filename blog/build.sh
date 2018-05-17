@@ -26,9 +26,16 @@ echo "$publications" | {
     content=$(echo "$markdown" | commonmark --smart)
     keywords=$(echo "$markdown" |
       awk '/^<script type="application\/ld/ {keep=1;next} /^<\/script>/ {keep=0} keep' |
-      jq -r .keywords)
+      jq -r .keywords | sed 's/,/ /g')
+    html_tags=$(for k in $keywords; do
+      echo "  <a class=tag href=\"..?tags=$k\">$k</a>";
+    done)
     echo -n "$template" \
       | sed '
+        /TAGS/ {
+          r '<(echo "$html_tags")'
+          d
+        }
         sTITLE'"$title"'
         sISOTIME'"$isotime"'
         sTIME'"$time"'
@@ -53,7 +60,7 @@ echo "$publications" | {
 EOF
       )$'\n'"$jsonfeed_items"
 
-      atom_categories=$(for k in "$keywords"; do
+      atom_categories=$(for k in $keywords; do
         echo "<category term=\"$k\"/>";
       done)
       atomfeed_entries=$(cat <<EOF
