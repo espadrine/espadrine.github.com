@@ -105,5 +105,5 @@ I already started using this here (which the astute reader will surely have noti
 { "@context": "http://schema.org",
   "@type": "BlogPosting",
   "datePublished": "2014-10-22T20:11:00Z",
-  "keywords": "css svg" }
+  "keywords": "css, svg" }
 </script>

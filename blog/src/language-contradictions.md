@@ -125,5 +125,5 @@ I have yet to see a consistent and productive programming language.
 { "@context": "http://schema.org",
   "@type": "BlogPosting",
   "datePublished": "2011-08-30T19:54:00Z",
-  "keywords": "js go" }
+  "keywords": "js, go" }
 </script>
