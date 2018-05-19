@@ -26,9 +26,10 @@ echo "$publications" | {
     content=$(echo "$markdown" | commonmark --smart)
     keywords=$(echo "$markdown" |
       awk '/^<script type="application\/ld/ {keep=1;next} /^<\/script>/ {keep=0} keep' |
-      jq -r .keywords | sed 's/,/ /g')
-    html_tags=$(for k in $keywords; do
-      echo "  <a class=tag href=\"..?tags=$k\">$k</a>";
+      jq -r .keywords)
+    tags=$(echo "$keywords" | sed 's/, */ /g')
+    html_tags=$(for k in $tags; do
+      echo "  <a class=tag href=\"../index.html?tags=$k\">$k</a>";
     done)
     echo -n "$template" \
       | sed '
@@ -44,7 +45,7 @@ echo "$publications" | {
           d
         }' \
       > "$dir"/posts/"$name".html
-    post_links='    <li><a href="posts/'"$name"'.html">'"$title"'</a></li>'$'\n'"$post_links"
+    post_links='    <li data-tags="'"$keywords"'"><a href="posts/'"$name"'.html">'"$title"'</a></li>'$'\n'"$post_links"
 
     # We expect RSS feed clients to poll at least once a year.
     if [[ "$isotime" > "$last_year" ]]; then
@@ -53,14 +54,14 @@ echo "$publications" | {
         "id":  "https://espadrine.github.io/blog/posts/$name.html",
         "url": "https://espadrine.github.io/blog/posts/$name.html",
         "title": $(echo "$title" | jq . -R),
-        "tags": "$keywords",
+        "tags": "$tags",
         "date_published": "$isotime"
         "content_html": $(echo "$content" | jq . -Rs),
       },
 EOF
       )$'\n'"$jsonfeed_items"
 
-      atom_categories=$(for k in $keywords; do
+      atom_categories=$(for k in $tags; do
         echo "<category term=\"$k\"/>";
       done)
       atomfeed_entries=$(cat <<EOF
