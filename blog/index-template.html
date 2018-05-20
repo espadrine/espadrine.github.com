@@ -12,3 +12,21 @@
     </ul>
   </nav>
 </main>
+<script>
+function initTags() {
+  var tagsQuery = location.search.slice(1).split('&')
+    .find(function startWithTags(e) { return e.startsWith('tags='); });
+  if (tagsQuery) {
+    var tags = tagsQuery.split('=')[1].split(',');
+    var posts = document.querySelectorAll('main>nav>ul>li');
+    for (var i = 0; i < posts.length; i++) {
+      var postTags = posts[i].dataset.tags;
+      if (!postTags || !postTags.split(/, */g)
+        .some(function matchTag(e) { return tags.includes(e); })) {
+        posts[i].style.display = 'none';
+      }
+    }
+  }
+};
+addEventListener('DOMContentLoaded', initTags);
+</script>
