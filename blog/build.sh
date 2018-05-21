@@ -29,12 +29,14 @@ echo "$publications" | {
       jq -r .keywords)
     tags=$(echo "$keywords" | sed 's/, */ /g')
     html_tags=$(for k in $tags; do
-      echo "  <a class=tag href=\"../index.html?tags=$k\">$k</a>";
+      echo " <a class=tag href=\"../index.html?tags=$k\">$k</a>";
     done)
     echo -n "$template" \
       | sed '
         /TAGS/ {
-          r '<(echo "$html_tags")'
+          r '<(if [[ "$html_tags" ]]; then
+              echo '      Tags:'"$html_tags".;
+            fi)'
           d
         }
         sTITLE'"$title"'
