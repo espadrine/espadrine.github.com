@@ -30,7 +30,7 @@ echo "$publications" | {
     tags=$(echo "$keywords" | sed 's/, */ /g')
     html_tags=$(for k in $tags; do
       echo " <a class=tag href=\"../index.html?tags=$k\">$k</a>";
-    done)
+    done | sed '$!s/$/,/')
     echo -n "$template" \
       | sed '
         /TAGS/ {
