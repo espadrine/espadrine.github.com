@@ -31,6 +31,9 @@ echo "$publications" | {
     html_tags=$(for k in $tags; do
       echo " <a class=tag href=\"../index.html?tags=$k\">$k</a>";
     done | sed '$!s/$/,/')
+    index_html_tags=$(for k in $tags; do
+      echo " <a class=tag href=\"?tags=$k\">$k</a>";
+    done | sed '$!s/$/,/')
     echo -n "$template" \
       | sed '
         /TAGS/ {
@@ -47,7 +50,14 @@ echo "$publications" | {
           d
         }' \
       > "$dir"/posts/"$name".html
-    post_links='    <li data-tags="'"$keywords"'"><a href="posts/'"$name"'.html">'"$title"'</a></li>'$'\n'"$post_links"
+    post_links=$(cat <<EOF
+      <li data-tags="$keywords">
+        <a href="posts/$name.html">$title</a>
+        <span class=post-tags>Tags:$index_html_tags</span>
+      </li>
+$post_links
+EOF
+      )
 
     # We expect RSS feed clients to poll at least once a year.
     if [[ "$isotime" > "$last_year" ]]; then
