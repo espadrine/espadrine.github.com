@@ -32,6 +32,18 @@ body {
   top: -4em;
 }
 
+/* Post tags in index */
+main > nav > ul > li > .post-tags {
+  visibility: hidden;
+  font-style: italic;
+  font-size: 0.7rem;
+  text-align: right;
+}
+
+main > nav > ul > li:hover > .post-tags {
+  visibility: visible;
+}
+
 /* Article and Markdown */
 
 main {
