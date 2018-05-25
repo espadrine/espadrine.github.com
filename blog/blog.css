@@ -27,17 +27,18 @@ body {
 }
 
 .rss {
-  position: relative;
-  float: right;
-  top: -4em;
+  position: absolute;
+  right: 16rem;
+  top: 4.8rem;
 }
+.rss > img { height: 1rem; }
 
 /* Post tags in index */
 main > nav > ul > li > .post-tags {
   visibility: hidden;
   font-style: italic;
   font-size: 0.7rem;
-  text-align: right;
+  float: right;
 }
 
 main > nav > ul > li:hover > .post-tags {
