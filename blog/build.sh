@@ -53,7 +53,9 @@ echo "$publications" | {
     post_links=$(cat <<EOF
       <li data-tags="$keywords">
         <a href="posts/$name.html">$title</a>
-        <span class=post-tags>Tags:$index_html_tags</span>
+        $(if [[ "$index_html_tags" ]]; then
+          echo "<span class=post-tags>Tags:$index_html_tags</span>";
+        fi)
       </li>
 $post_links
 EOF
