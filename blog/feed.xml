@@ -104,6 +104,7 @@ like to be alone. I will have to investigate further later.</p>
         <title>A Go Browser Battle</title>
         <published>2017-06-16T16:53:49Z</published>
         <category term="baduk"/>
+<category term="ai"/>
         <content type="html">
           <![CDATA[ <h1>A Go Browser Battle</h1>
 <p>I learned Go from my Dad — after all, we lived in Japan for a short while when I was little — but DeepMind’s <a href="https://events.google.com/alphago2017/">foray</a> into the venerable board game definitely renewed my interest.</p>
@@ -176,7 +177,7 @@ There is no planned date for the final confrontation.</p>
 { "@context": "http://schema.org",
   "@type": "BlogPosting",
   "datePublished": "2017-06-16T16:53:49Z",
-  "keywords": "baduk" }
+  "keywords": "baduk, ai" }
 </script> ]]>
         </content>
       </entry>
