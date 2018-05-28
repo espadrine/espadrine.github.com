@@ -102,5 +102,5 @@ Here is the CSS file I now use:&nbsp;[https://github.com/espadrine/plugs/blob/ma
 { "@context": "http://schema.org",
   "@type": "BlogPosting",
   "datePublished": "2016-03-05T17:06:00Z",
-  "keywords": "markdown css" }
+  "keywords": "markdown, css" }
 </script>
