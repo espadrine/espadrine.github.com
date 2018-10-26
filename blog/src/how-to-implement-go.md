@@ -1,6 +1,6 @@
 # How to implement Go
 
-If I wanted to make an automated Go player, as I planned [on a previous
+As I wanted to make an automated Go player, as I planned [on a previous
 article][A Go Browser Battle], I first needed a full implementation of the game
 of Go.
 
@@ -9,9 +9,9 @@ of Go.
 Go is a beautiful, tremendously old game with very simple rules and yet
 tremendous subtlety. Here are the rules:
 
-1. Each of two players, black or white, take turns either passing their turn or
-   placing a stone of their color on an intersection of a 19x19 board, starting
-   with black.
+1. Each of two players, black or white, take turns either passing or placing a
+   stone of their color on an intersection of a 19×19 board, starting with
+   black.
 2. A **group** is a set of stones that are next to each other (up, down, left or
    right), or next to a stone that is in the group. A group's **liberties** are
    the number of disctinct empty intersections next to the group's stones. When
@@ -107,9 +107,9 @@ own territory, and the trick is done.
 
 Having implemented the game rules is not enough to properly train bots on it.
 
-For starters, we need a **SGF parser** to extract information about the moves of
-existing games. SGF (Simple Game Format) is the main format for serializing Go
-games.
+For starters, we need an **SGF parser** to extract information about the moves
+of existing games. SGF (Simple Game Format) is the main format for serializing
+Go games.
 
 Then, we want to support **GTP**: the Go Text Protocol is the most common format
 for transmitting remote commands between a Go implementation and a robot player.
