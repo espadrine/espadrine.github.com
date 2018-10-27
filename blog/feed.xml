@@ -41,7 +41,7 @@ intersections (aka. <strong>territory</strong>), captured stones, and <strong>Ko
 bonus to white to compensate for the asymmetry of who starts first), wins.</li>
 </ol>
 <h2>The board</h2>
-<p><img src="https://thefiletree.com/metaboard/go/blog/intro/badukjs.png" alt="AlphaGo vs. AlphaGo game, where white is about to capture 66 stones." /></p>
+<p><img src="https://thefiletree.com/metaboard/go/blog/how-to-implement-go/capture.png" alt="AlphaGo vs. AlphaGo game, where white is about to capture 66 stones." /></p>
 <p>Since the board is a compact 2-dimensional space, we use an array, with each
 slot containing an intersection which includes its state (empty, with a white
 stone, etc.) and historical and analytical information for use by the learning
