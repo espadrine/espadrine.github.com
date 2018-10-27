@@ -31,6 +31,8 @@ tremendous subtlety. Here are the rules:
 
 ## The board
 
+![AlphaGo vs. AlphaGo game, where white is about to capture 66 stones.](https://thefiletree.com/metaboard/go/blog/how-to-implement-go/capture.png)
+
 Since the board is a compact 2-dimensional space, we use an array, with each
 slot containing an intersection which includes its state (empty, with a white
 stone, etc.) and historical and analytical information for use by the learning
