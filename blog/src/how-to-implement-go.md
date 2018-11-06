@@ -15,19 +15,20 @@ tremendous subtlety. Here are the rules:
 2. A **group** is a set of stones that are next to each other (up, down, left or
    right), or next to a stone that is in the group. A group's **liberties** are
    the number of disctinct empty intersections next to the group's stones. When
-   a player places a stone, if it does not result in the stone's group having no
-   liberties, all enemy groups that no longer have any liberties are
-   **captured**: they are removed from the board and each stone contributes one
-   point to the capturer.
-3. A player is not allowed to place a stone if the stone's group has no
-   liberties.
-4. A player is not allowed to place a stone if it results, at the end of their
-   turn, in a board configuration that already occurred during the game. This is
+   a player places a stone, all enemy groups that no longer have any liberties
+   are **captured**: they are removed from the board.
+3. A player is not allowed to place a stone if it causes the start of next turn
+   to include a group with no liberties. That forbids **suicides**.
+4. A player is not allowed to place a stone if it causes the start of next turn
+   to have a board configuration that already occurred during the game. This is
    known as a **Ko** when the configuration happened on the previous turn, and
-   as a **Superko** more generally.
+   as a **Superko** more generally. It ensures that games must end; there are no
+   draws.
 5. When nobody can add stones, the player with the most stones, enclosed
    intersections (aka. **territory**), captured stones, and **Komi** (an added
    bonus to white to compensate for the asymmetry of who starts first), wins.
+   The Komi usually has a half point to ensure that there can be no equal
+   scores, again to forbid draws.
 
 ## The board
 

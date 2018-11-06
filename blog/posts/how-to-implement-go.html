@@ -18,19 +18,20 @@ black.</li>
 <li>A <strong>group</strong> is a set of stones that are next to each other (up, down, left or
 right), or next to a stone that is in the group. A group’s <strong>liberties</strong> are
 the number of disctinct empty intersections next to the group’s stones. When
-a player places a stone, if it does not result in the stone’s group having no
-liberties, all enemy groups that no longer have any liberties are
-<strong>captured</strong>: they are removed from the board and each stone contributes one
-point to the capturer.</li>
-<li>A player is not allowed to place a stone if the stone’s group has no
-liberties.</li>
-<li>A player is not allowed to place a stone if it results, at the end of their
-turn, in a board configuration that already occurred during the game. This is
+a player places a stone, all enemy groups that no longer have any liberties
+are <strong>captured</strong>: they are removed from the board.</li>
+<li>A player is not allowed to place a stone if it causes the start of next turn
+to include a group with no liberties. That forbids <strong>suicides</strong>.</li>
+<li>A player is not allowed to place a stone if it causes the start of next turn
+to have a board configuration that already occurred during the game. This is
 known as a <strong>Ko</strong> when the configuration happened on the previous turn, and
-as a <strong>Superko</strong> more generally.</li>
+as a <strong>Superko</strong> more generally. It ensures that games must end; there are no
+draws.</li>
 <li>When nobody can add stones, the player with the most stones, enclosed
 intersections (aka. <strong>territory</strong>), captured stones, and <strong>Komi</strong> (an added
-bonus to white to compensate for the asymmetry of who starts first), wins.</li>
+bonus to white to compensate for the asymmetry of who starts first), wins.
+The Komi usually has a half point to ensure that there can be no equal
+scores, again to forbid draws.</li>
 </ol>
 <h2>The board</h2>
 <p><img src="https://thefiletree.com/metaboard/go/blog/how-to-implement-go/capture.png" alt="AlphaGo vs. AlphaGo game, where white is about to capture 66 stones." /></p>
