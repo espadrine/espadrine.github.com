@@ -10,7 +10,7 @@ That 5-year span got increased time and time again, lobbies helping, up to the 7
 
 An interesting impact of those increases is that there are large chunks of time where no piece of art could enter the public domain. I plotted those chunks in red: during those periods, the public domain stagnates. In order to help visualize why, I also plotted for a few years the time when the production of that year’s dead artists would eventually enter public domain by reaching the blue line. The post-mortem age of this art creates rays that are interrupted by the change in law, producing what I call a **Public Domain Shadow**.
 
-![Plot of post-mortem copyright law and public domain shadow](https://thefiletree.com/espadrine/drop/copyright-shadow.svg?plug=none)
+![Plot of post-mortem copyright law and public domain shadow](https://thefiletree.com/espadrine/drop/copyright-shadow.svg)
 
 Surprisingly, we currently are in a Public Domain Shadow which will end in 2019, unless copyright gets extended yet again. Until then, we won't get to remix anything new.
 
