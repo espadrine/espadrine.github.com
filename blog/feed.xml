@@ -221,8 +221,10 @@ checksum algorithm, makes verifying the checksum laborious to implement.
 Few user interfaces embed a validator as a result.</p>
 <p>Finally, even if we wanted to replace the checksum with an easier-to-use check
 digit, it is not immediately easy to design a base58 check character.</p>
-<p><a href="https://tools.ietf.org/html/rfc4648">base32</a> avoids many of these inconveniences. However, there isn’t a
-particularly good, dedicated, check character algorithm for it — yet.</p>
+<p><a href="https://tools.ietf.org/html/rfc4648">base32</a> avoids many of these inconveniences, especially in lowercase, where
+the varied heights are easy to distinguish and where there is no z/7 ambiguity.
+However, there isn’t a particularly good, dedicated, check character algorithm
+for it — yet.</p>
 <p>Let’s see how we can improve.</p>
 <h2>base32check1</h2>
 <p>Luhn, Verhoeff, Damm — some pretty nifty designs are already on the shelves.
@@ -271,8 +273,8 @@ with the polynomial coefficients, starting with x⁰:</p>
 ⎝ 0 0 0 1 0 ⎠
 </code></pre>
 <p>Each aᵢ term is a representation of a base32 character as a GF(2⁵) (finite field
-of order 2⁵) polynome: A is 0, which we represent as (0 0 0 0 0); B is 1 or (0 0
-0 0 1); F is 1+x² or (0 0 1 0 1).</p>
+of order 2⁵) polynome: a is 0, which we represent as (0 0 0 0 0); b is 1 or (0 0
+0 0 1); f is 1+x² or (0 0 1 0 1).</p>
 <p>Validating a check character is straightforward: compute Σ aᵢ·Pⁱ; verify that
 the result is a zero vector. It does involve writing custom matrix
 multiplication and addition primitives to ensure that they are all computed
@@ -285,7 +287,7 @@ base32check1: 243.500ms
 <p>There is a <a href="https://johnkerl.org/doc/ffcomp.pdf">neat trick</a> to speed up computation on a finite field where
 the cardinal is a power of 2: instead of implementing vectors as arrays, use
 integers whose binary sequence is the list of polynome coefficients. For
-instance, 1+x² (which represents F) is <code>0b00101</code>, or 5.</p>
+instance, 1+x² (which represents f) is <code>0b00101</code>, or 5.</p>
 <p>Then <strong>addition is XOR</strong>, and matrix multiplication is a conditional XOR on the
 successive bits of the current row. With aᵢ and bᵢ vectors of size 5:</p>
 <pre><code>⎛ a₀ ⎞   ⎛ b₀ ⎞   ⎛ Σ a₀[i]×bᵢ ⎞
@@ -442,8 +444,8 @@ a net loss.</li>
 </ul>
 <p>So, I picked the largest prime below 1024, 1021, to limit the number of
 sequences of two characters with the same value in GF(p). It does mean that
-replacing any 75 by AA on even positions will give the same checksum, and the
-same is true of 76 / AB and 77 / AC.</p>
+replacing any 75 by aa on even positions will give the same checksum, and the
+same is true of 76 / ab and 77 / ac.</p>
 <p>I brute-forced a primitive element, and again I took the largest, 1011, although
 this time, there is no justification, just sheer superstition. (I tried
 computing the statistics of detection of all primitives, and they seemed
