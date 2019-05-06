@@ -233,11 +233,12 @@ Finally, even if we wanted to replace the checksum with an easier-to-use check
 digit, it is not immediately easy to design a base58 check character.
 
 [base32][] avoids many of these inconveniences, especially in lowercase, where
-the varied heights are easy to distinguish and where there is no z/7 ambiguity.
+the varied heights are easy to distinguish and where there is no S/5 and Z/7
+ambiguity.
 However, there isn't a particularly good, dedicated, check character algorithm
 for it — yet.
 
-Let's see how we can improve.
+Let's create one.
 
 ## base32check1
 
@@ -611,7 +612,7 @@ th, td { text-align: "." center; }
   <tr><td> 1-twin       <td> 0.29%     <td> 12.871%   <td> 0.331%    <td> 3.755%    <td> 0%          <td> 0%           <td> 0%
   <tr><th> Format       <td> N/A       <td> 1-digit   <td> 2-digit   <td> 1-alnum   <td> 2-alnum     <td> 1-base32     <td> 2-base32
   <tr><th>Detection rate<td> N/A       <td> 91.994%   <td> 99.629%   <td> 99.654%   <td> 99.995%     <td> 99.732%      <td> 99.993%
-  <tr><th> DRPB         <td> N/A       <td> 0.18398   <td> 0.09962   <td> 0.19275   <td> 0.09670     <td> 0.19946      <td> 0.09999
+  <tr><th> Det. factor  <td> N/A       <td> 0.729     <td> 0.807     <td> 1.581     <td> 1.382       <td> 1.709        <td> 1.380
 </table>
 
 Error types:
@@ -635,14 +636,23 @@ statistical proportion of random inputs for which the checksum does not
 detect a given error type. You can see the proportion of undetected errors
 for each checksum in the table above.
 
-We added an interesting figure, the **detection rate per bit**. After all,
+We added an interesting figure, the **detection factor**. After all,
 we want our checksum to make the most of the space it takes. Each bit should
-contribute to improving the detection rate.
+contribute to improving the detection rate. Since we expect a law of diminishing
+returns for every additional bit, the detection rate of a given design should
+improve with the number of checksum bits by 1 - 2<sup>-k·b</sup>, with b the
+number of checksum bits, and k the detection factor, which we compute as
+-log2(1-detection) ÷ b.
 
 Each check digit is a base32 character, so they each cost 5 bits of
 information, except for the alphanumerical ones, which cheat by producing
 values that cannot be mapped to base32 characters without increasing the
 error rate. Those take log2(36) ≈ 5.17 bits.
+
+_(The detection factor is not a perfect model, as the [ISO/IEC 7064][]
+algorithms don't all have the same factor, despite being the same design with
+tweaked parameters. That said, MOD 1007-32 is between base32check2 and MOD
+1271-36.)_
 
 You will notice two positive things:
 
@@ -650,11 +660,13 @@ You will notice two positive things:
   all others for a given number of check characters. (MOD 1271-36 is essentially
   identical, apart from the 0/O, 1/I and 8/B confusion risk, which is
   unfortunately not computed here, for lack of empirical data.)
-- Both have the *best detection rate per bit* for a given number of check
-  characters. That confirms our hope that, while base32check2 may not be
-  that competitive with MOD 1271-36, the difference is entirely imputable to
-  the latter playing with more bits, as base32check2 makes better use of the
-  bits it has.
+- base32check1 has the *best overall detection factor*. base32check2 has a
+  comparable one to MOD 1271-36. It is slightly lower, implying that it could
+  potentially use its bits better. Indeed, there are a few tweaks that could
+  help, although I would prefer to await more statistical human error data
+  before changing the design, as the detection rate varies significantly if
+  we label the 3sub thru 6sub as insertion and deletion errors instead, which
+  they probably are; Verhoeff's study does not distinguish them.
 
 While writing the algorithm, I worried that perhaps I would not be able to
 beat the detection rate of IBAN with a single check character (half the
@@ -694,12 +706,12 @@ wrong account.
   `⌈b ÷ log2(α)⌉ + checksum size`.
 
 We can get the probability of a single-character substitution, for instance,
-from the probability `p` of a substitution on a text of `n` characters:
+from the probability `p` of a substitution on a text holding `b` bits:
 
-    prob_char_error = 1 - 2 ^ (log2(1 - p) / n)
+    prob_char_error = 1 - 2 ^ (log2(1 - p) ÷ ⌈b ÷ log2(α)⌉)
 
 So, all we need, to find an optimal `α` and `checksum size`, is **a user study
-computing the probability of human mistakes**.
+estimating the probability of human mistakes**.
 
 …
 
