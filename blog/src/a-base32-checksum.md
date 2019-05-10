@@ -742,6 +742,7 @@ All participant information is anonymous and sent securely.
 Give it a try! Contribute to the study! Statistics will appear as you make
 progress. Plus, it is pretty relaxing.
 
+<!-- Taken from https://github.com/espadrine/checksum-user-study/blob/master/web/index.html -->
 <form id=studyForm action='javascript:void 0'>
   <p><strong><output class=bitsOutput>Number</output></strong> bits of
      <strong><output class=alphabetOutput>alphabet</output></strong>
@@ -761,6 +762,7 @@ progress. Plus, it is pretty relaxing.
 <script>
 (function() {
 
+// The following is taken from https://github.com/espadrine/checksum-user-study/blob/master/model.js
 const alphabets = {
   base10: `0123456789`,
   base16: `0123456789abcdef`,
