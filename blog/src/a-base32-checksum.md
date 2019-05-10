@@ -713,7 +713,509 @@ from the probability `p` of a substitution on a text holding `b` bits:
 So, all we need, to find an optimal `α` and `checksum size`, is **a user study
 estimating the probability of human mistakes**.
 
-…
+We will look at A = 7 alphabets:
+
+- **base10** (digits) is found in most identifiers, including credit card
+  numbers. Checksums include Luhn, MOD 11-10 and MOD 97-10,
+- **base16** is found in most binary representations, including IPv6. A
+  checksum for it is represented in [the paper we based our work on][Chen 2016],
+- **base32** (our main focus),
+- **base36**, seen in IBAN, has MOD 37-36 and MOD 1271-36,
+- **base58** as used by Bitcoin addresses; we don't have a checksum for it, but
+  one could be designed based on either MOD algorithms or [the paper's][Chen
+  2016], although the latter would be more complicated, as it would use a
+  combination of GF(2) and GF(29),
+- **base64**, mostly to see how much base58 improves from it, can also easily
+  have a checksum designed for it,
+- **base1024**, a fresh design, used nowhere, where 10 bits are represented as 3
+  alternating consonants and vowels, which means base32check2 would work just
+  fine. It has roughly the same information density as base10, which makes it an
+  interesting comparison. Would all base10 identifiers be better served by being
+  shown as base1024 instead?
+
+Let's ask each participant to submit S = 50 entries.
+To get error estimations accurate to the percent, we need 100÷(S÷A) = 14
+participants; we need ten times that to remove most of the estimation error.
+
+All participant information is anonymous and sent securely.
+
+Give it a try! Contribute to the study! Statistics will appear as you make
+progress. Plus, it is pretty relaxing.
+
+<form id=studyForm action='javascript:void 0'>
+  <p><strong><output class=bitsOutput>Number</output></strong> bits of
+     <strong><output class=alphabetOutput>alphabet</output></strong>
+  <div class=expectedDiv>Loading…</div>
+  <input name=studyInput>
+  <div class=entryPromptNode>Enter the text you see above.</div>
+  <div class=submissionPromptNode>Press Enter to submit this answer.</div>
+  <div class=awaitEnoughSubmissionPromptNode>
+    Once you submit 50 entries, the statistics across all participants will be
+    included as well. You are at
+    <strong><output class=countEntriesOutput>0</output> entries</strong>.
+  </div>
+</form>
+<div id=showError></div>
+<div id=alphabetStatistics></div>
+
+<script>
+(function() {
+
+const alphabets = {
+  base10: `0123456789`,
+  base16: `0123456789abcdef`,
+  base32: `abcdefghijklmnopqrstuvwxyz234567`,
+  base36: `0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ`,
+  base58: `123456789ABCDEFGHJKLMNOPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz`,
+  base64: `ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_`,
+  // Imaginary; codes 10 bits in 3 characters (42% efficient)
+  base1024: [...(function*() {for (const a of 'bdfghjklmnprstvz') for (const b of 'aeio') for (const c of 'bdfghjklmnprstvz') yield a+b+c; })()],
+};
+
+const alphabetNames = Object.keys(alphabets);
+
+function symbolCountToEncode(bits, alphabet) {
+  return Math.ceil(bits / Math.log2(alphabets[alphabet].length));
+}
+
+function stringSizeToEncode(bits, alphabet) {
+  let count = symbolCountToEncode(bits, alphabet);
+  if (alphabet === 'base1024') { count / 3; }
+  return count;
+}
+
+function isValidAlphabet(a) {
+  return alphabetNames.some(alphabet => alphabet === a);
+}
+
+// submissions: {<user>: Submission {
+//   user, total: { <alphabet>: count },
+//   errors: [TranscriptionError {
+//     input, type,
+//     test: Test { alphabet, bits, expected }
+//   ]}}
+// statistics: {<alphabet>: {total, outcomes: {<outcome>: {count}}}}
+class Study {
+  constructor(submissions = {}) {
+    this.submissions = Object.fromEntries(
+      Object.entries(submissions).map(([k, v]) => [k, new Submission(v)]));
+    this.statistics = Object.create(null);
+    this.buildStatistics();
+  }
+
+  add(submission) {
+    if (this.submissions[submission.user] !== undefined) {
+      this.revertStatistics(this.submissions[submission.user]);
+    }
+    this.updateStatistics(submission);
+    this.submissions[submission.user] = new Submission(submission);
+  }
+
+  buildStatistics() {
+    this.resetStatistics();
+    Object.values(this.submissions).forEach(s => this.updateStatistics(s));
+  }
+
+  revertStatistics(submission) {
+    this.updateStatistics(submission, -1);
+  }
+
+  updateStatistics(submission, diff = 1) {
+    const errorTypes = submission.errors.reduce(
+      (acc, e) => acc.add(e.type), new Set());
+    const outcomes = ['no error', ...errorTypes];
+
+    // Add new error types to statistics.
+    for (const type of outcomes) {
+      for (const [alphabet, stat] of Object.entries(this.statistics)) {
+        if (stat.outcomes[type] === undefined) {
+          stat.outcomes[type] = {count: 0};
+        }
+      }
+    }
+
+    // In order to compute the successful tests (with no errors), we need to
+    // count the number of errors for each alphabet.
+    const alphabetErrors = Object.fromEntries(alphabetNames.map(n => [n, 0]));
+
+    // Update the error statistics.
+    for (const error of submission.errors) {
+      this.statistics[error.test.alphabet].outcomes[error.type].count += diff;
+      alphabetErrors[error.test.alphabet]++;
+    }
+
+    for (const alphabet of alphabetNames) {
+      this.statistics[alphabet].outcomes['no error'].count +=
+        diff * (submission.total[alphabet] - alphabetErrors[alphabet]);
+      this.statistics[alphabet].total += diff * submission.total[alphabet];
+    }
+  }
+
+  resetStatistics() {
+    this.statistics = Object.fromEntries(alphabetNames.map(
+      a => [a, {total: 0, outcomes: Object.create(null)}]));
+  }
+}
+
+class Submission {
+  constructor(post) {
+    if (!(post instanceof Object)) { post = Object.create(null); }
+    this.user = post.user;
+    this.total = Object.assign(Object.create(null), post.total);
+    this.errors = (post.errors || [])
+      .map(e => new TranscriptionError(e.input, e.test));
+  }
+
+  addEntry(input, test) {
+    this.total[test.alphabet]++;
+    if (test.expected !== input) {
+      this.errors.push(new TranscriptionError(input, test));
+    }
+  }
+
+  totalEntries() {
+    return Object.values(this.total).reduce((a, e) => a + e);
+  }
+
+  validate() {
+    let errors = [];
+    if (typeof this.user !== 'string') {
+      errors.push({code: 'invalid_type', message: 'user is not a string'});
+    } else if (this.user.length < 20) {
+      errors.push({code: 'invalid_type', message: 'user is not long enough'});
+    } else if (this.user.length > 200) {
+      errors.push({code: 'invalid_type', message: 'user is too long'});
+    }
+    if (!Object.keys(this.total).every(a => isValidAlphabet(a)
+          && (typeof this.total[a] === 'number'))) {
+      errors.push({code: 'invalid_type', message: 'total contains elements of the wrong format'});
+    }
+    const errorsValidation = this.errors.flatMap(e => e.validate());
+    errors = errors.concat(errorsValidation);
+    return errors;
+  }
+}
+
+class TranscriptionError {
+  constructor(input, test) {
+    this.input = input;
+    this.test = new Test(test);
+    this.guessType();
+  }
+
+  guessType() {
+    const lenDiff = this.test.expected.length - this.input.length;
+    if (lenDiff > 0) {
+      this.type = lenDiff + '-del';
+      return;
+    } else if (lenDiff < 0) {
+      this.type = (-lenDiff) + '-ins';
+      return;
+    }
+    const sub1 = findSub(this.test.expected, this.input);
+    const trailSub = findSub(this.test.expected.slice(sub1 + 1), this.input.slice(sub1 + 1));
+    if (trailSub !== undefined) {
+      const sub2 = sub1 + 1 + trailSub;
+      if (sub2 === sub1 + 1) {
+        if (this.test.expected[sub1] === '1' && this.input[sub2] === '0' && this.test.expected[sub2] === this.input[sub1]) {
+          this.type = 'phonetic';
+          return;
+        }
+        if (this.test.expected[sub2] === '1' && this.input[sub1] === '0' && this.test.expected[sub1] === this.input[sub2]) {
+          this.type = 'phonetic';
+          return;
+        }
+      }
+      if (this.test.expected[sub1] === this.input[sub2] && this.test.expected[sub2] === this.input[sub1]) {
+        this.type = (sub2 - sub1 - 1) + '-trans';
+        return;
+      }
+      if (this.test.expected[sub1] === this.test.expected[sub2] && this.input[sub1] === this.input[sub2]) {
+        this.type = (sub2 - sub1 - 1) + '-twin';
+        return;
+      }
+      if (this.test.expected.slice(sub2 + 1) === this.input.slice(sub2 + 1)) {
+        this.type = (sub2 - sub1 - 1) + '-2sub';
+        return;
+      }
+      this.type = 'nsub';
+      return;
+    }
+    this.type = '1sub';
+  }
+
+  validate() {
+    let errors = [];
+    if (typeof this.input !== 'string') {
+      errors.push({code: 'invalid_type', message: 'error input is not a string'});
+    } else if (this.input.length > 200) {
+      errors.push({code: 'invalid_type', message: 'error input is too long'});
+    }
+    errors = errors.concat(this.test.validate());
+    return errors;
+  }
+}
+
+function findSub(expected, input) {
+  for (let i = 0; i < expected.length; i++) {
+    if (expected[i] !== input[i]) {
+      return i;
+    }
+  }
+}
+
+function genChar(alphabet) {
+  return alphabets[alphabet][Math.floor(Math.random() * alphabets[alphabet].length)];
+}
+
+function genPayload(size, alphabet) {
+  let payload = '';
+  for (let i = 0; i < size; i++) {
+    payload += genChar(alphabet);
+  }
+  return payload;
+}
+
+class Test {
+  constructor(test) {
+    this.bits = test.bits || 64;
+    this.alphabet = test.alphabet || 'base10';
+    this.expected = test.expected || this.generate();
+  }
+
+  generate() {
+    const size = symbolCountToEncode(this.bits, this.alphabet);
+    this.expected = genPayload(size, this.alphabet);
+    return this.expected;
+  }
+
+  validate() {
+    const errors = [];
+    if (typeof this.alphabet !== 'string') {
+      errors.push({code: 'invalid_type', message: 'test alphabet is not a string'});
+    } else if (!isValidAlphabet(this.alphabet)) {
+      errors.push({code: 'invalid_type', message: 'test alphabet is unknown'});
+    }
+    if (typeof this.bits !== 'number') {
+      errors.push({code: 'invalid_type', message: 'test bits are not a number'});
+    }
+    if (typeof this.expected !== 'string') {
+      errors.push({code: 'invalid_type', message: 'expected test input is not a string'});
+    } else if (this.expected.length > 200) {
+      errors.push({code: 'invalid_type', message: 'expected test input is too long'});
+    }
+    if (errors.length > 0) { return errors; }
+    const expectedSize = stringSizeToEncode(this.bits, this.alphabet);
+    if (expectedSize !== this.expected.length) {
+      errors.push({code: 'invalid_type', message: 'expected test input does not match alphabet and bits'});
+    }
+    return errors;
+  }
+}
+
+
+  const submission = new Submission({
+    user: '',
+    total: Object.fromEntries(alphabetNames.map(n => [n, 0])),
+    errors: [],
+  });
+
+  const submissionBatchSize = 50;
+
+  class StudyForm {
+    constructor(form) {
+      this.form = form;
+      this.input = this.form.studyInput;
+      [ 'expectedDiv', 'bitsOutput', 'alphabetOutput', 'entryPromptNode',
+        'submissionPromptNode', 'awaitEnoughSubmissionPromptNode',
+        'countEntriesOutput' ]
+      .forEach(className => {
+        this[className] = this.form.getElementsByClassName(className)[0];
+      });
+      this.input.addEventListener('input', () => this.setInstructions());
+      this.form.addEventListener('submit', () => this.submit());
+
+      this.listeners = new Map();
+      this.setInstructions();
+    }
+
+    prepareTest() {
+      const alphabet = alphabetNames.reduce((acc, a) =>
+        (submission.total[acc] < submission.total[a])? acc: a);
+      this.test = new Test({alphabet});
+      this.input.value = '';
+      this.expectedDiv.textContent = this.test.expected;
+      this.bitsOutput.value = this.test.bits;
+      this.alphabetOutput.value = this.test.alphabet;
+    }
+
+    setInstructions() {
+      if (this.input.value.length > 0) {
+        this.entryPromptNode     .style.display = 'none';
+        this.submissionPromptNode.style.display = 'block';
+      } else {
+        this.entryPromptNode     .style.display = 'block';
+        this.submissionPromptNode.style.display = 'none';
+      }
+
+      const totalEntries = submission.totalEntries();
+      if (totalEntries > 3 && totalEntries < submissionBatchSize) {
+        this.countEntriesOutput.value = totalEntries;
+        this.awaitEnoughSubmissionPromptNode.style.display = 'block';
+      } else {
+        this.awaitEnoughSubmissionPromptNode.style.display = 'none';
+      }
+    }
+
+    submit() {
+      if (this.test instanceof Test) {
+        submission.addEntry(this.input.value, this.test);
+      }
+      this.emit('submit', { test: this.test, submission });
+      this.prepareTest();
+      this.setInstructions();
+    }
+
+    on(eventName, callback) {
+      const callbacks = this.listeners.get(eventName) || [];
+      this.listeners.set(eventName, callbacks.concat(callback));
+    }
+
+    emit(eventName, event) {
+      (this.listeners.get(eventName) || []).forEach(l => l(event));
+    }
+  }
+
+  class AlphabetStatistics {
+    constructor(dom, {submission}) {
+      this.dom = dom;
+      this.data = this.data || {};
+      this.data.study = new Study(
+        Object.fromEntries([[submission.user, submission]]));
+      this.data.overallStats = null;
+    }
+
+    update(submission) {
+      this.data.study.add(submission);
+
+      const totalEntries = submission.totalEntries();
+      if (totalEntries >= submissionBatchSize) {
+        downloadStudyStatistics().then(stats => {
+          this.data.overallStats = stats;
+          this.render();
+        }).catch(e => { throw e });
+      }
+
+      this.render();
+    }
+
+    combinedStats() {
+      // Poor folk's cloning. FIXME: do rich folk's cloning.
+      const stats = JSON.parse(JSON.stringify(this.data.study.statistics));
+      if (this.data.overallStats !== null) {
+        for (const [alphabet, stat] of Object.entries(this.data.overallStats)) {
+          stats[alphabet].total += stat.total;
+          for (const [outcome, value] of Object.entries(stat.outcomes)) {
+            stats[alphabet].outcomes[outcome].count += value.count;
+          }
+        }
+      }
+      return stats;
+    }
+
+    render() {
+      const stats = this.combinedStats();
+      const combineOutcomes = (acc, as) =>
+        new Set([...acc, ...Object.keys(as.outcomes)]);
+      const outcomes = [...Object.values(stats)
+        .reduce(combineOutcomes, new Set())];
+
+      const header = '<tr><th>Alphabets</th><th>'
+        + outcomes.map(escapeHTML).join('<th>');
+      const usedAlphabets = Object.keys(stats)
+        .filter(a => stats[a].total > 0);
+      const tableContent = '<tr>' + usedAlphabets.map(a => {
+        const as = stats[a];
+        const aos = outcomes.map(o => as.outcomes[o].count / as.total * 100);
+        const cells = aos.map(i => `${i.toFixed(2)}%`);;
+        return `<th>${escapeHTML(a)}<td>` + cells.map(escapeHTML).join('<td>');
+      }).join('<tr>');
+
+      this.dom.innerHTML = `<table>${header}${tableContent}</table>`;
+    }
+  }
+
+  function escapeHTML(html) {
+    return html.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+  }
+
+
+  function load() {
+    loadUserStudy(submission);
+    const studyForm = new StudyForm(document.getElementById('studyForm'));
+    studyForm.prepareTest();
+    const alphabetStatistics = new AlphabetStatistics(
+      document.getElementById('alphabetStatistics'), {submission});
+    if (alphabetNames.some(a => submission.total[a] > 0)) { alphabetStatistics.update(submission); }
+    studyForm.on('submit', () => alphabetStatistics.update(submission));
+    studyForm.on('submit', () => storeUserStudy(submission));
+    studyForm.on('submit', () => sendUserStudy(submission));
+  }
+  addEventListener('DOMContentLoaded', load);
+
+
+  // Persist user study submission.
+
+  function storeUserStudy(submission) {
+    localStorage.setItem(localStorageKey('submission'), JSON.stringify(submission));
+  }
+
+  function loadUserStudy(submission) {
+    submission.user = getUser();
+    try {
+      const storedSubmission = JSON.parse(localStorage.getItem(localStorageKey('submission')));
+      if (storedSubmission !== null) {
+        submission.total = storedSubmission.total;
+        submission.errors = storedSubmission.errors.map(e => new TranscriptionError(e.input, e.test));
+      }
+    } catch(e) { console.error(e); }
+  }
+
+  const localStoragePrefix = 'base32check_study_';
+  function localStorageKey(key) { return localStoragePrefix + key; }
+  function getUser() {
+    const user = localStorage.getItem(localStorageKey('user'));
+    if (user !== null) { return user; }
+    const newUser = genPayload(22, 'base58');
+    localStorage.setItem(localStorageKey('user'), newUser);
+    return newUser;
+  }
+
+  const userStudyHost = (window.location.hostname === 'espadrine.github.io')
+    ? 'https://thefiletree.com:58623'
+    : window.location.origin;
+
+  function sendUserStudy(submission) {
+    fetch(userStudyHost + '/submissions', {
+      method: 'POST',
+      mode: 'cors',
+      body: JSON.stringify({submission}),
+      headers: {'Content-Type': 'application/json'},
+    })
+    .catch(e => console.error('Failed sending base32check user study submission:', e));
+  }
+
+  function downloadStudyStatistics() {
+    return fetch(userStudyHost + '/statistics', {mode: 'cors'})
+      .then(res => res.json());
+  }
+}());
+</script>
+
+## References
+
+- [base32check][] source code.
+- [User study][] source code.
 
 [Luhn]: https://patents.google.com/patent/US2950048
 [Verhoeff]: https://onlinelibrary.wiley.com/doi/abs/10.1002/zamm.19710510323
@@ -726,6 +1228,8 @@ estimating the probability of human mistakes**.
 [fourwordsalluppercase]: https://www.youtube.com/watch?v=bLE7zsJk4AI
 [primitive polynomial]: http://mathworld.wolfram.com/PrimitivePolynomial.html
 [ffcomp]: https://johnkerl.org/doc/ffcomp.pdf
+[base32check]: https://github.com/espadrine/base32check
+[User study]: https://github.com/espadrine/checksum-user-study
 
 <script type="application/ld+json">
 { "@context": "http://schema.org",
