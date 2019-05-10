@@ -19,7 +19,7 @@
 I used to do that all day, everyday!</p>
 <p>But then, I found base32check, and my life turned upside-down.
 base32check is there for me on my daily purchases, watching out for my
-erroneous transcriptions online and offline! And now, for some reason,
+typing errors online and offline! And now, for some reason,
 I smell of roses and there are sparkling AfterEffects™ all around.</p>
 <p>Download the base32check whitepaper. Symptoms may include an accelerated heart
 rate, a shortness of breath, and acute depression. Please consult your
@@ -86,11 +86,12 @@ of the causes of human errors.</p>
 double-digit checksums of numerical and alphanumerical inputs, with the goal
 to detect all single substitutions and most adjacent transpositions.</p>
 <p>They intended it for use in future standards.
-For instance, <strong><a href="https://www.iso.org/standard/41031.html">IBAN</a></strong> (the International Bank Account Number)
-needed a checksum to lower the risk of accidentally transfering funds to the
-wrong account number.</p>
-<p>Surprisingly, the IBAN system, which supports alphanumeric characters,
-relied on MOD 97-10, which was designed only for numeric inputs.</p>
+For instance, <strong><a href="https://www.iso.org/standard/41031.html">IBAN</a></strong> (the International Bank Account Number),
+published in 1997, needed a checksum to lower the risk of accidentally
+transfering funds to the wrong account number.</p>
+<p>The designers created IBAN as a sequence of alphanumeric characters.
+Surprisingly, for the check digits, they relied on <a href="https://www.iso.org/standard/31531.html">ISO/IEC 7064</a>’s MOD 97-10,
+which was designed only for numeric inputs.</p>
 <p>Our analysis indicates that this was a BAD MOVE™.</p>
 <p>A root promise of MOD 97-10 as specified in <a href="https://www.iso.org/standard/31531.html">ISO/IEC 7064</a> is to detect
 all single substitution errors. Well, not anymore! Not with that
@@ -206,24 +207,24 @@ created a solution for this. How does it work, and how does it fare?</p>
 <p>In Bitcoin, the account number is roughly a (cryptographic) hash of the user’s
 public key, cut and concatenated with a checksum that also uses a cryptographic
 hash.</p>
-<p>The account number is usually represented in text as <a href="https://en.bitcoin.it/wiki/Base58Check_encoding#Background">base58</a>. It is very
-similar to <a href="https://tools.ietf.org/html/rfc4648">base64</a>, except that it removes the 0/O and l/I ambiguity, but
-still has the i/1, Z/7, B/8 and S/5 confusion. Besides, transcribing or
+<p>Bitcoin account numbers are usually represented in text as <a href="https://en.bitcoin.it/wiki/Base58Check_encoding#Background">base58</a>. Base58 is
+very similar to <a href="https://tools.ietf.org/html/rfc4648">base64</a>, except that it removes the 0/O and l/I ambiguity,
+but still has the i/1, Z/7, B/8 and S/5 confusion. Besides, transcribing or
 communicating mixed-case letters is tedious. Each letter needs mentioning
 whether it is uppercase or lowercase. That is why <a href="https://www.youtube.com/watch?v=bLE7zsJk4AI">fourwordsalluppercase</a> is a
 great WiFi password.</p>
-<p>The checksum uses roughly 5 characters (four bytes of <a href="https://en.bitcoin.it/wiki/Base58Check_encoding#Background">base58</a> is 32 ÷
-log2(58)). It is fairly big, which at least ensures that there won’t be
-mistakes… unless the account number goes unchecked. If that is the case, neither
-the sender nor the recipient may use the funds transferred.</p>
+<p>Bitcoin’s account number checksum uses roughly 5 characters (four bytes of
+<a href="https://en.bitcoin.it/wiki/Base58Check_encoding#Background">base58</a> is 32 ÷ log2(58) ≈ 5). It is fairly big, which at least ensures that
+there won’t be mistakes… unless the account number goes unchecked. If that is
+the case, neither the sender nor the recipient may use the funds transferred.</p>
 <p>Sadly, the necessity of a bignum library for base58 decoding, and SHA256 as the
 checksum algorithm, makes verifying the checksum laborious to implement.
 Few user interfaces embed a validator as a result.</p>
 <p>Finally, even if we wanted to replace the checksum with an easier-to-use check
 digit, it is not immediately easy to design a base58 check character.</p>
 <p><a href="https://tools.ietf.org/html/rfc4648">base32</a> avoids many of these inconveniences, especially in lowercase, where
-the varied heights are easy to distinguish and where there is no S/5 and Z/7
-ambiguity.
+the varied heights are easy to distinguish and where there are no S/5 and Z/7
+ambiguities.
 However, there isn’t a particularly good, dedicated, check character algorithm
 for it — yet.</p>
 <p>Let’s create one.</p>
@@ -231,14 +232,14 @@ for it — yet.</p>
 <p>Luhn, Verhoeff, Damm — some pretty nifty designs are already on the shelves.
 Sadly, they mostly focus on digits, which have poor information capacity (3.3
 bits per char).</p>
-<p>While they can be extended to larger alphabets, that is not trivial nor
+<p>While they can be extended to larger alphabets, it is not trivial nor
 standard. (Ah, the joy of tweaking the Verhoeff parameters.) Worse, they are no
 longer the coolest kids on the block.</p>
 <p>I found a 2016 <a href="https://www.uni-due.de/imperia/md/content/dc/yanling_2015_check_digit.pdf">paper</a> referencing a 2014 one (which I couldn’t get
 my hands on. Curse the IEEE overseers and their labyrinthic subscription
-models! <em>Please pay $84.50 membership and the paper is $14.95, oh and would you
-mind donating because IEEE helps improve the human condition? Also good news, we
-offer free shipping for PDF documents.</em>)</p>
+models! <em>Please pay a $84.50 membership fee and the paper is $14.95. Oh and
+would you mind donating because IEEE helps improve the human condition? Also
+good news, we offer free shipping for PDF documents.</em>)</p>
 <p>No joke, but I digress. The 2014 paper has no value anyway, as the principle is
 described in full in the <a href="https://www.uni-due.de/imperia/md/content/dc/yanling_2015_check_digit.pdf">2016 paper</a>, available online.</p>
 <p>The main insight is this: if your check digit a<sub>n+1</sub> solves Σ aᵢ·Pⁱ = 0
@@ -278,8 +279,7 @@ of order 2⁵) polynome: a is 0, which we represent as (0 0 0 0 0); b is 1 or (0
 0 0 1); f is 1+x² or (0 0 1 0 1).</p>
 <p>Validating a check character is straightforward: compute Σ aᵢ·Pⁱ; verify that
 the result is a zero vector. It does involve writing custom matrix
-multiplication and addition primitives to ensure that they are all computed
-modulo the cardinal.</p>
+operations to ensure that they are all computed modulo the cardinal.</p>
 <p>Unsurprisingly, the performance is not all that great:</p>
 <pre><code>$ node test/perf
 10000 runs.
@@ -307,11 +307,13 @@ base32check1: 34.120ms
 Then, we need to solve S + c·P<sup>n+1</sup> = 0 for c.</p>
 <p>Let’s compute c·P<sup>n+1</sup> = -S.
 Opposites are equal in GF(2ᵏ), so -S = S.</p>
-<p>The second insight is that, since a primitive element is a generator of
-its finite field, its powers loop around through all non-zero values. Therefore,
-P<sup>2ᵏ-1</sup> = 1, and so, P<sup>n+1</sup>·P<sup>2ᵏ-n-2</sup> = 1.
-This gives us the inverse of P<sup>n+1</sup>, which we can get by generating
-all the powers of P when initializaing the system.</p>
+<p>Now, we need to inverse P<sup>n+1</sup>.
+To do that efficiently, we need the following insight: since a primitive element
+is a generator of its finite field, its powers loop around through all non-zero
+values. Therefore, P<sup>2ᵏ-1</sup> = 1, and so,
+P<sup>n+1</sup>·P<sup>2ᵏ-n-2</sup> = 1.  This gives us the inverse of
+P<sup>n+1</sup>, which we can get by generating all the powers of P when
+initializaing the system.</p>
 <p>Then we have c = S·P<sup>2ᵏ-n-2</sup>.</p>
 <div id=base32check1Widget>
   <input class=input value=consecration>
@@ -429,13 +431,15 @@ addEventListener('DOMContentLoaded', init);
 })();
 </script>
 <h2>base32check2</h2>
-<p>I chose to also design a 2-character checksum alongside, on the off-chance that
-the first was not strong enough. There are 2<sup>2×5</sup> = 1024 possible
-combinations of two characters of base32. Using the same design as above, it
-required working on 10×10 matrices. I chose not to do that for the following
-reasons:</p>
+<p>I chose to also design a 2-character checksum alongside the first, on the
+off-chance that the first was not strong enough. (After all, the single-char
+checksum needed to make the most of 5 bits, while MOD 97-10’s two check digits
+had a roomier 6.6 bits to play with.)</p>
+<p>There are 2<sup>2×5</sup> = 1024 possible combinations of two characters of
+base32. Using the same design as above, it required working on 10×10 matrices. I
+chose not to do that for the following reasons:</p>
 <ul>
-<li>The initialization matrix starts to look scary like the Verhoeff one!</li>
+<li>The initialization matrix starts to look as scary as Verhoeff’s!</li>
 <li>There was opportunity for a design without matrices by instead picking a prime
 cardinal, which would enormously reduce implementation complexity.</li>
 <li>Using a prime instead of a prime power improves your multi-substitution
@@ -683,17 +687,26 @@ participants; we need ten times that to remove most of the estimation error.</p>
 progress. Plus, it is pretty relaxing.</p>
 <!-- Taken from https://github.com/espadrine/checksum-user-study/blob/master/web/index.html -->
 <form id=studyForm action='javascript:void 0'>
-  <p><strong><output class=bitsOutput>Number</output></strong> bits of
-     <strong><output class=alphabetOutput>alphabet</output></strong>
-  <div class=expectedDiv>Loading…</div>
+  <p>
+    <strong><output class=bitsOutput>Number</output></strong> bits of
+      <strong><output class=alphabetOutput>alphabet</output></strong>
+  </p>
+  <span class=expectedDiv>Loading…</span>
   <input name=studyInput>
-  <div class=entryPromptNode>Enter the text you see above.</div>
+  <div class=entryPromptNode>
+    Enter the text you see on the left.
+  </div>
   <div class=submissionPromptNode>Press Enter to submit this answer.</div>
-  <div class=awaitEnoughSubmissionPromptNode>
+  <p class=awaitEnoughSubmissionPromptNode>
     Once you submit 50 entries, the statistics across all participants will be
     included as well. You are at
     <strong><output class=countEntriesOutput>0</output> entries</strong>.
-  </div>
+  </p>
+  <p class=reachedEnoughSubmissionPromptNode>
+    You have submitted enough entries: the statistics you now see below include
+    entries from all participants. You can still submit more entries to continue
+    helping the study.
+  </p>
 </form>
 <div id=showError></div>
 <div id=alphabetStatistics></div>
@@ -968,7 +981,7 @@ class Test {
       this.input = this.form.studyInput;
       [ 'expectedDiv', 'bitsOutput', 'alphabetOutput', 'entryPromptNode',
         'submissionPromptNode', 'awaitEnoughSubmissionPromptNode',
-        'countEntriesOutput' ]
+        'countEntriesOutput', 'reachedEnoughSubmissionPromptNode' ]
       .forEach(className => {
         this[className] = this.form.getElementsByClassName(className)[0];
       });
@@ -999,11 +1012,17 @@ class Test {
       }
 
       const totalEntries = submission.totalEntries();
-      if (totalEntries > 3 && totalEntries < submissionBatchSize) {
-        this.countEntriesOutput.value = totalEntries;
-        this.awaitEnoughSubmissionPromptNode.style.display = 'block';
+      if (totalEntries < submissionBatchSize) {
+        if (totalEntries > 3) {
+          this.countEntriesOutput.value = totalEntries;
+          this.awaitEnoughSubmissionPromptNode.style.display = 'block';
+        } else {
+          this.awaitEnoughSubmissionPromptNode.style.display = 'none';
+        }
+        this.reachedEnoughSubmissionPromptNode.style.display = 'none';
       } else {
         this.awaitEnoughSubmissionPromptNode.style.display = 'none';
+        this.reachedEnoughSubmissionPromptNode.style.display = 'block';
       }
     }
 

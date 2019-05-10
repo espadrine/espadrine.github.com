@@ -7,7 +7,7 @@ _(Cue: in the voice of a badly-acted TV commercial.)_
 >
 > But then, I found base32check, and my life turned upside-down.
 > base32check is there for me on my daily purchases, watching out for my
-> erroneous transcriptions online and offline! And now, for some reason,
+> typing errors online and offline! And now, for some reason,
 > I smell of roses and there are sparkling AfterEffects™ all around.
 >
 > Download the base32check whitepaper. Symptoms may include an accelerated heart
@@ -81,12 +81,13 @@ double-digit checksums of numerical and alphanumerical inputs, with the goal
 to detect all single substitutions and most adjacent transpositions.
 
 They intended it for use in future standards.
-For instance, **[IBAN][ISO 13616]** (the International Bank Account Number)
-needed a checksum to lower the risk of accidentally transfering funds to the
-wrong account number.
+For instance, **[IBAN][ISO 13616]** (the International Bank Account Number),
+published in 1997, needed a checksum to lower the risk of accidentally
+transfering funds to the wrong account number.
 
-Surprisingly, the IBAN system, which supports alphanumeric characters,
-relied on MOD 97-10, which was designed only for numeric inputs.
+The designers created IBAN as a sequence of alphanumeric characters.
+Surprisingly, for the check digits, they relied on [ISO/IEC 7064][]’s MOD 97-10,
+which was designed only for numeric inputs.
 
 Our analysis indicates that this was a BAD MOVE™.
 
@@ -213,17 +214,17 @@ In Bitcoin, the account number is roughly a (cryptographic) hash of the user's
 public key, cut and concatenated with a checksum that also uses a cryptographic
 hash.
 
-The account number is usually represented in text as [base58][]. It is very
-similar to [base64][], except that it removes the 0/O and l/I ambiguity, but
-still has the i/1, Z/7, B/8 and S/5 confusion. Besides, transcribing or
+Bitcoin account numbers are usually represented in text as [base58][]. Base58 is
+very similar to [base64][], except that it removes the 0/O and l/I ambiguity,
+but still has the i/1, Z/7, B/8 and S/5 confusion. Besides, transcribing or
 communicating mixed-case letters is tedious. Each letter needs mentioning
 whether it is uppercase or lowercase. That is why [fourwordsalluppercase][] is a
 great WiFi password.
 
-The checksum uses roughly 5 characters (four bytes of [base58][] is 32 ÷
-log2(58)). It is fairly big, which at least ensures that there won't be
-mistakes… unless the account number goes unchecked. If that is the case, neither
-the sender nor the recipient may use the funds transferred.
+Bitcoin’s account number checksum uses roughly 5 characters (four bytes of
+[base58][] is 32 ÷ log2(58) ≈ 5). It is fairly big, which at least ensures that
+there won't be mistakes… unless the account number goes unchecked. If that is
+the case, neither the sender nor the recipient may use the funds transferred.
 
 Sadly, the necessity of a bignum library for base58 decoding, and SHA256 as the
 checksum algorithm, makes verifying the checksum laborious to implement.
@@ -233,8 +234,8 @@ Finally, even if we wanted to replace the checksum with an easier-to-use check
 digit, it is not immediately easy to design a base58 check character.
 
 [base32][] avoids many of these inconveniences, especially in lowercase, where
-the varied heights are easy to distinguish and where there is no S/5 and Z/7
-ambiguity.
+the varied heights are easy to distinguish and where there are no S/5 and Z/7
+ambiguities.
 However, there isn't a particularly good, dedicated, check character algorithm
 for it — yet.
 
@@ -246,15 +247,15 @@ Luhn, Verhoeff, Damm — some pretty nifty designs are already on the shelves.
 Sadly, they mostly focus on digits, which have poor information capacity (3.3
 bits per char).
 
-While they can be extended to larger alphabets, that is not trivial nor
+While they can be extended to larger alphabets, it is not trivial nor
 standard. (Ah, the joy of tweaking the Verhoeff parameters.) Worse, they are no
 longer the coolest kids on the block.
 
 I found a 2016 [paper][Chen 2016] referencing a 2014 one (which I couldn't get
 my hands on. Curse the IEEE overseers and their labyrinthic subscription
-models! _Please pay $84.50 membership and the paper is $14.95, oh and would you
-mind donating because IEEE helps improve the human condition? Also good news, we
-offer free shipping for PDF documents._)
+models! _Please pay a $84.50 membership fee and the paper is $14.95. Oh and
+would you mind donating because IEEE helps improve the human condition? Also
+good news, we offer free shipping for PDF documents._)
 
 No joke, but I digress. The 2014 paper has no value anyway, as the principle is
 described in full in the [2016 paper][Chen 2016], available online.
@@ -302,8 +303,7 @@ of order 2⁵) polynome: a is 0, which we represent as (0 0 0 0 0); b is 1 or (0
 
 Validating a check character is straightforward: compute Σ aᵢ·Pⁱ; verify that
 the result is a zero vector. It does involve writing custom matrix
-multiplication and addition primitives to ensure that they are all computed
-modulo the cardinal.
+operations to ensure that they are all computed modulo the cardinal.
 
 Unsurprisingly, the performance is not all that great:
 
@@ -339,11 +339,13 @@ Then, we need to solve S + c·P<sup>n+1</sup> = 0 for c.
 Let's compute c·P<sup>n+1</sup> = -S.
 Opposites are equal in GF(2ᵏ), so -S = S.
 
-The second insight is that, since a primitive element is a generator of
-its finite field, its powers loop around through all non-zero values. Therefore,
-P<sup>2ᵏ-1</sup> = 1, and so, P<sup>n+1</sup>·P<sup>2ᵏ-n-2</sup> = 1.
-This gives us the inverse of P<sup>n+1</sup>, which we can get by generating
-all the powers of P when initializaing the system.
+Now, we need to inverse P<sup>n+1</sup>.
+To do that efficiently, we need the following insight: since a primitive element
+is a generator of its finite field, its powers loop around through all non-zero
+values. Therefore, P<sup>2ᵏ-1</sup> = 1, and so,
+P<sup>n+1</sup>·P<sup>2ᵏ-n-2</sup> = 1.  This gives us the inverse of
+P<sup>n+1</sup>, which we can get by generating all the powers of P when
+initializaing the system.
 
 Then we have c = S·P<sup>2ᵏ-n-2</sup>.
 
@@ -466,13 +468,16 @@ addEventListener('DOMContentLoaded', init);
 
 ## base32check2
 
-I chose to also design a 2-character checksum alongside, on the off-chance that
-the first was not strong enough. There are 2<sup>2×5</sup> = 1024 possible
-combinations of two characters of base32. Using the same design as above, it
-required working on 10×10 matrices. I chose not to do that for the following
-reasons:
+I chose to also design a 2-character checksum alongside the first, on the
+off-chance that the first was not strong enough. (After all, the single-char
+checksum needed to make the most of 5 bits, while MOD 97-10’s two check digits
+had a roomier 6.6 bits to play with.)
 
-- The initialization matrix starts to look scary like the Verhoeff one!
+There are 2<sup>2×5</sup> = 1024 possible combinations of two characters of
+base32. Using the same design as above, it required working on 10×10 matrices. I
+chose not to do that for the following reasons:
+
+- The initialization matrix starts to look as scary as Verhoeff’s!
 - There was opportunity for a design without matrices by instead picking a prime
   cardinal, which would enormously reduce implementation complexity.
 - Using a prime instead of a prime power improves your multi-substitution
@@ -744,17 +749,26 @@ progress. Plus, it is pretty relaxing.
 
 <!-- Taken from https://github.com/espadrine/checksum-user-study/blob/master/web/index.html -->
 <form id=studyForm action='javascript:void 0'>
-  <p><strong><output class=bitsOutput>Number</output></strong> bits of
-     <strong><output class=alphabetOutput>alphabet</output></strong>
-  <div class=expectedDiv>Loading…</div>
+  <p>
+    <strong><output class=bitsOutput>Number</output></strong> bits of
+      <strong><output class=alphabetOutput>alphabet</output></strong>
+  </p>
+  <span class=expectedDiv>Loading…</span>
   <input name=studyInput>
-  <div class=entryPromptNode>Enter the text you see above.</div>
+  <div class=entryPromptNode>
+    Enter the text you see on the left.
+  </div>
   <div class=submissionPromptNode>Press Enter to submit this answer.</div>
-  <div class=awaitEnoughSubmissionPromptNode>
+  <p class=awaitEnoughSubmissionPromptNode>
     Once you submit 50 entries, the statistics across all participants will be
     included as well. You are at
     <strong><output class=countEntriesOutput>0</output> entries</strong>.
-  </div>
+  </p>
+  <p class=reachedEnoughSubmissionPromptNode>
+    You have submitted enough entries: the statistics you now see below include
+    entries from all participants. You can still submit more entries to continue
+    helping the study.
+  </p>
 </form>
 <div id=showError></div>
 <div id=alphabetStatistics></div>
@@ -1030,7 +1044,7 @@ class Test {
       this.input = this.form.studyInput;
       [ 'expectedDiv', 'bitsOutput', 'alphabetOutput', 'entryPromptNode',
         'submissionPromptNode', 'awaitEnoughSubmissionPromptNode',
-        'countEntriesOutput' ]
+        'countEntriesOutput', 'reachedEnoughSubmissionPromptNode' ]
       .forEach(className => {
         this[className] = this.form.getElementsByClassName(className)[0];
       });
@@ -1061,11 +1075,17 @@ class Test {
       }
 
       const totalEntries = submission.totalEntries();
-      if (totalEntries > 3 && totalEntries < submissionBatchSize) {
-        this.countEntriesOutput.value = totalEntries;
-        this.awaitEnoughSubmissionPromptNode.style.display = 'block';
+      if (totalEntries < submissionBatchSize) {
+        if (totalEntries > 3) {
+          this.countEntriesOutput.value = totalEntries;
+          this.awaitEnoughSubmissionPromptNode.style.display = 'block';
+        } else {
+          this.awaitEnoughSubmissionPromptNode.style.display = 'none';
+        }
+        this.reachedEnoughSubmissionPromptNode.style.display = 'none';
       } else {
         this.awaitEnoughSubmissionPromptNode.style.display = 'none';
+        this.reachedEnoughSubmissionPromptNode.style.display = 'block';
       }
     }
 
