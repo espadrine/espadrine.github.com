@@ -62,11 +62,11 @@ everything that a transaction witnesses can be explained by executing all its
 statements either after all statements of another transaction, or before all of
 them. It won’t see a changing state within the execution of the transaction.</p>
 <p><em>(By the way, PostgreSQL only achieved serializability in 2011, when they
-released <a href="https://www.postgresql.org/docs/release/9.1.0/">version 9.1</a> with support for predicate locks. It is hard)</em></p>
+released <a href="https://www.postgresql.org/docs/release/9.1.0/">version 9.1</a> with support for predicate locks. It is hard.)</em></p>
 <p>Having a causal order does not mean that this order follows <em>real time</em>: one
 insertion may complete at 9:30am <em>after (in causal order)</em> another that
-completes at 10:40am. If you want the additional property that the order is
-consistent with wall clock time, you want <strong><a href="https://jepsen.io/consistency/models/strict-serializable">Strict Serializability</a></strong>.</p>
+completes later at 10:40am. If you want the additional property that the order
+is consistent with wall clock time, you want <strong><a href="https://jepsen.io/consistency/models/strict-serializable">Strict Serializability</a></strong>.</p>
 <p>However, <strong>PostgreSQL makes no claim of Strict Serializability</strong>.</p>
 <p>Given all this, sequences probably feel much weaker than you initially thought.</p>
 <p>You want them to give a continuous set of numbers, but a sequence can yield
@@ -107,6 +107,9 @@ SELECT * FROM gaps;
 </code></pre>
 <p>Oops! Despite the rollback, the sequence was incremented without being reverted.
 Now, there is a gap.</p>
+<p>This is not a PostgreSQL bug per se: the way sequences are stored, it just does
+not keep the information necessary to undo the <code>nextval()</code> without potentially
+breaking other operations.</p>
 <p>Let’s now break the other assumption.</p>
 <h2>Order violation</h2>
 <p>First, a table with a sequence and a timestamp:</p>
@@ -137,6 +140,8 @@ COMMIT;
   1 | 2019-09-05 08:19:34.423947+02
 </code></pre>
 <p>The order of the sequence does not follow creation order.</p>
+<p>Lest you turn your heart to another false god, that behavior remains the same
+with serializable transactions.</p>
 <h2>Are we doomed?</h2>
 <p>No.</p>
 <p>Sure, the systems we use have weak assumptions. But that is true at every level.
@@ -158,16 +163,20 @@ determine causal order between the conflicting rows), so you add a microsecond
 to the current time if there is a conflict.</p>
 <p>It does mean that concurrent insertions will likely fail, as they will each
 acquire a (non-blocking) SIReadLock on the relation.</p>
+<p>The reason for that is that we perform a Seq Scan in this trivial example.
+With an index, concurrent insertions work:</p>
+<pre><code class="language-sql">CREATE TABLE orders (created_at TIMESTAMPTZ UNIQUE NOT NULL);
+</code></pre>
 <script type="application/ld+json">
 { "@context": "http://schema.org",
   "@type": "BlogPosting",
   "datePublished": "2019-09-05T17:28:59Z",
-  "keywords": "hash" }
+  "keywords": "sql" }
 </script>
     <footer>
       Published <time itemprop=datePublished datetime="2019-09-05T17:28:59Z">5 September 2019</time>.
       <br>
-      Tags: <a class=tag href="../index.html?tags=hash">hash</a>.
+      Tags: <a class=tag href="../index.html?tags=sql">sql</a>.
     </footer>
   </article>
 </main>

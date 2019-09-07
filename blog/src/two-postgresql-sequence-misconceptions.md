@@ -75,14 +75,14 @@ statements either after all statements of another transaction, or before all of
 them. It won’t see a changing state within the execution of the transaction.
 
 _(By the way, PostgreSQL only achieved serializability in 2011, when they
-released [version 9.1][] with support for predicate locks. It is hard)_
+released [version 9.1][] with support for predicate locks. It is hard.)_
 
 [version 9.1]: https://www.postgresql.org/docs/release/9.1.0/
 
 Having a causal order does not mean that this order follows _real time_: one
 insertion may complete at 9:30am _after (in causal order)_ another that
-completes at 10:40am. If you want the additional property that the order is
-consistent with wall clock time, you want **[Strict Serializability][]**.
+completes later at 10:40am. If you want the additional property that the order
+is consistent with wall clock time, you want **[Strict Serializability][]**.
 
 [Strict Serializability]: https://jepsen.io/consistency/models/strict-serializable
 
@@ -144,6 +144,10 @@ SELECT * FROM gaps;
 Oops! Despite the rollback, the sequence was incremented without being reverted.
 Now, there is a gap.
 
+This is not a PostgreSQL bug per se: the way sequences are stored, it just does
+not keep the information necessary to undo the `nextval()` without potentially
+breaking other operations.
+
 Let’s now break the other assumption.
 
 ## Order violation
@@ -192,6 +196,9 @@ SELECT * FROM orders ORDER BY created_at;
 
 The order of the sequence does not follow creation order.
 
+Lest you turn your heart to another false god, that behavior remains the same
+with serializable transactions.
+
 ## Are we doomed?
 
 No.
@@ -221,9 +228,16 @@ to the current time if there is a conflict.
 It does mean that concurrent insertions will likely fail, as they will each
 acquire a (non-blocking) SIReadLock on the relation.
 
+The reason for that is that we perform a Seq Scan in this trivial example.
+With an index, concurrent insertions work:
+
+```sql
+CREATE TABLE orders (created_at TIMESTAMPTZ UNIQUE NOT NULL);
+```
+
 <script type="application/ld+json">
 { "@context": "http://schema.org",
   "@type": "BlogPosting",
   "datePublished": "2019-09-05T17:28:59Z",
-  "keywords": "hash" }
+  "keywords": "sql" }
 </script>
