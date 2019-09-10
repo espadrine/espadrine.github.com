@@ -196,6 +196,10 @@ SELECT * FROM orders ORDER BY created_at;
 
 The order of the sequence does not follow creation order.
 
+From then on, developers may write some queries ordering by ID, and some
+ordering by timestamp, expecting an identical order. That incorrect assumption
+may break their business logic.
+
 Lest you turn your heart to another false god, that behavior remains the same
 with serializable transactions.
 
@@ -225,15 +229,97 @@ don’t want to have conflicts in your `created_at` (otherwise you could not
 determine causal order between the conflicting rows), so you add a microsecond
 to the current time if there is a conflict.
 
-It does mean that concurrent insertions will likely fail, as they will each
-acquire a (non-blocking) SIReadLock on the relation.
-
-The reason for that is that we perform a Seq Scan in this trivial example.
-With an index, concurrent insertions work:
+However, here, concurrent operations are likely to fail, as we acquire a
+(non-blocking) SIReadLock on the whole table (what the documentation calls a
+relation lock):
 
 ```sql
-CREATE TABLE orders (created_at TIMESTAMPTZ UNIQUE NOT NULL);
+SELECT l.mode, l.relation::regclass, l.page, l.tuple, substring(a.query from 0 for 19)
+FROM pg_stat_activity a JOIN pg_locks l ON l.pid = a.pid
+WHERE l.relation::regclass::text LIKE 'orders%'
+  AND datname = current_database()
+  AND granted
+ORDER BY a.query_start;
 ```
+
+           mode       | relation | page | tuple |     substring
+    ------------------+----------+------+-------+--------------------
+     SIReadLock       | orders   |      |       | INSERT INTO orders
+     RowExclusiveLock | orders   |      |       | INSERT INTO orders
+     AccessShareLock  | orders   |      |       | INSERT INTO orders
+
+The reason for that is that we perform a slow Seq Scan in this trivial example,
+as the [EXPLAIN][] proves.
+
+                                      QUERY PLAN
+    -------------------------------------------------------------------------------
+     Insert on orders  (cost=38.25..38.28 rows=1 width=8)
+       ->  Aggregate  (cost=38.25..38.27 rows=1 width=8)
+             ->  Seq Scan on orders orders_1  (cost=0.00..32.60 rows=2260 width=8)
+
+[EXPLAIN]: https://www.postgresql.org/docs/current/using-explain.html
+
+With an [index][], concurrent operations are much more likely to work:
+
+[index]: https://www.postgresql.org/docs/current/sql-createindex.html
+
+```sql
+CREATE INDEX created_at_idx ON orders (created_at);
+```
+
+We then only take a tuple lock on the table:
+
+           mode       | relation | page | tuple |     substring      
+    ------------------+----------+------+-------+--------------------
+     SIReadLock       | orders   |    0 |     5 | INSERT INTO orders
+     RowExclusiveLock | orders   |      |       | INSERT INTO orders
+     AccessShareLock  | orders   |      |       | INSERT INTO orders
+
+However, the tuple in question is the latest row in the table. Any two
+concurrent insertions will definitely read from the same one: the one with the
+latest `created_at`. Therefore, only one of concurrent insertion will succeed;
+the others will need to be retried until they do too.
+
+## Subset Ordering
+
+In cases where you only need a unique ordering for a subset of rows based on
+another field, you can set a combined index with that other field:
+
+```sql
+CREATE TABLE orders (
+  account_id UUID DEFAULT gen_random_uuid(),
+  created_at TIMESTAMPTZ);
+CREATE INDEX account_created_at_idx ON orders (account_id, created_at DESC);
+```
+
+Then the [query planner][EXPLAIN] goes through the account index:
+
+```sql
+INSERT INTO orders (account_id, created_at)
+SELECT account_id, GREATEST(NOW(), created_at + INTERVAL '1 microsecond')
+FROM orders WHERE account_id = '9c99bef6-a05a-48c4-bba3-6080a6ce4f2e'::uuid
+ORDER BY created_at DESC LIMIT 1
+```
+
+                                                          QUERY PLAN
+    -----------------------------------------------------------------------------------------------------------------------
+     Insert on orders  (cost=0.15..3.69 rows=1 width=24)
+       ->  Subquery Scan on "*SELECT*"  (cost=0.15..3.69 rows=1 width=24)
+             ->  Limit  (cost=0.15..3.68 rows=1 width=32)
+                   ->  Index Only Scan using account_created_at_idx on orders orders_1  (cost=0.15..28.35 rows=8 width=32)
+                         Index Cond: (account_id = '9c99bef6-a05a-48c4-bba3-6080a6ce4f2e'::uuid)
+
+And concurrent insertions on different accounts work:
+
+           mode       | relation | page | tuple |     substring
+    ------------------+----------+------+-------+--------------------
+     SIReadLock       | orders   |    0 |     1 | INSERT INTO orders
+     RowExclusiveLock | orders   |      |       | INSERT INTO orders
+     AccessShareLock  | orders   |      |       | INSERT INTO orders
+     SIReadLock       | orders   |    0 |     2 | COMMIT;
+
+(The first three row are from one not-finished transaction on account 1, the
+last is from a finished one on account 2.)
 
 <script type="application/ld+json">
 { "@context": "http://schema.org",
