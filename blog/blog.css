@@ -21,7 +21,7 @@ a:hover {
 }
 
 body {
-  max-width: 17cm;
+  max-width: 70ch;
   margin: 1rem auto;
   padding: 0 8px;
 }
