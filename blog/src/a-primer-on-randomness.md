@@ -486,6 +486,8 @@ I’ll give you a few fun facts about it, as goodbye.
 [djb export]: https://cr.yp.to/export/1996/0726-bernstein.txt
 [salsa hash]: https://cr.yp.to/snuffle/reoncore-20080224.pdf
 
+[Find comments on Reddit](https://www.reddit.com/r/prng/comments/fpy6pg/a_primer_on_randomness/).
+
 <script type="application/ld+json">
 { "@context": "http://schema.org",
   "@type": "BlogPosting",

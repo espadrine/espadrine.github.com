@@ -349,6 +349,7 @@ I’ll give you a few fun facts about it, as goodbye.</p>
 <li>It is based on the design of <a href="https://cr.yp.to/export/1996/0726-bernstein.txt">a joke cipher that plays on a US law</a> cataloguing encryption as munition, except if it is a hash. He built it as a simple construction on top of a carefully-constructed hash. Calling the core construction a hash caused him trouble later as <a href="https://cr.yp.to/snuffle/reoncore-20080224.pdf">reviewers misunderstood it</a>.</li>
 <li>The initial name of that cipher was Snuffle. (Yes.)</li>
 </ol>
+<p><a href="https://www.reddit.com/r/prng/comments/fpy6pg/a_primer_on_randomness/">Find comments on Reddit</a>.</p>
 <script type="application/ld+json">
 { "@context": "http://schema.org",
   "@type": "BlogPosting",
