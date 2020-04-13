@@ -362,7 +362,15 @@ but to be useful, it also must be the fastest in its class.
 
 A few notes can really help you get it up to speed.
 
-First, you want to be as close to the metal as you can. Code in C, C++, or Rust.
+First, pick your target platform.
+
+You will need different optimization tricks if you build for `x86_64`
+(Intel / AMD), or for ARM (phones),
+or if you directly target a CMOS integrated circuit,
+if you want to burn your PRNG in an ASIC.
+
+Let’s say you want to get the most out of your Intel or AMD chip.
+Go as close to the metal as you can. Code in C, C++, or Rust.
 
 Second, understand the assembly output. Looking at the compiled assembly with `gcc prng.c -S -o prng.asm` can help.
 I recommend [Intel’s introduction], [AMD’s manual] and [Agner’s instruction tables].

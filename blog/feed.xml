@@ -265,7 +265,13 @@ it will probably fail at 16 GiB.</p>
 <p>Once you beat 32 TiB of PractRand, you know your generator is good —
 but to be useful, it also must be the fastest in its class.</p>
 <p>A few notes can really help you get it up to speed.</p>
-<p>First, you want to be as close to the metal as you can. Code in C, C++, or Rust.</p>
+<p>First, pick your target platform.</p>
+<p>You will need different optimization tricks if you build for <code>x86_64</code>
+(Intel / AMD), or for ARM (phones),
+or if you directly target a CMOS integrated circuit,
+if you want to burn your PRNG in an ASIC.</p>
+<p>Let’s say you want to get the most out of your Intel or AMD chip.
+Go as close to the metal as you can. Code in C, C++, or Rust.</p>
 <p>Second, understand the assembly output. Looking at the compiled assembly with <code>gcc prng.c -S -o prng.asm</code> can help.
 I recommend <a href="https://software.intel.com/en-us/articles/introduction-to-x64-assembly">Intel’s introduction</a>, <a href="https://www.amd.com/system/files/TechDocs/24592.pdf">AMD’s manual</a> and <a href="https://www.agner.org/optimize/instruction_tables.pdf">Agner’s instruction tables</a>.</p>
 <p>In particular, a number of amd64 opcodes are inaccessible from the programming language.
