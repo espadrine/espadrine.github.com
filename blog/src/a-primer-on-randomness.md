@@ -126,13 +126,26 @@ First, it reduces the potency of your state size (since a percentage of possible
 
 Second, many seeds merge into the rail tracks of other seeds,
 converging to a reduced set of possible streams and outputting the same values!
+Not only does this create inter-seed output correlation,
+it also means that *a given stream will likely degrade in quality*.
 
-If you build a **reversible** algorithm, at least each possible state is useful,
-and inter-seed correlation is less probable.
+<p><img alt='Irreversible PRNG example.' src='../assets/irreversible-prng.svg' width=350px'>
+
+If you build a **reversible** algorithm,
+at least all streams are a cycle,
+so inter-seed correlation is not inevitable.
+
+Some streams can have really long cycles.
+Because they include a lot of states,
+a starting seed is more likely to land in a long-cycle state.
+
+<p><img alt='Reversible PRNG example.' src='../assets/reversible-prng.svg' width=350px'>
 
 Note that a reversible design does not mean that the state cycles through all possible combinations.
 It just means that each state points to exactly one other state, and has exactly one state leading to it.
 In other words, it is a *bijection*, but not a *circular permutation*.
+
+<p><img alt='Cyclic permutation example.' src='../assets/cyclic-prng.svg' width=350px'>
 
 ### Diffusion
 
