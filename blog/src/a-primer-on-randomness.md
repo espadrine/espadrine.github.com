@@ -114,22 +114,35 @@ However, a fundamentally better generator would have become even better yet with
 
 If you build out the design at random, a danger lingers.
 Unless you are careful, you might build an irreversible generator.
-Given a state after a generation, can you mathematically compute the previous state?
+Given a state after a generation,
+can you mathematically compute the previous state?
 
-If you can’t, then there are multiple initial states that can transition to the current state.
-That means some states can never happen, because there are no initial state that transitions to them;
+If you can’t,
+then there are multiple initial states that can transition to the current state.
+That means some states can never happen,
+because there are no initial state that transitions to them;
 they got stolen by the states with multiple previous states pointing to it!
 
 That is bad. Why?
 
-First, it reduces the potency of your state size (since a percentage of possible states are dead).
+First, it reduces the potency of your state size
+(since a percentage of possible states are unreachable).
 
 Second, many seeds merge into the rail tracks of other seeds,
 converging to a reduced set of possible streams and outputting the same values!
 Not only does this create inter-seed output correlation,
-it also means that *a given stream will likely degrade in quality*.
+it also means that *a given stream will likely degrade in period*.
 
 <p><img alt='Irreversible PRNG example.' src='../assets/irreversible-prng.svg' width=350px'>
+
+It could look good for many terabytes, and suddenly reach a fixed point,
+and output the same number over and over.
+
+In fact, if the states transition to randomly picked states,
+the average cycle that you eventually get to,
+[loops every 2<sup>(n+1)÷2</sup>][Bob Jenkins talk].
+
+[Bob Jenkins talk]: https://burtleburtle.net/bob/rand/talksmall.html
 
 If you build a **reversible** algorithm,
 at least all streams are a cycle,
@@ -138,6 +151,7 @@ so inter-seed correlation is not inevitable.
 Some streams can have really long cycles.
 Because they include a lot of states,
 a starting seed is more likely to land in a long-cycle state.
+The average period becomes 2<sup>n-2</sup>, almost the square of the length.
 
 <p><img alt='Reversible PRNG example.' src='../assets/reversible-prng.svg' width=350px'>
 
@@ -145,7 +159,7 @@ Note that a reversible design does not mean that the state cycles through all po
 It just means that each state points to exactly one other state, and has exactly one state leading to it.
 In other words, it is a *bijection*, but not a *circular permutation*.
 
-<p><img alt='Cyclic permutation example.' src='../assets/cyclic-prng.svg' width=350px'>
+<p><img alt='Circular permutation example.' src='../assets/circular-prng.svg' width=350px'>
 
 ### Diffusion
 
