@@ -620,6 +620,14 @@ PractRand is great compared to what came before it; but:
 
 I believe great improvements are coming.
 
+---
+
+Discussions on
+[Reddit](https://www.reddit.com/r/prng/comments/g3nh4i/shishua_the_fastest_prng_in_the_world/)
+and
+[Hacker News](https://news.ycombinator.com/item?id=22907539)
+.
+
 <script type="application/ld+json">
 { "@context": "http://schema.org",
   "@type": "BlogPosting",

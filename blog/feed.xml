@@ -438,6 +438,12 @@ We just get to say “well, they both had no anomalies after 32 TiB…”</li>
 <li>It takes weeks to run…</li>
 </ul>
 <p>I believe great improvements are coming.</p>
+<hr />
+<p>Discussions on
+<a href="https://www.reddit.com/r/prng/comments/g3nh4i/shishua_the_fastest_prng_in_the_world/">Reddit</a>
+and
+<a href="https://news.ycombinator.com/item?id=22907539">Hacker News</a>
+.</p>
 <script type="application/ld+json">
 { "@context": "http://schema.org",
   "@type": "BlogPosting",
