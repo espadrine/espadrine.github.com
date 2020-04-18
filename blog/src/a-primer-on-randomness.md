@@ -133,7 +133,7 @@ converging to a reduced set of possible streams and outputting the same values!
 Not only does this create inter-seed output correlation,
 it also means that *a given stream will likely degrade in period*.
 
-<p><img alt='Irreversible PRNG example.' src='../assets/irreversible-prng.svg' width=350px'>
+<p><img alt='Irreversible PRNG example.' src='../assets/a-primer-on-randomness/irreversible-prng.svg' width=350px'>
 
 It could look good for many terabytes, and suddenly reach a fixed point,
 and output the same number over and over.
@@ -153,13 +153,13 @@ Because they include a lot of states,
 a starting seed is more likely to land in a long-cycle state.
 The average period becomes 2<sup>n-2</sup>, almost the square of the length.
 
-<p><img alt='Reversible PRNG example.' src='../assets/reversible-prng.svg' width=350px'>
+<p><img alt='Reversible PRNG example.' src='../assets/a-primer-on-randomness/reversible-prng.svg' width=350px'>
 
 Note that a reversible design does not mean that the state cycles through all possible combinations.
 It just means that each state points to exactly one other state, and has exactly one state leading to it.
 In other words, it is a *bijection*, but not a *circular permutation*.
 
-<p><img alt='Circular permutation example.' src='../assets/circular-prng.svg' width=350px'>
+<p><img alt='Circular permutation example.' src='../assets/a-primer-on-randomness/circular-prng.svg' width=350px'>
 
 ### Diffusion
 

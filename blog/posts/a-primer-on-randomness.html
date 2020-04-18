@@ -100,7 +100,7 @@ they got stolen by the states with multiple previous states pointing to it!</p>
 converging to a reduced set of possible streams and outputting the same values!
 Not only does this create inter-seed output correlation,
 it also means that <em>a given stream will likely degrade in period</em>.</p>
-<p><img alt='Irreversible PRNG example.' src='../assets/irreversible-prng.svg' width=350px'>
+<p><img alt='Irreversible PRNG example.' src='../assets/a-primer-on-randomness/irreversible-prng.svg' width=350px'>
 <p>It could look good for many terabytes, and suddenly reach a fixed point,
 and output the same number over and over.</p>
 <p>In fact, if the states transition to randomly picked states,
@@ -113,11 +113,11 @@ so inter-seed correlation is not inevitable.</p>
 Because they include a lot of states,
 a starting seed is more likely to land in a long-cycle state.
 The average period becomes 2<sup>n-2</sup>, almost the square of the length.</p>
-<p><img alt='Reversible PRNG example.' src='../assets/reversible-prng.svg' width=350px'>
+<p><img alt='Reversible PRNG example.' src='../assets/a-primer-on-randomness/reversible-prng.svg' width=350px'>
 <p>Note that a reversible design does not mean that the state cycles through all possible combinations.
 It just means that each state points to exactly one other state, and has exactly one state leading to it.
 In other words, it is a <em>bijection</em>, but not a <em>circular permutation</em>.</p>
-<p><img alt='Circular permutation example.' src='../assets/circular-prng.svg' width=350px'>
+<p><img alt='Circular permutation example.' src='../assets/a-primer-on-randomness/circular-prng.svg' width=350px'>
 <h3>Diffusion</h3>
 <p>Claude Shannon made <a href="https://www.iacr.org/museum/shannon/shannon45.pdf">a very good point the other day</a> (I think it was in 1945?) about ciphers.
 An ideal pseudo-random source is such that any bit of the input flips half the bits of the output.</p>
