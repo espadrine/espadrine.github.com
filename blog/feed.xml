@@ -101,7 +101,7 @@ For instance, <a href="https://norx.io/data/norx.pdf">NORX</a> and <a href="http
 for building a very fast PRNG.</p>
 <p>For instance, Sebastiano Vigna, while pushing for his <a href="http://prng.di.unimi.it/#speed">xoshiro256++</a> design
 in the Julia programming language’s standard library,
-<a href="https://github.com/JuliaLang/julia/issues/27614#issuecomment-548154730">he learnt</a> that concatenating the output of eight concurrent instances of the PRNG
+<a href="https://github.com/JuliaLang/julia/issues/27614#issuecomment-548154730">learnt</a> that concatenating the output of eight concurrent instances of the PRNG
 initialized differently, was made very fast by having each operation of the design
 performed simultaneously on each PRNG.</p>
 <p>SIMD is one level of CPU parallelism, but not the only one.

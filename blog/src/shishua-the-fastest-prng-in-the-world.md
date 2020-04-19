@@ -140,7 +140,7 @@ for building a very fast PRNG.
 
 For instance, Sebastiano Vigna, while pushing for his [xoshiro256++] design
 in the Julia programming language’s standard library,
-[he learnt][Julia] that concatenating the output of eight concurrent instances of the PRNG
+[learnt][Julia] that concatenating the output of eight concurrent instances of the PRNG
 initialized differently, was made very fast by having each operation of the design
 performed simultaneously on each PRNG.
 
