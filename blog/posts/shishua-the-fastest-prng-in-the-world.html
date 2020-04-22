@@ -163,7 +163,7 @@ to other bit positions! And shift is the next best thing for that.</p>
 <p>We must shift by an odd number so that each bit reaches all 64-bit positions,
 and not just half.</p>
 <p>Shift loses bits, which removes information from our state.
-That is bad, so we minimize the loss: the smalles odd numbers are 1 and 3.
+That is bad, so we minimize the loss: the smallest odd numbers are 1 and 3.
 We use different shift values to increase divergence between the two sides,
 which should help lower the similarity of their self-correlation.</p>
 <p>We use rightward shift because the rightmost bits have the least diffusion in addition:
@@ -284,7 +284,7 @@ s.state[1] = _mm256_set_epi64x(phi[7], phi[6] ^ seed[3], phi[5], phi[4] ^ seed[2
 In the initialization, the added work and state correlation don’t matter,
 since this is only done a few times, once.
 You only care about diffusion in initialization.</p>
-<p>I picked values of 2 for <code>STEPS</code> and 10 for <code>ROUNDS</code>
+<p>I picked values of 5 for <code>STEPS</code> and 4 for <code>ROUNDS</code>
 after looking at how much they impacted seed correlation.</p>
 <p>(I computed seed correlation by counting the “unusual” and “suspicious” anomalies
 coming out of the PractRand PRNG quality tool.)</p>

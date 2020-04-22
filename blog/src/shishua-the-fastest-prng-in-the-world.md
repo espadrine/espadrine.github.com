@@ -237,7 +237,7 @@ We must shift by an odd number so that each bit reaches all 64-bit positions,
 and not just half.
 
 Shift loses bits, which removes information from our state.
-That is bad, so we minimize the loss: the smalles odd numbers are 1 and 3.
+That is bad, so we minimize the loss: the smallest odd numbers are 1 and 3.
 We use different shift values to increase divergence between the two sides,
 which should help lower the similarity of their self-correlation.
 
@@ -414,7 +414,7 @@ In the initialization, the added work and state correlation don’t matter,
 since this is only done a few times, once.
 You only care about diffusion in initialization.
 
-I picked values of 2 for `STEPS` and 10 for `ROUNDS`
+I picked values of 5 for `STEPS` and 4 for `ROUNDS`
 after looking at how much they impacted seed correlation.
 
 (I computed seed correlation by counting the “unusual” and “suspicious” anomalies
