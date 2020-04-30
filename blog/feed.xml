@@ -362,7 +362,8 @@ o3 = _mm256_xor_si256(s2, s1);
 <p>And that is how you get SHISHUA, and its <strong>0.06 cpb</strong> speed.</p>
 <p>Five times faster than the previously-fastest in the world
 that passes 32 TiB of PractRand.
-You can barely see it in the graph.</p>
+You can barely see it in the graph, so I removed RC4.</p>
+<p><img src="../assets/shishua-the-fastest-prng-in-the-world/speed.svg" alt="Speed plot" /></p>
 <p>I guess my point is that it is somewhat competitive.</p>
 <p>(In fact, it is even faster on my laptop, at 0.03 cpb,
 but I want to stick to my benchmark promises.)</p>
@@ -390,7 +391,7 @@ as they give no indication on the quality of the output.</p>
 <p>Alright, here is the distilled benchmark:</p>
 <table id=benchmark>
   <tr><th>Name   <th>Performance <th>Quality <th>Seed correlation
-  <tr><td>SHISHUA       <td>0.06 <td>>32 TiB <td>>256 GiB
+  <tr><td>SHISHUA       <td>0.06 <td>>32 TiB <td> >32 TiB
   <tr><td>xoshiro256+x8 <td>0.07 <td>  1 KiB <td>   0 KiB
   <tr><td>RomuTrio      <td>0.31 <td>>32 TiB <td>   1 KiB
   <tr><td>xoshiro256+   <td>0.34 <td>512 MiB <td>   1 KiB
@@ -408,7 +409,12 @@ We put a question mark if we have not proved it.</li>
 with seeds 0, 1, 2, 4, 8, 16, 32, 64.
 We use PractRand with folding 2 and expanded tests.</li>
 </ol>
-<p><img src="../assets/shishua-the-fastest-prng-in-the-world/speed.svg" alt="Speed plot" /></p>
+<p>Speed measurement is traditionally in cpb.
+Given the speed we get to nowadays,
+a more appropriate measurement is in number of bits generated per CPU cycle.
+Not only do I find it easier to grasp,
+it is also much easier to compare huge differences on the graph:</p>
+<p><img src="../assets/shishua-the-fastest-prng-in-the-world/speed-total.svg" alt="Speed plot" /></p>
 <h2>Next</h2>
 <p>While there are no practical issue with irreversibility in our case,
 it also means that we can improve on SHISHUA.</p>

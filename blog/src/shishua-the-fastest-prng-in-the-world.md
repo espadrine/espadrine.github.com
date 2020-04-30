@@ -525,7 +525,9 @@ And that is how you get SHISHUA, and its **0.06 cpb** speed.
 
 Five times faster than the previously-fastest in the world
 that passes 32 TiB of PractRand.
-You can barely see it in the graph.
+You can barely see it in the graph, so I removed RC4.
+
+![Speed plot](../assets/shishua-the-fastest-prng-in-the-world/speed.svg)
 
 I guess my point is that it is somewhat competitive.
 
@@ -567,7 +569,7 @@ Alright, here is the distilled benchmark:
 
 <table id=benchmark>
   <tr><th>Name   <th>Performance <th>Quality <th>Seed correlation
-  <tr><td>SHISHUA       <td>0.06 <td>>32 TiB <td>>256 GiB
+  <tr><td>SHISHUA       <td>0.06 <td>>32 TiB <td> >32 TiB
   <tr><td>xoshiro256+x8 <td>0.07 <td>  1 KiB <td>   0 KiB
   <tr><td>RomuTrio      <td>0.31 <td>>32 TiB <td>   1 KiB
   <tr><td>xoshiro256+   <td>0.34 <td>512 MiB <td>   1 KiB
@@ -585,7 +587,13 @@ Alright, here is the distilled benchmark:
    with seeds 0, 1, 2, 4, 8, 16, 32, 64.
    We use PractRand with folding 2 and expanded tests.
 
-![Speed plot](../assets/shishua-the-fastest-prng-in-the-world/speed.svg)
+Speed measurement is traditionally in cpb.
+Given the speed we get to nowadays,
+a more appropriate measurement is in number of bits generated per CPU cycle.
+Not only do I find it easier to grasp,
+it is also much easier to compare huge differences on the graph:
+
+![Speed plot](../assets/shishua-the-fastest-prng-in-the-world/speed-total.svg)
 
 ## Next
 
