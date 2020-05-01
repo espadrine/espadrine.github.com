@@ -340,7 +340,7 @@ It claims the title of fastest PRNG in the world: <strong>0.31 cpb</strong>.</p>
 combining multiple instances of Vigna’s design
 to make a fast SIMD PRNG?
 Let’s look at Vigna’s fastest result using this technique:
-<a href="http://prng.di.unimi.it/#speed">Xoshiro256+ 8 times</a>. <strong>0.09 cpb</strong>!</p>
+<a href="http://prng.di.unimi.it/#speed">Xoshiro256+ 8 times</a>. <strong>0.07 cpb</strong>!</p>
 <p>(Technically, it varies on the machine;
 on my laptop, SHISHUA-half is faster than this.)</p>
 <hr />
@@ -366,8 +366,9 @@ You can barely see it in the graph, so I removed RC4.</p>
 <p><img src="../assets/shishua-the-fastest-prng-in-the-world/speed.svg" alt="Speed plot" /></p>
 <p>I guess my point is that it is somewhat competitive.</p>
 <p>(In fact, it is even faster on my laptop, at 0.03 cpb,
-but I want to stick to my benchmark promises.)</p>
-<p>Hopefully, it stays the fastest in the world for at least a few weeks?
+but I want to stick to my benchmark promises.
+Maybe we lose a tiny bit of performance on early AVX-512 CPUs.)</p>
+<p>Hopefully, SHISHUA stays the fastest in the world for at least a few weeks?
 (Please make it so.)</p>
 <h2>Quality</h2>
 <p>It passes BigCrush and 32 TiB of PractRand without suspicion.</p>
@@ -395,7 +396,7 @@ as they give no indication on the quality of the output.</p>
   <tr><td>xoshiro256+x8 <td>0.07 <td>  1 KiB <td>   0 KiB
   <tr><td>RomuTrio      <td>0.31 <td>>32 TiB <td>   1 KiB
   <tr><td>xoshiro256+   <td>0.34 <td>512 MiB <td>   1 KiB
-  <tr><td>wyrand        <td>0.41 <td>>32 TiB <td>   8 KiB
+  <tr><td>wyrand        <td>0.41 <td>>32 TiB <td>  32 KiB
   <tr><td>Lehmer128     <td>0.44 <td>>32 TiB <td>   1 KiB
   <tr><td>ChaCha8       <td>0.46 <td>>32 TiB?<td> >32 TiB?
   <tr><td>RC4           <td>8.06 <td>  1 TiB <td>   1 KiB
@@ -406,7 +407,7 @@ on N2 GCP instances. On N2D (AMD), the order is the same.</li>
 <li><strong>Quality</strong>: level at which it fails PractRand. We show a <code>&gt;</code> if it did not fail.
 We put a question mark if we have not proved it.</li>
 <li><strong>Seed correlation</strong>: PractRand on interleaving of bytes from eight streams
-with seeds 0, 1, 2, 4, 8, 16, 32, 64.
+with seeds 1, 2, 4, 8, 16, 32, 64, 128.
 We use PractRand with folding 2 and expanded tests.</li>
 </ol>
 <p>Speed measurement is traditionally in cpb.

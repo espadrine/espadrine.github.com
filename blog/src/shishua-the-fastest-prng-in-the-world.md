@@ -491,7 +491,7 @@ But remember how the Julia team looked at
 combining multiple instances of Vigna’s design
 to make a fast SIMD PRNG?
 Let’s look at Vigna’s fastest result using this technique:
-[Xoshiro256+ 8 times]. **0.09 cpb**!
+[Xoshiro256+ 8 times]. **0.07 cpb**!
 
 (Technically, it varies on the machine;
 on my laptop, SHISHUA-half is faster than this.)
@@ -532,9 +532,10 @@ You can barely see it in the graph, so I removed RC4.
 I guess my point is that it is somewhat competitive.
 
 (In fact, it is even faster on my laptop, at 0.03 cpb,
-but I want to stick to my benchmark promises.)
+but I want to stick to my benchmark promises.
+Maybe we lose a tiny bit of performance on early AVX-512 CPUs.)
 
-Hopefully, it stays the fastest in the world for at least a few weeks?
+Hopefully, SHISHUA stays the fastest in the world for at least a few weeks?
 (Please make it so.)
 
 ## Quality
@@ -573,7 +574,7 @@ Alright, here is the distilled benchmark:
   <tr><td>xoshiro256+x8 <td>0.07 <td>  1 KiB <td>   0 KiB
   <tr><td>RomuTrio      <td>0.31 <td>>32 TiB <td>   1 KiB
   <tr><td>xoshiro256+   <td>0.34 <td>512 MiB <td>   1 KiB
-  <tr><td>wyrand        <td>0.41 <td>>32 TiB <td>   8 KiB
+  <tr><td>wyrand        <td>0.41 <td>>32 TiB <td>  32 KiB
   <tr><td>Lehmer128     <td>0.44 <td>>32 TiB <td>   1 KiB
   <tr><td>ChaCha8       <td>0.46 <td>>32 TiB?<td> >32 TiB?
   <tr><td>RC4           <td>8.06 <td>  1 TiB <td>   1 KiB
@@ -584,7 +585,7 @@ Alright, here is the distilled benchmark:
 2. **Quality**: level at which it fails PractRand. We show a `>` if it did not fail.
    We put a question mark if we have not proved it.
 3. **Seed correlation**: PractRand on interleaving of bytes from eight streams
-   with seeds 0, 1, 2, 4, 8, 16, 32, 64.
+   with seeds 1, 2, 4, 8, 16, 32, 64, 128.
    We use PractRand with folding 2 and expanded tests.
 
 Speed measurement is traditionally in cpb.
