@@ -5,7 +5,8 @@
 <link rel="alternate" type="application/json" title="JSON Feed" href="feed.json" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <main>
-  <article>
+  <article class=relative>
+    <a href=../feed.xml class=rss><img src=../rss.svg></a>
 <h1>Don’t be eval()</h1>
 <p>[TLDR: <a href="https://github.com/espadrine/localeval">https://github.com/espadrine/localeval</a>]</p>
 <p>We JS programmers know how evil <code>eval()</code> is. An attempt at copying the fancy concept of Lisp’s metacircular evaluator, it takes a string instead of Lisp’s homoiconic quoted syntax tree. Beyond that, unlike Scheme (which allows to specify your own environment), it evaluates the code in the current lexical environment. Consequently, it can mess with all variable bindings in scope, and will leak to the outside world all variables it defines.</p>

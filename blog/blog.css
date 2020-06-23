@@ -26,10 +26,18 @@ body {
   padding: 0 8px;
 }
 
+.relative {
+  position: relative;
+}
+
 .rss {
   position: absolute;
-  right: 16rem;
-  top: 4.8rem;
+  height: 1rem;
+  top: 0.4rem;
+}
+.rss.rss-index {
+  top: 0.7rem;
+  left: 5.5rem;
 }
 .rss > img { height: 1rem; }
 

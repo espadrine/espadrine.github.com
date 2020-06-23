@@ -5,7 +5,8 @@
 <link rel="alternate" type="application/json" title="JSON Feed" href="feed.json" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <main>
-  <article>
+  <article class=relative>
+    <a href=../feed.xml class=rss><img src=../rss.svg></a>
 <h1>Schemes: Performance, Conformance, Openness</h1>
 <p>As <a href="http://lists.gnu.org/archive/html/info-gnu/2014-03/msg00006.html">Guile 2.0.10</a> just rolled out, I wished to re-acquaint myself with the status of Schemes. I downloaded the new version, compiled it (boy, is it slow to compile), installed it. It is designed as a language to extend existing programs, much like Lua. One goal is obviously to make the interpreter as fast as can be. Ideally, it should be the LuaJIT of Scheme-land.</p>
 <p>The other approach used to make Scheme run fast is to compile it. Other projects, such as Chicken Scheme, compile the code to C, and the result tends to have reasonable performance. They do also cut corners, as we’ll see.</p>
