@@ -77,7 +77,7 @@ Can they hack you before you die?
 First, under those assumptions,
 assuming the NSA consumes its whole budget cracking you,
 how many computers will it use to crack you in parallel?
-The result is B ÷ 12 ÷ 0.03 = 28 billion servers.
+The result is P = B ÷ 12 ÷ 0.03 = 28 billion servers.
 
 If your password has an N-bit entropy,
 it will take 2<sup>N-1</sup>·0.005÷P÷3600÷24÷365 years on average,
@@ -87,7 +87,7 @@ to account for the possibility that the NSA has machines a hundred times more po
 than the rest of us, which is both unlikely, and would not cost what we estimated).
 
 As a result, our formula for picking strength is
-N = log2(B÷12÷0.03·Y·365·24·3600÷0.005) + 1 = 77 bits of security.
+N = log2(B÷12÷0.03 · Y·365·24·3600÷0.005) + 1 = 77 bits of security.
 
 Note that we can assume that a good KDF is used,
 since we are only worried about password strength for the password manager,
