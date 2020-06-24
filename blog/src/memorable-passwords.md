@@ -134,12 +134,14 @@ I feel strongly that passwords are passé.
 I would love to talk about my hopes for the future of Web authentication.
 
 [Reddit comments here][].
+[HN comments here][].
 
 [Argon2-KDF]: https://password-hashing.net/argon2-specs.pdf
 [Facebook passwords]: https://www.zdnet.com/article/facebook-passwords-are-not-case-sensitive-update
 [StackOverflow strength suggestion]: https://crypto.stackexchange.com/questions/60815/recommended-minimum-entropy-for-online-passwords-in-2018
 [passphrase]: https://espadrine.github.io/passphrase/
 [Reddit comments here]: https://www.reddit.com/r/programming/comments/hf63bp/generate_cryptographically_secure_passphrases_at/
+[HN comments here]: https://news.ycombinator.com/item?id=23632533
 
 <script type="application/ld+json">
 { "@context": "http://schema.org",
