@@ -33,9 +33,6 @@ body {
 .rss {
   position: absolute;
   height: 1rem;
-  top: 0.4rem;
-}
-.rss.rss-index {
   top: 0.7rem;
   left: 5.5rem;
 }
@@ -51,6 +48,17 @@ main > nav > ul > li > .post-tags {
 
 main > nav > ul > li:hover > .post-tags {
   visibility: visible;
+}
+
+/* Used on articles top links. */
+main > nav.social-links {
+  text-align: center;
+  filter: saturate(70%) contrast(65%) brightness(123%);
+  height: 20px;
+}
+
+main > nav.social-links > object {
+  height: 20px;
 }
 
 /* Article and Markdown */
@@ -109,7 +117,7 @@ article li:before {
 }
 article h1 {
   text-align: center;
-  margin: 1rem 0 2rem;
+  margin: 2rem 0 2rem;
 }
 article h1, article h2, article h3, article h4,
 article h5, article h6 { color: black; }

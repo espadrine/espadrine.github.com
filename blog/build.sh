@@ -14,6 +14,7 @@ publications=$(ls "$dir"/src/*.md | sed 's,^.*/,,; s,\.md$,,' | \
     echo $(<"$dir/src/$src.md" grep '^  "datePublished"' | \
       cut -d'"' -f4 | cut -d' ' -f2)$'\t'"$src";
   done } | sort)
+pubcount=$(echo "$publications" | wc -l)
 
 echo "$publications" | {
   while read post; do
@@ -43,6 +44,7 @@ echo "$publications" | {
           d
         }
         sTITLE'"$title"'
+        sPUBCOUNT'"$pubcount"'
         sISOTIME'"$isotime"'
         sTIME'"$time"'
         /POST/ {
