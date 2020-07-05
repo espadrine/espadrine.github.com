@@ -540,6 +540,10 @@ The examples use:
 - WK: `DCmk1xzu05QmT578_9QUSckIjCYRyr19W0bf0bMb46MK`.
 - MACs generated with `echo -n "$input" | openssl sha256 -hmac "$key" | cut -f2 -d' ' | xxd -r -p | base64 | tr +/ -_ | tr -d =`.
 
+## Comments and links
+
+[Blog comments here](https://www.reddit.com/r/espadrine/comments/hlrx40/webidentity_oneclick_passwordless_signups_logins/).
+
 [MemorablePasswords]: https://espadrine.github.io/blog/posts/memorable-passwords.html
 [line of death]: https://textslashplain.com/2017/01/14/the-line-of-death/
 [PublicSuffix]: https://publicsuffix.org/

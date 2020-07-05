@@ -492,6 +492,8 @@ The implementation should be constant-time.</p>
 <li>WK: <code>DCmk1xzu05QmT578_9QUSckIjCYRyr19W0bf0bMb46MK</code>.</li>
 <li>MACs generated with <code>echo -n &quot;$input&quot; | openssl sha256 -hmac &quot;$key&quot; | cut -f2 -d' ' | xxd -r -p | base64 | tr +/ -_ | tr -d =</code>.</li>
 </ul>
+<h2>Comments and links</h2>
+<p><a href="https://www.reddit.com/r/espadrine/comments/hlrx40/webidentity_oneclick_passwordless_signups_logins/">Blog comments here</a>.</p>
 <script type="application/ld+json">
 { "@context": "http://schema.org",
   "@type": "BlogPosting",
