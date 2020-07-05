@@ -248,7 +248,7 @@ Otherwise, it returns a page with the following header:
   In our case, it is `espadrine`.
 - `Cru8…` is the LISK, which will be used to prove that the user is who they claim to be for one hour.
 
-The browser stores the version (v1), the KID, the AUID, the ID and the LISK in its Sync feature.
+The browser stores the version (v1), the KID, the LID, the ID and the LISK in its Sync feature.
 
 ## Authentication
 
@@ -369,7 +369,7 @@ The rest goes exactly like a Sign Up:
 - `ZXNw…` is the website’s internal user reference in database.
 - `nAMM…` is the Log-In Shared Key (LISK), which will be used to prove that the user is who they claim to be.
 
-The browser stores the version (v1), the KID, the AUID and the LISK in its Sync feature.
+The browser stores the version (v1), the KID, the new LID and the LISK in its Sync feature.
 
 ### Website key update
 
