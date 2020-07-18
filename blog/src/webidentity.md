@@ -126,7 +126,7 @@ which should really be used on all sensitive actions on the website.
 First, the browser stores a single random 256-bit secret for each user,
 called the **Browser Key (BK)**,
 synchronized across all devices through its Sync feature.
-That key never leaves the browser.
+That key never leaves the browser’s Sync servers.
 
 Each website keeps around a random 256-bit secret key (**Website Key, WK**)
 identified by a **key ID (KID)**,
@@ -157,9 +157,10 @@ and incidentally will also soon be [the only URL part shown][RegistrableDomain] 
 So the security UX will be consistent for identity and website trust here.
 The UWK MAC is keyed with BK, the user’s Sync secret kept by the browser.
 The UWK is a *secret that the browser has for each user and each website*.
-It is never stored and never transmitted.
+It is never stored and only transmitted between the browser’s Sync servers
+and the user’s browser upon sign-up and login.
 
-Then, the browser takes a MAC of the UWK, keyed with BK (the user’s Browser Key):
+Then, the browser takes a MAC of the UWK, keyed with the ASCII string “AUID”:
 this becomes the **Authentication User ID (AUID)**
 which will *identify the user in each HTTP request*.
 Eavesdropper cannot find the UWK from it, which is good,
@@ -183,15 +184,15 @@ and the following new header
 (all in one line, with spaces instead of newlines; the newlines are for readability):
 
     Authorization: Identity v1 SignUp
-      auid="_r2AX32_B-nVFU5IUyc4_VdC1c5FCDSCRYkQd4DlPqg"
-      liv="iOFqWGWM14o2jvETiuC583w4zci4sSBEXkzEvBE6khI"
+      auid="VzX3h8VumdWIY7MiUCcYwnS8kz9DxdtFzQftFhLvkFkK"
+      liv="7deoyUWH9wk-x15mb-vr7i57rU0VojDLwc99EjtKUlUK"
 
 - `Identity` indicates that it uses this authorization scheme.
 - `v1` is the version of the scheme; it likely would change very rarely, typically when the hash function gets broken.
 - `SignUp` is the action: here, we sign up as a new user.
-- `_r2A…` is the Authentication User ID (AUID), which the website will rely on to identify the user.
-- `iOFq…` is the **Log-In Verification token (LIV)**,
-  a MAC of the Log-In Proof token (LIP) keyed with the AUID.
+- `VzX3…` is the Authentication User ID (AUID), which the website will rely on to identify the user.
+- `7deo…` is the **Log-In Verification token (LIV)**,
+  a MAC of the AUID keyed with the Log-In Proof token (LIP).
 - The LID is sent in the Date header so that the website can store it.
 
 The website cannot guess the LIP, nor can any eavesdropper,
@@ -237,16 +238,16 @@ Otherwise, it returns a page with the following header:
 
     WWW-Authenticate: Identity v1 Key
       kid="2020"
-      auid="_r2AX32_B-nVFU5IUyc4_VdC1c5FCDSCRYkQd4DlPqg"
+      auid="VzX3h8VumdWIY7MiUCcYwnS8kz9DxdtFzQftFhLvkFkK"
       id="ZXNwYWRyaW5l"
-      lisk="Cru8G_ulATqwIGzxU_MetC0WrcOWF51BLWXD6sPqa90"
+      lisk="Ii6JLfnbWJgcy0WtworWKRIlJIPSGkQwSAvBtQM1OEgK"
 
 - `Key` is the action instructing the browser to store the website’s key.
 - `2020` is the KID, placed first to ease inspection.
-- `_r2A…` is the AUID, identifying the user in all future requests.
+- `VzX3…` is the AUID, identifying the user in all future requests.
 - `ZXNw…` is the ID, the identifier that the website relies on internally to reference the user, encoded here in base64url.
   In our case, it is `espadrine`.
-- `Cru8…` is the LISK, which will be used to prove that the user is who they claim to be for one hour.
+- `Ii6J…` is the LISK, which will be used to prove that the user is who they claim to be for one hour.
 
 The browser stores the version (v1), the KID, the LID, the ID and the LISK in its Sync feature.
 
@@ -257,19 +258,19 @@ along with a MAC of the Date HTTP header keyed with the LISK:
 
     Authorization: Identity v1 Auth
       kid="2020"
-      auid="_r2AX32_B-nVFU5IUyc4_VdC1c5FCDSCRYkQd4DlPqg"
+      auid="VzX3h8VumdWIY7MiUCcYwnS8kz9DxdtFzQftFhLvkFkK"
       id="ZXNwYWRyaW5l"
       lid="Fri, 03 Jul 2020 10:11:22 GMT"
-      totp="imCpzFyYB6SOrOjRhzdtVOUrrJGEyzy0M_DC1u-9PyY"
+      totp="YrrliECBpS34lKob4xMOIKgM5zw8_zxMsBBleIIfGHIK
 
 - `Auth` is the action to authenticate the request.
 - `2020` is the KID in use.
-- `_r2A…` is the AUID, as returned from the SignUp response.
+- `VzX3…` is the AUID, as returned from the SignUp response.
 - `ZXNw…` is the internal identifier that the website uses to reference the user, in base64url.
   It is sent to avoid having the website make a database call to map the AUID to it.
 - The Log-In Date (LID) lets the website compute the LISK.
-- `imCp…` is the **Time-based One-Time Password (TOTP)**:
-  the MAC of the Date (`Fri, 03 Jul 2020 14:32:20 GMT`), keyed with the LISK.
+- `Yrrl…` is the **Time-based One-Time Password (TOTP)**:
+  the MAC of the Date (`Fri, 03 Jul 2020 14:32:19 GMT`), keyed with the LISK.
 
 When receiving an Auth request, the website must:
 
@@ -313,7 +314,8 @@ The website detects that a sign-up already occured, and initiates the login proc
 
 You can find after the LogIn keyword, the Log-In Date (LID) that the website registered for this UID.
 
-The browser computes the User’s Website Key (UWK, a MAC of the eTLD+1 keyed with BK),
+The browser’s Sync server computes the User’s Website Key
+(UWK, a MAC of the eTLD+1 keyed with BK),
 and keys with it a MAC of that LID.
 That gives it the Log-In Proof (LIP) that was created during sign-up.
 
@@ -327,14 +329,14 @@ It then sends a LogIn request,
 which is essentially identical to the SignUp request, but with the new LIV:
 
     Authorization: Identity v1 LogIn
-      auid="_r2AX32_B-nVFU5IUyc4_VdC1c5FCDSCRYkQd4DlPqg"
-      olip="ykZ9EInb8UhoPZAZD00_XL3asi1d9noVYnBW04EK33Y"
-      liv="trpgs8wzEzbVBDimCbaG3p_pohqkB19GGXwncc4VWRM"
+      auid="VzX3h8VumdWIY7MiUCcYwnS8kz9DxdtFzQftFhLvkFkK"
+      olip="8x8HgKzEl5nok-JNwT2PCiwnfwrCD2rOxtMTUotU4hgK"
+      liv="S4GFp0Xh8rSeV9-VgpNTCW2iDPd36sABZrGPqwj8oJkK"
 
-- `_r2A…` is the Authentication User ID (AUID).
-- `ykZ9…` is the old Log-In Proof (LIP).
-- `trpg…`, is a new **Log-In Verification token (LIV)**,
-  a MAC of the Log-In Proof (LIP) keyed with the AUID.
+- `VzX3…` is the Authentication User ID (AUID).
+- `8x8H…` is the old Log-In Proof (LIP).
+- `S4GF…`, is a new **Log-In Verification token (LIV)**,
+  a MAC of the AUID keyed with the Log-In Proof (LIP).
 - The LID is sent in the Date header, so that the website can store it.
 
 The website constructs the WUK as the MAC of the AUID keyed with its WK,
@@ -343,7 +345,8 @@ Then it validates the following:
 
 1. The LID must be within one minute of its known date.
 2. The old LIV must be the one associated with this UID as stored in database.
-3. Computing the MAC of the old LIP transmitted in the request, yields the old LIV stored in database.
+3. Computing the MAC of the AUID keyed with the old LIP transmitted in the request,
+   yields the old LIV stored in database.
 
 If the validation fails, the LogIn request is denied.
 Then, if both validated OK, it updates in database the sign-up Date and the new LIV.
@@ -359,15 +362,15 @@ The rest goes exactly like a Sign Up:
 
     WWW-Authenticate: Identity v1 Key
       kid="2020"
-      auid="_r2AX32_B-nVFU5IUyc4_VdC1c5FCDSCRYkQd4DlPqg"
+      auid="VzX3h8VumdWIY7MiUCcYwnS8kz9DxdtFzQftFhLvkFkK"
       id="ZXNwYWRyaW5l"
-      lisk="nAMMy6iuDlJ9JpCYeac_0DOq1OQv1HVP_1wsV36pQN8"
+      lisk="zhgoQXVsATIUd-S2mB1gUlKi5yj_iO7K7KrsI_H8rBEK"
 
 - `Key` is the action instructing the browser to store the website’s key.
 - `2020` is the KID, placed first to ease inspection.
-- `_r2A…` is the AUID, identifying the user in all future requests.
+- `VzX3…` is the AUID, identifying the user in all future requests.
 - `ZXNw…` is the website’s internal user reference in database.
-- `nAMM…` is the Log-In Shared Key (LISK), which will be used to prove that the user is who they claim to be.
+- `zhgo…` is the Log-In Shared Key (LISK), which will be used to prove that the user is who they claim to be.
 
 The browser stores the version (v1), the KID, the new LID and the LISK in its Sync feature.
 
@@ -387,9 +390,9 @@ but responds with a new Key action, similar to a sign-up:
 
     WWW-Authenticate: Identity v1 Key
       kid="2021"
-      auid="_r2AX32_B-nVFU5IUyc4_VdC1c5FCDSCRYkQd4DlPqg"
+      auid="VzX3h8VumdWIY7MiUCcYwnS8kz9DxdtFzQftFhLvkFkK"
       id="ZXNwYWRyaW5l"
-      lisk="nAMMy6iuDlJ9JpCYeac_0DOq1OQv1HVP_1wsV36pQN8"
+      lisk="zhgoQXVsATIUd-S2mB1gUlKi5yj_iO7K7KrsI_H8rBEK"
 
 When receiving this, the browser updates its KID and LISK in its Sync storage for the website.
 It then uses the new LISK on future authentications.
@@ -404,6 +407,7 @@ the need to log out and log back in.
 
 Browsers must provide a way to export the Browser Key to another browser.
 It is recommended that the browser export format be encrypted with the user’s master password.
+Additionally, any export event should be authenticated with a second factor.
 
 From just the BK, the new browser can perform the Log In procedure on all websites.
 
@@ -415,25 +419,26 @@ will instruct the user to trigger the **Browser Key Reset procedure**.
 
 The browser must have a button in its UI (for instance, in the Sync Preferences page) triggering the procedure:
 
-First, it will create a new BK, but keep the old BK around.
+First, it will create a new BK (say, `0dP_ocrzSwieAuLUNCD6P660HLLOGl9zyfxYwdSLI0kK`),
+but keep the old BK around.
 
 Then, for each website for which the user has a LISK associated to the old BK,
 the browser will make a ReSignUp request, very similar to a LogIn request:
 
     Authorization: Identity v1 ReSignUp v1
-      oauid="_r2AX32_B-nVFU5IUyc4_VdC1c5FCDSCRYkQd4DlPqg"
-      olip="ykZ9EInb8UhoPZAZD00_XL3asi1d9noVYnBW04EK33Y"
-      auid="H_ja9SqB0Iz5HgBzUmtA-rdBGDugiYk9S_GTTtlC36E"
-      liv="VQ4RFiw7C_GqQ4cQO67GdUXoUYxOvVjgq7tV30ZOSIQ"
+      oauid="VzX3h8VumdWIY7MiUCcYwnS8kz9DxdtFzQftFhLvkFkK"
+      olip="R05PEuFZHCngevxsxJZsIDeJe66IDGYqoH3JBVtT-DcK"
+      auid="yFvfOjHW68qyhMIPobZdL6oZmIIOD7aEVquwkkbbxS4"
+      liv="yWPeXDGFi3q8ZAwVOAvbv5swl6oVoOScw7Y3CDVPQCM"
 
 - `ReSignUp` is a new action to instruct the website to reset the UIDs everywhere where it matters, and provide a new LISK.
 - `v1` means that the protocol used for the old IDs and tokens is v1. This is useful for the “Hash function theoretically broken” section.
-- `_r2A…` is the old Authentication User ID (AUID).
-- `ykZ9…` is the old Log-In Proof (LIP).
-- `H_ja…` is a new Authentication User ID (AUID).
-- `VQ4R…`, is a new Log-In Verification token (LIV),
-  a MAC of the new Log-In Proof (LIP) keyed with the new AUID.
-- The new LID is sent in the Date header.
+- `VzX3…` is the old Authentication User ID (AUID).
+- `R05P…` is the old Log-In Proof (LIP).
+- `yFvf…` is a new Authentication User ID (AUID).
+- `yWPe…`, is a new Log-In Verification token (LIV),
+  a MAC of the new AUID keyed with the new Log-In Proof (LIP).
+- The new LID is sent in the Date header (`Fri, 03 Jul 2020 16:03:26 GMT`).
 
 The website treats it just like a LogIn request, except it also updates the UID in database.
 
@@ -502,9 +507,9 @@ they must follow the Browser Key Reset procedure.
   - From the **browser**: since it has access to the Sync secrets, it can perform authenticated requests and account takeover for all its registered users. However, it cannot do so for users of other browsers, if their BK is not explicitly shared.
 - Browser attack:
   - **XSS**: Since WebIdentity is controlled by the browser and has no JS integration, JS code cannot access secrets or perform authentication. All the exchanges and headers related to WebIdentity must be hidden from the page transparently. All same-origin requests are authenticated or not depending on whether the user has clicked the Log In button, and depending on the [credentials mode][]. Cross-site requests comply with CORS. The Authorization and WWW-Authenticate headers already have the right protections in place.
-  - Browsers should never store BK on the device. They can store the websites’ KID, AUID, ID and LISK. An attacker that gains access to the **device’s permanent storage** will be unable to obtain the BK, and therefore sign up on new websites. They can however make authenticated requests on behalf of the user to websites in which they are signed up. It is therefore necessary for browsers to encrypt the Sync database when caching it locally, which is already the case. They should not use an encryption key that is common to multiple users (also already the case IIUC).
+  - Browsers should never have BK on the device. They can store the websites’ KID, AUID, ID and LISK. An attacker that gains access to the **device’s permanent or memory storage** will be unable to obtain the BK, and therefore sign up on new websites. They can however make authenticated requests on behalf of the user to websites in which they are signed up, for up to one hour after they lose access. It is therefore necessary for browsers to encrypt the Sync database (with the LISK) if they cache it locally, which is already the case. They should not use an encryption key that is common to multiple users (also already the case IIUC).
   - The Operating System and the CPU, on the other hand, can obviously access the BK **in memory** and perform authenticated requests and account takeover on behalf of the user, but not of other users.
-  - **BK loss**: the Browser Sync could experience complete loss of data, including the BK, maliciously or accidentally. The consequence would be the same as a password manager, today, losing the passwords (which indeed is the main thing it wishes to guarantee as a business), or a website using WebAuthn as only primary authentication and the user losing their device (Yubico etc.): users would no longer be able to log in. However, people that switched browsers or backed up their BK would be able to add it back in using the *Browser Export* procedure. Thanks to /u/josejimeniz2 for raising this.
+  - **BK loss**: the Browser Sync could experience complete loss of data, including the BK, maliciously or accidentally. The consequence would be the same as a password manager, today, losing the passwords (which indeed is the main thing it wishes to guarantee as a business), or a website using WebAuthn as only primary authentication and the user losing their device (Yubico etc.): users would no longer be able to log in. However, people that switched browsers or backed up their BK would be able to add it back in using the *Browser Export* procedure.
 
 ### Cryptographic comments
 
@@ -541,6 +546,15 @@ The examples use:
 - WK: `DCmk1xzu05QmT578_9QUSckIjCYRyr19W0bf0bMb46MK`.
 - MACs generated with `echo -n "$input" | openssl sha256 -hmac "$key" | cut -f2 -d' ' | xxd -r -p | base64 | tr +/ -_ | tr -d =`.
 
+The script to generate the examples is available [here][TestVectors];
+running it yields all values used in examples.
+
+## Acknowledgements
+
+Thanks go to /u/josejimeniz2 for considering the risk of Sync data loss,
+and to /u/haxelion for raising the risk of having the BK on the device
+(which is no longer the case in the current draft).
+
 ## Comments and links
 
 [Blog comments here](https://www.reddit.com/r/espadrine/comments/hlrx40/webidentity_oneclick_passwordless_signups_logins/).
@@ -558,6 +572,7 @@ The examples use:
 [WebAuthn]: https://webauthn.guide/
 [Apple]: https://developer.apple.com/videos/play/wwdc2020/10670/
 [quantum-resistant]: https://en.wikipedia.org/wiki/SHA-3#Security_against_quantum_attacks
+[TestVectors]: https://github.com/espadrine/espadrine.github.com/blob/master/blog/assets/webidentity/test-vectors.sh
 
 <script type="application/ld+json">
 { "@context": "http://schema.org",
