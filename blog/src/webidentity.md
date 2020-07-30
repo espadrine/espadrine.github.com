@@ -160,7 +160,7 @@ The UWK is a *secret that the browser has for each user and each website*.
 It is never stored and only transmitted between the browser’s Sync servers
 and the user’s browser upon sign-up and login.
 
-Then, the browser takes a MAC of the UWK, keyed with the ASCII string “AUID”:
+Then, the browser takes a MAC of the ASCII string “AUID”, keyed with UWK:
 this becomes the **Authentication User ID (AUID)**
 which will *identify the user in each HTTP request*.
 Eavesdropper cannot find the UWK from it, which is good,
@@ -239,17 +239,22 @@ Otherwise, it returns a page with the following header:
     WWW-Authenticate: Identity v1 Key
       kid="2020"
       auid="VzX3h8VumdWIY7MiUCcYwnS8kz9DxdtFzQftFhLvkFkK"
-      id="ZXNwYWRyaW5l"
       lisk="Ii6JLfnbWJgcy0WtworWKRIlJIPSGkQwSAvBtQM1OEgK"
 
 - `Key` is the action instructing the browser to store the website’s key.
 - `2020` is the KID, placed first to ease inspection.
 - `VzX3…` is the AUID, identifying the user in all future requests.
-- `ZXNw…` is the ID, the identifier that the website relies on internally to reference the user, encoded here in base64url.
-  In our case, it is `espadrine`.
 - `Ii6J…` is the LISK, which will be used to prove that the user is who they claim to be for one hour.
 
-The browser stores the version (v1), the KID, the LID, the ID and the LISK in its Sync feature.
+(The website can also send identifying data,
+such as its internal ID (eg. a username or its database’s generated `user_id`),
+in a payload encrypted with the WUK as key,
+in the Cookies header, ideally Secure and httpOnly.
+That lets it avoid a database fetch when it relies on an internally-produced ID
+instead of the UID provided by WebIdentity.
+That part is outside the definition of WebIdentity, however.)
+
+The browser stores the version (v1), the KID, the LID and the LISK in its Sync feature.
 
 ## Authentication
 
@@ -259,15 +264,12 @@ along with a MAC of the Date HTTP header keyed with the LISK:
     Authorization: Identity v1 Auth
       kid="2020"
       auid="VzX3h8VumdWIY7MiUCcYwnS8kz9DxdtFzQftFhLvkFkK"
-      id="ZXNwYWRyaW5l"
       lid="Fri, 03 Jul 2020 10:11:22 GMT"
-      totp="YrrliECBpS34lKob4xMOIKgM5zw8_zxMsBBleIIfGHIK
+      totp="YrrliECBpS34lKob4xMOIKgM5zw8_zxMsBBleIIfGHIK"
 
 - `Auth` is the action to authenticate the request.
 - `2020` is the KID in use.
 - `VzX3…` is the AUID, as returned from the SignUp response.
-- `ZXNw…` is the internal identifier that the website uses to reference the user, in base64url.
-  It is sent to avoid having the website make a database call to map the AUID to it.
 - The Log-In Date (LID) lets the website compute the LISK.
 - `Yrrl…` is the **Time-based One-Time Password (TOTP)**:
   the MAC of the Date (`Fri, 03 Jul 2020 14:32:19 GMT`), keyed with the LISK.
@@ -295,7 +297,7 @@ ranging in order from uncommon (monthly?) to extremely rare (every 20 years?).
 When logged in, the browser’s Log In button changes to a Log out button.
 
 When clicking the Log out button,
-the browser deletes the protocol version, KID, AUID, ID and LISK in Sync;
+the browser deletes the protocol version, KID, AUID and LISK in Sync;
 and no longer sends Authorization headers.
 
 The browser logs out and logs back in automatically every hour,
@@ -363,13 +365,11 @@ The rest goes exactly like a Sign Up:
     WWW-Authenticate: Identity v1 Key
       kid="2020"
       auid="VzX3h8VumdWIY7MiUCcYwnS8kz9DxdtFzQftFhLvkFkK"
-      id="ZXNwYWRyaW5l"
       lisk="zhgoQXVsATIUd-S2mB1gUlKi5yj_iO7K7KrsI_H8rBEK"
 
 - `Key` is the action instructing the browser to store the website’s key.
 - `2020` is the KID, placed first to ease inspection.
 - `VzX3…` is the AUID, identifying the user in all future requests.
-- `ZXNw…` is the website’s internal user reference in database.
 - `zhgo…` is the Log-In Shared Key (LISK), which will be used to prove that the user is who they claim to be.
 
 The browser stores the version (v1), the KID, the new LID and the LISK in its Sync feature.
@@ -391,7 +391,6 @@ but responds with a new Key action, similar to a sign-up:
     WWW-Authenticate: Identity v1 Key
       kid="2021"
       auid="VzX3h8VumdWIY7MiUCcYwnS8kz9DxdtFzQftFhLvkFkK"
-      id="ZXNwYWRyaW5l"
       lisk="zhgoQXVsATIUd-S2mB1gUlKi5yj_iO7K7KrsI_H8rBEK"
 
 When receiving this, the browser updates its KID and LISK in its Sync storage for the website.
@@ -507,7 +506,7 @@ they must follow the Browser Key Reset procedure.
   - From the **browser**: since it has access to the Sync secrets, it can perform authenticated requests and account takeover for all its registered users. However, it cannot do so for users of other browsers, if their BK is not explicitly shared.
 - Browser attack:
   - **XSS**: Since WebIdentity is controlled by the browser and has no JS integration, JS code cannot access secrets or perform authentication. All the exchanges and headers related to WebIdentity must be hidden from the page transparently. All same-origin requests are authenticated or not depending on whether the user has clicked the Log In button, and depending on the [credentials mode][]. Cross-site requests comply with CORS. The Authorization and WWW-Authenticate headers already have the right protections in place.
-  - Browsers should never have BK on the device. They can store the websites’ KID, AUID, ID and LISK. An attacker that gains access to the **device’s permanent or memory storage** will be unable to obtain the BK, and therefore sign up on new websites. They can however make authenticated requests on behalf of the user to websites in which they are signed up, for up to one hour after they lose access. It is therefore necessary for browsers to encrypt the Sync database (with the LISK) if they cache it locally, which is already the case. They should not use an encryption key that is common to multiple users (also already the case IIUC).
+  - Browsers should never have BK on the device. They can store the websites’ KID, AUID and LISK. An attacker that gains access to the **device’s permanent or memory storage** will be unable to obtain the BK, and therefore sign up on new websites. They can however make authenticated requests on behalf of the user to websites in which they are signed up, for up to one hour after they lose access. It is therefore necessary for browsers to encrypt the Sync database (with the LISK) if they cache it locally, which is already the case. They should not use an encryption key that is common to multiple users (also already the case IIUC).
   - The Operating System and the CPU, on the other hand, can obviously access the BK **in memory** and perform authenticated requests and account takeover on behalf of the user, but not of other users.
   - **BK loss**: the Browser Sync could experience complete loss of data, including the BK, maliciously or accidentally. The consequence would be the same as a password manager, today, losing the passwords (which indeed is the main thing it wishes to guarantee as a business), or a website using WebAuthn as only primary authentication and the user losing their device (Yubico etc.): users would no longer be able to log in. However, people that switched browsers or backed up their BK would be able to add it back in using the *Browser Export* procedure.
 
