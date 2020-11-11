@@ -1,0 +1,118 @@
+<!doctype html><meta charset=utf-8>
+<title> A Learning Resource for the NATO Phonetic Alphabet </title>
+<link href=../blog.css rel=stylesheet>
+<link rel="alternate" type="application/atom+xml" title="Atom 1.0" href="feed.xml"/>
+<link rel="alternate" type="application/json" title="JSON Feed" href="feed.json" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<main>
+  <nav class=social-links>
+    <object type='image/svg+xml' data='https://img.shields.io/badge/blog-45-green?style=social&logo=rss&logoColor=e5732f&link=https://espadrine.github.io/blog/&link=https://espadrine.github.io/blog/feed.xml'></object>
+    <object type='image/svg+xml' data='https://img.shields.io/github/followers/espadrine?label=Github&style=social&link=https%3A%2F%2Fgithub.com%2Fespadrine&link=https%3A%2F%2Fgithub.com%2Fespadrine%3Ftab%3Dfollowers'></object>
+    <object type='image/svg+xml' data='https://img.shields.io/twitter/follow/espadrine?label=Twitter&style=social'></object>
+  </nav>
+  <article class=relative>
+<h1>A Learning Resource for the NATO Phonetic Alphabet</h1>
+<iframe src=https://espadrine.github.io/nato-alphabet/
+  style='width:100%; height:1000px; border:0'></iframe>
+<p>A while back, I wrote <a href="https://espadrine.github.io/nato-alphabet/">a resource</a>
+to help me learn the <a href="https://www.nato.int/cps/en/natohq/declassified_136216.htm">NATO phonetic alphabet</a>.</p>
+<p><em>(Link to <a href="https://espadrine.github.io/nato-alphabet/">the full website here</a>.)</em></p>
+<h2>What does this resource do well?</h2>
+<p>A major aspect of good learning, is the randomization of tests.</p>
+<p>When you must remember by heart a large number of element,
+a common mistake I find in schoolbooks
+is for the exercises to repeat only the past ten new words or so.</p>
+<p>It is critical, to achieve a leveled, continuous learning experience,
+to randomly sample all words previously learnt,
+regardless of how old.
+That counteracts the inevitable forgetting of short-term-memory words.</p>
+<p><em>If you can <strong>predict</strong> the words that your memory must remember,
+you will subconsciously forget the words that won’t appear.</em>
+Worse, you may link them to the predictable sequence of words
+that the test is built on,
+causing you to only remember one word when it is next to the other,
+which in real life, it will often not be.</p>
+<p>This principle is noticeably unfollowed in language manuals,
+with predictable effects on my own learning.
+I was (and am) frustrated to not have tools like these.</p>
+<p>Good randomness is critical to healthy knowledge acquisition.</p>
+<p>In fact, many machine learning systems heavily depend on that insight.
+For instance, <a href="https://deepmind.com/blog/article/alphago-zero-starting-scratch">AlphaGo</a> carefully randomized the sequence of games
+and the stage of the games that it had to learn,
+to avoid the system from overfitting on one game, or on the late game.</p>
+<h2>Why did I want to learn it?</h2>
+<p>When investigating production issues,
+developers and operations managers often have to communicate identifiers
+so they can share their findings.</p>
+<blockquote>
+<p>— “<em>Hey, take a look at payment authorization number
+<code>78223a6b-6b41-41ac-9cc1-00b76a664ac9</code>:
+the amount matches the settlement we are looking for.</em>”</p>
+</blockquote>
+<p><strong>Sequential identifiers</strong> are short (at first),
+but betray information about when the entity was created,
+which is often not welcome.
+<em>Identifiers should never contain potentially secret information.</em></p>
+<p><strong>Traditional UUID v4</strong> are not great at transmitting identifiers efficiently,
+especially vocally.</p>
+<p>Indeed, sequences of digits have a higher error rate when vocally transmitted.
+They are easy to confuse with each other, after all;
+using a larger glyph set increases distinguishability.</p>
+<p><a href="https://qonto.com/en">At work</a>, we do have a lot of UUIDs.
+In many spots in the deeper core of the system, however,
+I opted for <strong>128-bit CSPRNG-produced base64 identifiers</strong>.
+They are shorter (⌈128÷log2(64)⌉ = 22 characters)
+and harder to mistype.</p>
+<p>Looking back, one flaw with those is that it is very hard
+to communicate them vocally.
+You always end up having to specify uppercase / lowercase.
+Even when mentally copying these IDs on your own,
+you often use the wrong case.</p>
+<p>Instead, <strong>base32</strong> does away with case,
+making it very suitable for vocal transmission.
+When lowercase, it is even particularly easy to read.</p>
+<p>I must not be the only one with that opinion.
+In fact, in the Bitcoin world,
+the account number format has been switched from a base58 one,
+to the new <a href="https://github.com/bitcoin/bips/blob/master/bip-0173.mediawiki">Bech32</a> addresses introduced with SegWit.
+Behold, it uses lowercase base32!</p>
+<blockquote>
+<p><code>bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4</code></p>
+</blockquote>
+<p>Of course, Bitcoin addresses are still very long.
+Too long to transmit in a single breath.</p>
+<p>We could constrain ourselves to 128 random bits,
+yielding a ⌈128÷log2(32)⌉ = 26-character identifier.
+As long as the entire alphabet!</p>
+<p>There is a shorter technique:</p>
+<ol>
+<li>Identifier generator nodes are globally assigned a random 16-bit number.</li>
+<li>They all share a 128-bit secret.</li>
+<li>They each have a separate 48-bit counter that they increment for each new ID.</li>
+<li>Each new identifier is <code>PRP((nodeID &lt;&lt; 48) ^ counter, secret)</code>,
+where PRP is a 64-bit block cipher, like <a href="https://nsacyber.github.io/simon-speck/">Speck64/128</a> or XTEA.</li>
+</ol>
+<p>Since a block cipher is a <a href="https://en.wikipedia.org/wiki/Pseudorandom_permutation">Pseudo-Random Permutation</a> (or PRP for short),
+it will cycle through all 64-bit values without repetition.
+The output will be essentially indistinguishably random,
+avoiding leaking information about the identified object.
+And a 64-bit number is only 13 characters of base32!</p>
+<blockquote>
+<p>— “<em>Hey, take a look at payment authorization number <code>nhimasuge7f52</code>:
+the amount matches the settlement we are looking for.</em>”</p>
+</blockquote>
+<p>That, finally, can be easily transmitted using the NATO system.</p>
+<p><em>(This system is likely overkill, but a fun thought.)</em></p>
+<script type="application/ld+json">
+{ "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "datePublished": "2020-11-11T19:18:25Z",
+  "keywords": "codes" }
+</script>
+    <footer>
+      Published <time itemprop=datePublished datetime="2020-11-11T19:18:25Z">11 November 2020</time>.
+      <br>
+      Tags: <a class=tag href="../index.html?tags=codes">codes</a>.
+    </footer>
+  </article>
+</main>

@@ -4,7 +4,114 @@
   <link rel="alternate" type="text/html" href="https://espadrine.github.io/blog/"/>
   <link rel="self" type="application/atom+xml" href="https://espadrine.github.io/blog/feed.xml"/>
   <id>https://espadrine.github.io/blog/feed.xml</id>
-  <updated>2020-07-05T20:19:02Z</updated>
+  <updated>2020-11-11T19:18:25Z</updated>
+      <entry>
+        <id>https://espadrine.github.io/blog/posts/nato-phonetic-alphabet.html</id>
+        <link rel="alternate" type="text/html" href="https://espadrine.github.io/blog/posts/nato-phonetic-alphabet.html"/>
+        <title>A Learning Resource for the NATO Phonetic Alphabet</title>
+        <published>2020-11-11T19:18:25Z</published>
+        <category term="codes"/>
+        <content type="html">
+          <![CDATA[ <h1>A Learning Resource for the NATO Phonetic Alphabet</h1>
+<iframe src=https://espadrine.github.io/nato-alphabet/
+  style='width:100%; height:1000px; border:0'></iframe>
+<p>A while back, I wrote <a href="https://espadrine.github.io/nato-alphabet/">a resource</a>
+to help me learn the <a href="https://www.nato.int/cps/en/natohq/declassified_136216.htm">NATO phonetic alphabet</a>.</p>
+<p><em>(Link to <a href="https://espadrine.github.io/nato-alphabet/">the full website here</a>.)</em></p>
+<h2>What does this resource do well?</h2>
+<p>A major aspect of good learning, is the randomization of tests.</p>
+<p>When you must remember by heart a large number of element,
+a common mistake I find in schoolbooks
+is for the exercises to repeat only the past ten new words or so.</p>
+<p>It is critical, to achieve a leveled, continuous learning experience,
+to randomly sample all words previously learnt,
+regardless of how old.
+That counteracts the inevitable forgetting of short-term-memory words.</p>
+<p><em>If you can <strong>predict</strong> the words that your memory must remember,
+you will subconsciously forget the words that won’t appear.</em>
+Worse, you may link them to the predictable sequence of words
+that the test is built on,
+causing you to only remember one word when it is next to the other,
+which in real life, it will often not be.</p>
+<p>This principle is noticeably unfollowed in language manuals,
+with predictable effects on my own learning.
+I was (and am) frustrated to not have tools like these.</p>
+<p>Good randomness is critical to healthy knowledge acquisition.</p>
+<p>In fact, many machine learning systems heavily depend on that insight.
+For instance, <a href="https://deepmind.com/blog/article/alphago-zero-starting-scratch">AlphaGo</a> carefully randomized the sequence of games
+and the stage of the games that it had to learn,
+to avoid the system from overfitting on one game, or on the late game.</p>
+<h2>Why did I want to learn it?</h2>
+<p>When investigating production issues,
+developers and operations managers often have to communicate identifiers
+so they can share their findings.</p>
+<blockquote>
+<p>— “<em>Hey, take a look at payment authorization number
+<code>78223a6b-6b41-41ac-9cc1-00b76a664ac9</code>:
+the amount matches the settlement we are looking for.</em>”</p>
+</blockquote>
+<p><strong>Sequential identifiers</strong> are short (at first),
+but betray information about when the entity was created,
+which is often not welcome.
+<em>Identifiers should never contain potentially secret information.</em></p>
+<p><strong>Traditional UUID v4</strong> are not great at transmitting identifiers efficiently,
+especially vocally.</p>
+<p>Indeed, sequences of digits have a higher error rate when vocally transmitted.
+They are easy to confuse with each other, after all;
+using a larger glyph set increases distinguishability.</p>
+<p><a href="https://qonto.com/en">At work</a>, we do have a lot of UUIDs.
+In many spots in the deeper core of the system, however,
+I opted for <strong>128-bit CSPRNG-produced base64 identifiers</strong>.
+They are shorter (⌈128÷log2(64)⌉ = 22 characters)
+and harder to mistype.</p>
+<p>Looking back, one flaw with those is that it is very hard
+to communicate them vocally.
+You always end up having to specify uppercase / lowercase.
+Even when mentally copying these IDs on your own,
+you often use the wrong case.</p>
+<p>Instead, <strong>base32</strong> does away with case,
+making it very suitable for vocal transmission.
+When lowercase, it is even particularly easy to read.</p>
+<p>I must not be the only one with that opinion.
+In fact, in the Bitcoin world,
+the account number format has been switched from a base58 one,
+to the new <a href="https://github.com/bitcoin/bips/blob/master/bip-0173.mediawiki">Bech32</a> addresses introduced with SegWit.
+Behold, it uses lowercase base32!</p>
+<blockquote>
+<p><code>bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4</code></p>
+</blockquote>
+<p>Of course, Bitcoin addresses are still very long.
+Too long to transmit in a single breath.</p>
+<p>We could constrain ourselves to 128 random bits,
+yielding a ⌈128÷log2(32)⌉ = 26-character identifier.
+As long as the entire alphabet!</p>
+<p>There is a shorter technique:</p>
+<ol>
+<li>Identifier generator nodes are globally assigned a random 16-bit number.</li>
+<li>They all share a 128-bit secret.</li>
+<li>They each have a separate 48-bit counter that they increment for each new ID.</li>
+<li>Each new identifier is <code>PRP((nodeID &lt;&lt; 48) ^ counter, secret)</code>,
+where PRP is a 64-bit block cipher, like <a href="https://nsacyber.github.io/simon-speck/">Speck64/128</a> or XTEA.</li>
+</ol>
+<p>Since a block cipher is a <a href="https://en.wikipedia.org/wiki/Pseudorandom_permutation">Pseudo-Random Permutation</a> (or PRP for short),
+it will cycle through all 64-bit values without repetition.
+The output will be essentially indistinguishably random,
+avoiding leaking information about the identified object.
+And a 64-bit number is only 13 characters of base32!</p>
+<blockquote>
+<p>— “<em>Hey, take a look at payment authorization number <code>nhimasuge7f52</code>:
+the amount matches the settlement we are looking for.</em>”</p>
+</blockquote>
+<p>That, finally, can be easily transmitted using the NATO system.</p>
+<p><em>(This system is likely overkill, but a fun thought.)</em></p>
+<script type="application/ld+json">
+{ "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "datePublished": "2020-11-11T19:18:25Z",
+  "keywords": "codes" }
+</script> ]]>
+        </content>
+      </entry>
       <entry>
         <id>https://espadrine.github.io/blog/posts/webidentity.html</id>
         <link rel="alternate" type="text/html" href="https://espadrine.github.io/blog/posts/webidentity.html"/>
@@ -1461,250 +1568,6 @@ I’ll give you a few fun facts about it, as goodbye.</p>
   "@type": "BlogPosting",
   "datePublished": "2020-03-27T15:17:57Z",
   "keywords": "prng, crypto" }
-</script> ]]>
-        </content>
-      </entry>
-      <entry>
-        <id>https://espadrine.github.io/blog/posts/two-postgresql-sequence-misconceptions.html</id>
-        <link rel="alternate" type="text/html" href="https://espadrine.github.io/blog/posts/two-postgresql-sequence-misconceptions.html"/>
-        <title>Two PostgreSQL Sequence Misconceptions</title>
-        <published>2019-09-05T17:28:59Z</published>
-        <category term="sql"/>
-        <content type="html">
-          <![CDATA[ <h1>Two PostgreSQL Sequence Misconceptions</h1>
-<p>✨ <em>With Examples!</em> ✨</p>
-<p>Some constructs seem more powerful than the promises they make.</p>
-<p>PostgreSQL sequences are like that. Many assume it offers stronger properties
-than it can deliver.</p>
-<p>They trust them to be the grail of SQL ordering, the one-size-fits-all of strict
-serializability. However, there is a good reason Amazon spent design time on
-vector clocks in <a href="https://www.allthingsdistributed.com/files/amazon-dynamo-sosp2007.pdf">Dynamo</a>, Google invested significantly into <a href="https://static.googleusercontent.com/media/research.google.com/en//archive/chubby-osdi06.pdf">Chubby</a>, then
-<a href="https://storage.googleapis.com/pub-tools-public-publication-data/pdf/36726.pdf">Percolator</a>’s timestamp oracle, then <a href="https://static.googleusercontent.com/media/research.google.com/en//archive/spanner-osdi2012.pdf">Spanner</a>’s expensive,
-atomic-clock-based TrueTime; why Twitter built <a href="https://developer.twitter.com/en/docs/basics/twitter-ids.html">Snowflake</a>, and so many others
-built custom timestamp systems.</p>
-<ol>
-<li>Strict serializability is hard to achieve, especially in a distributed
-system, but even in a centralized system with the possibility of failure.</li>
-<li>Developers assume the system is strict-serializable, but it usually is not.</li>
-<li>When a system provides timestamps, developers will use those as if they were
-monotonically strictly increasing atomically throughout the distributed
-system, but they often are not, which causes subtle bugs.</li>
-</ol>
-<h2>The problem space</h2>
-<p>To design your system’s properties right, it is often useful or necessary to
-determine the order in which events happened. Ideally, you wish for the <strong>“wall
-clock” order</strong> (looking at your watch), although instantaneity gets tricky when
-events occur at a distance, even within the same motherboard, but especially
-across a datacenter, or between cities.</p>
-<p>At the very least, you want to reason about <strong>causal ordering</strong>: when that event
-happened, did it already see this other event?</p>
-<p>A nice property to have, even for a single centralized database, is to give a
-monotonically increasing identifier for each row. Most PostgreSQL users rely on
-the <code>SERIAL</code> type for that – a sequence. Each insertion will call <code>nextval()</code>
-and store an increasing value.</p>
-<p>What you implicitly want is to list rows by insertion order, Your mental model
-is that each insertion happens at a set “wall clock” time. A first insertion
-will happen at T0 and set the identifier 1, the next one happens at T1 and get
-number 2, and so on. Therefore, <em>you expect a row with ID N to have causally
-been inserted after a row with ID M &lt; N</em>.</p>
-<p>Operational order is a consistency constraint strongly associated with isolation
-levels. A PostgreSQL database can handle multiple simultaneous operations.</p>
-<p><em>(Side note: I could be talking about threads and locks, but I will not, because
-those are just tools to achieve properties. PostgreSQL may switch tools to
-better meet a given promise (they did so with the serializable level in 2011),
-but the promise won’t change.)</em></p>
-<p>By default, it promises <strong>Read Committed</strong> isolation: a transaction can witness
-the effects of all transactions that commit “before” it does (but not those that
-have not committed yet). Their commits are therefore causally ordered by commit
-time.</p>
-<p>However, nothing else within a transaction has any causal promise with respect
-to other transactions. The same <code>SELECT</code> can yield different values;
-simultaneous insertions can happen either before, after, or anything in between,
-your own insertion.</p>
-<p>The highest isolation level PostgreSQL offers is <strong>Serializable</strong> isolation: all
-transactions are causally ordered; from <code>BEGIN</code> to <code>COMMIT</code>. Of course,
-transactions still execute in parallel; but the database makes sure that
-everything that a transaction witnesses can be explained by executing all its
-statements either after all statements of another transaction, or before all of
-them. It won’t see a changing state within the execution of the transaction.</p>
-<p><em>(By the way, PostgreSQL only achieved serializability in 2011, when they
-released <a href="https://www.postgresql.org/docs/release/9.1.0/">version 9.1</a> with support for predicate locks. It is hard.)</em></p>
-<p>Having a causal order does not mean that this order follows <em>real time</em>: one
-insertion may complete at 9:30am <em>after (in causal order)</em> another that
-completes later at 10:40am. If you want the additional property that the order
-is consistent with wall clock time, you want <strong><a href="https://jepsen.io/consistency/models/strict-serializable">Strict Serializability</a></strong>.</p>
-<p>However, <strong>PostgreSQL makes no claim of Strict Serializability</strong>.</p>
-<p>Given all this, sequences probably feel much weaker than you initially thought.</p>
-<p>You want them to give a continuous set of numbers, but a sequence can yield
-values with gaps (1 2 4).</p>
-<p>You want them to give a causal order <em>(2 was inserted before 3)</em>, but it can
-yield values out of order (1 3 2).</p>
-<p>All a sequence promises is to give values that have an order. Not a continuous
-order, nor a time order.</p>
-<p>Let’s demonstrate both.</p>
-<h2>Gaps</h2>
-<p>Let’s create a table with a <code>SERIAL</code> identifier. For the purpose of showing
-things going right, let’s insert a row.</p>
-<pre><code class="language-sql">CREATE TABLE gaps (id SERIAL);
-BEGIN;
-INSERT INTO order DEFAULT VALUES;
-SELECT * FROM gaps;
-</code></pre>
-<pre><code> id 
-----
-  1
-(1 row)
-</code></pre>
-<p>Now comes the gap.</p>
-<pre><code class="language-sql">BEGIN;
-INSERT INTO order DEFAULT VALUES;
-ROLLBACK;
-</code></pre>
-<p>Since we rolled back, nothing happened – or did it?</p>
-<p>Let’s now insert another row.</p>
-<pre><code class="language-sql">INSERT INTO order DEFAULT VALUES;
-SELECT * FROM gaps;
-</code></pre>
-<pre><code> id 
-----
-  1
-  3
-(2 rows)
-</code></pre>
-<p>Oops! Despite the rollback, the sequence was incremented without being reverted.
-Now, there is a gap.</p>
-<p>This is not a PostgreSQL bug per se: the way sequences are stored, it just does
-not keep the information necessary to undo the <code>nextval()</code> without potentially
-breaking other operations.</p>
-<p>Let’s now break the other assumption.</p>
-<h2>Order violation</h2>
-<p>First, a table with a sequence and a timestamp:</p>
-<pre><code class="language-sql">CREATE TABLE orders (id SERIAL, created_at TIMESTAMPTZ);
-</code></pre>
-<p>Let’s set up two concurrent connections to the database. Each will have the same
-instructions. I started the first one yesterday:</p>
-<pre><code class="language-sql">-- Connection 1
-BEGIN;
-</code></pre>
-<p>I launch the second one today:</p>
-<pre><code class="language-sql">-- Connection 2
-BEGIN;
-INSERT INTO orders (created_at) VALUES (NOW());
-COMMIT;
-</code></pre>
-<p>Let’s go back to the first one:</p>
-<pre><code class="language-sql">-- Connection 1
-INSERT INTO orders (created_at) VALUES (NOW());
-COMMIT;
-</code></pre>
-<p>Simple enough. But we actually just got the order violation:</p>
-<pre><code class="language-sql">SELECT * FROM orders ORDER BY created_at;
-</code></pre>
-<pre><code> id |          created_at           
-----+-------------------------------
-  2 | 2019-09-04 21:10:38.392352+02
-  1 | 2019-09-05 08:19:34.423947+02
-</code></pre>
-<p>The order of the sequence does not follow creation order.</p>
-<p>From then on, developers may write some queries ordering by ID, and some
-ordering by timestamp, expecting an identical order. That incorrect assumption
-may break their business logic.</p>
-<p>Lest you turn your heart to another false god, that behavior remains the same
-with serializable transactions.</p>
-<h2>Are we doomed?</h2>
-<p>No.</p>
-<p>Sure, the systems we use have weak assumptions. But that is true at every level.
-The nice thing about the world is that you can combine weak things to make
-strong things. Pure iron is ductile, and carbon is brittle, but their alloy is
-steel.</p>
-<p>For instance, you can get the best of both worlds, causal order and “wall clock”
-timestamps, by having a <code>TIMESTAMPTZ</code> field, only inserting rows within
-serializable transactions, and setting the <code>created_at</code> field to now, or after
-the latest insertion:</p>
-<pre><code class="language-sql">BEGIN ISOLATION LEVEL SERIALIZABLE;
-INSERT INTO orders (created_at)
-SELECT GREATEST(NOW(), MAX(created_at) + INTERVAL '1 microsecond') FROM orders;
-COMMIT;
-</code></pre>
-<p>Indeed, PostgreSQL’s <code>TIMESTAMPTZ</code> has a precision up to the microsecond. You
-don’t want to have conflicts in your <code>created_at</code> (otherwise you could not
-determine causal order between the conflicting rows), so you add a microsecond
-to the current time if there is a conflict.</p>
-<p>However, here, concurrent operations are likely to fail, as we acquire a
-(non-blocking) SIReadLock on the whole table (what the documentation calls a
-relation lock):</p>
-<pre><code class="language-sql">SELECT l.mode, l.relation::regclass, l.page, l.tuple, substring(a.query from 0 for 19)
-FROM pg_stat_activity a JOIN pg_locks l ON l.pid = a.pid
-WHERE l.relation::regclass::text LIKE 'orders%'
-  AND datname = current_database()
-  AND granted
-ORDER BY a.query_start;
-</code></pre>
-<pre><code>       mode       | relation | page | tuple |     substring
-------------------+----------+------+-------+--------------------
- SIReadLock       | orders   |      |       | INSERT INTO orders
- RowExclusiveLock | orders   |      |       | INSERT INTO orders
- AccessShareLock  | orders   |      |       | INSERT INTO orders
-</code></pre>
-<p>The reason for that is that we perform a slow Seq Scan in this trivial example,
-as the <a href="https://www.postgresql.org/docs/current/using-explain.html">EXPLAIN</a> proves.</p>
-<pre><code>                                  QUERY PLAN
--------------------------------------------------------------------------------
- Insert on orders  (cost=38.25..38.28 rows=1 width=8)
-   -&gt;  Aggregate  (cost=38.25..38.27 rows=1 width=8)
-         -&gt;  Seq Scan on orders orders_1  (cost=0.00..32.60 rows=2260 width=8)
-</code></pre>
-<p>With an <a href="https://www.postgresql.org/docs/current/sql-createindex.html">index</a>, concurrent operations are much more likely to work:</p>
-<pre><code class="language-sql">CREATE INDEX created_at_idx ON orders (created_at);
-</code></pre>
-<p>We then only take a tuple lock on the table:</p>
-<pre><code>       mode       | relation | page | tuple |     substring      
-------------------+----------+------+-------+--------------------
- SIReadLock       | orders   |    0 |     5 | INSERT INTO orders
- RowExclusiveLock | orders   |      |       | INSERT INTO orders
- AccessShareLock  | orders   |      |       | INSERT INTO orders
-</code></pre>
-<p>However, the tuple in question is the latest row in the table. Any two
-concurrent insertions will definitely read from the same one: the one with the
-latest <code>created_at</code>. Therefore, only one of concurrent insertion will succeed;
-the others will need to be retried until they do too.</p>
-<h2>Subset Ordering</h2>
-<p>In cases where you only need a unique ordering for a subset of rows based on
-another field, you can set a combined index with that other field:</p>
-<pre><code class="language-sql">CREATE TABLE orders (
-  account_id UUID DEFAULT gen_random_uuid(),
-  created_at TIMESTAMPTZ);
-CREATE INDEX account_created_at_idx ON orders (account_id, created_at DESC);
-</code></pre>
-<p>Then the <a href="https://www.postgresql.org/docs/current/using-explain.html">query planner</a> goes through the account index:</p>
-<pre><code class="language-sql">INSERT INTO orders (account_id, created_at)
-SELECT account_id, GREATEST(NOW(), created_at + INTERVAL '1 microsecond')
-FROM orders WHERE account_id = '9c99bef6-a05a-48c4-bba3-6080a6ce4f2e'::uuid
-ORDER BY created_at DESC LIMIT 1
-</code></pre>
-<pre><code>                                                      QUERY PLAN
------------------------------------------------------------------------------------------------------------------------
- Insert on orders  (cost=0.15..3.69 rows=1 width=24)
-   -&gt;  Subquery Scan on &quot;*SELECT*&quot;  (cost=0.15..3.69 rows=1 width=24)
-         -&gt;  Limit  (cost=0.15..3.68 rows=1 width=32)
-               -&gt;  Index Only Scan using account_created_at_idx on orders orders_1  (cost=0.15..28.35 rows=8 width=32)
-                     Index Cond: (account_id = '9c99bef6-a05a-48c4-bba3-6080a6ce4f2e'::uuid)
-</code></pre>
-<p>And concurrent insertions on different accounts work:</p>
-<pre><code>       mode       | relation | page | tuple |     substring
-------------------+----------+------+-------+--------------------
- SIReadLock       | orders   |    0 |     1 | INSERT INTO orders
- RowExclusiveLock | orders   |      |       | INSERT INTO orders
- AccessShareLock  | orders   |      |       | INSERT INTO orders
- SIReadLock       | orders   |    0 |     2 | COMMIT;
-</code></pre>
-<p>(The first three row are from one not-finished transaction on account 1, the
-last is from a finished one on account 2.)</p>
-<script type="application/ld+json">
-{ "@context": "http://schema.org",
-  "@type": "BlogPosting",
-  "datePublished": "2019-09-05T17:28:59Z",
-  "keywords": "sql" }
 </script> ]]>
         </content>
       </entry>
