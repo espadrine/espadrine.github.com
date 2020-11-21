@@ -113,6 +113,10 @@ That, finally, can be easily transmitted using the NATO system.
 
 *(This system is likely overkill, but a fun thought.)*
 
+---
+
+*[Click to comment.][Comments]*
+
 [learn]: https://espadrine.github.io/nato-alphabet/
 [AlphaGo]: https://deepmind.com/blog/article/alphago-zero-starting-scratch
 [NATO]: https://www.nato.int/cps/en/natohq/declassified_136216.htm
@@ -120,6 +124,7 @@ That, finally, can be easily transmitted using the NATO system.
 [Bech32]: https://github.com/bitcoin/bips/blob/master/bip-0173.mediawiki
 [PRP]: https://en.wikipedia.org/wiki/Pseudorandom_permutation
 [Speck64/128]: https://nsacyber.github.io/simon-speck/
+[Comments]: https://www.reddit.com/r/espadrine/comments/jydh6k/a_learning_resource_for_the_nato_phonetic_alphabet/
 
 <script type="application/ld+json">
 { "@context": "http://schema.org",
