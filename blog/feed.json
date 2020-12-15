@@ -1,7 +1,7 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "Espadrine’s blog",
-  "description": "Let’s talk about whatever I learn!",
+  "title": "The espadrine blog.",
+  "description": "Tech deep dives, discoveries, and analyses.",
   "home_page_url": "https://espadrine.github.io/blog/",
   "feed_url": "https://espadrine.github.io/blog/feed.json",
   "author": {
