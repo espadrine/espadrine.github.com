@@ -1,12 +1,14 @@
 <!doctype html><meta charset=utf-8>
 <title> Two PostgreSQL Sequence Misconceptions </title>
 <link href=../blog.css rel=stylesheet>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.5.0/build/styles/default.min.css">
 <link rel="alternate" type="application/atom+xml" title="Atom 1.0" href="feed.xml"/>
 <link rel="alternate" type="application/json" title="JSON Feed" href="feed.json" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <main>
   <nav class=social-links>
-    <object type='image/svg+xml' data='https://img.shields.io/badge/blog-45-green?style=social&logo=rss&logoColor=e5732f&link=https://espadrine.github.io/blog/&link=https://espadrine.github.io/blog/feed.xml'></object>
+    <object type='image/svg+xml' data='https://img.shields.io/badge/blog-46-green?style=social&logo=rss&logoColor=e5732f&link=https://espadrine.github.io/blog/&link=https://espadrine.github.io/blog/feed.xml'></object>
     <object type='image/svg+xml' data='https://img.shields.io/github/followers/espadrine?label=Github&style=social&link=https%3A%2F%2Fgithub.com%2Fespadrine&link=https%3A%2F%2Fgithub.com%2Fespadrine%3Ftab%3Dfollowers'></object>
     <object type='image/svg+xml' data='https://img.shields.io/twitter/follow/espadrine?label=Twitter&style=social'></object>
   </nav>
@@ -85,26 +87,26 @@ order, nor a time order.</p>
 <h2>Gaps</h2>
 <p>Let’s create a table with a <code>SERIAL</code> identifier. For the purpose of showing
 things going right, let’s insert a row.</p>
-<pre><code class="language-sql">CREATE TABLE gaps (id SERIAL);
-BEGIN;
-INSERT INTO order DEFAULT VALUES;
-SELECT * FROM gaps;
-</code></pre>
+<pre><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> gaps (id SERIAL);
+<span class="hljs-keyword">BEGIN</span>;
+<span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> <span class="hljs-keyword">order</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">VALUES</span>;
+<span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> gaps;
+</pre>
 <pre><code> id 
 ----
   1
 (1 row)
 </code></pre>
 <p>Now comes the gap.</p>
-<pre><code class="language-sql">BEGIN;
-INSERT INTO order DEFAULT VALUES;
-ROLLBACK;
-</code></pre>
+<pre><span class="hljs-keyword">BEGIN</span>;
+<span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> <span class="hljs-keyword">order</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">VALUES</span>;
+<span class="hljs-keyword">ROLLBACK</span>;
+</pre>
 <p>Since we rolled back, nothing happened – or did it?</p>
 <p>Let’s now insert another row.</p>
-<pre><code class="language-sql">INSERT INTO order DEFAULT VALUES;
-SELECT * FROM gaps;
-</code></pre>
+<pre><span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> <span class="hljs-keyword">order</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">VALUES</span>;
+<span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> gaps;
+</pre>
 <pre><code> id 
 ----
   1
@@ -119,27 +121,27 @@ breaking other operations.</p>
 <p>Let’s now break the other assumption.</p>
 <h2>Order violation</h2>
 <p>First, a table with a sequence and a timestamp:</p>
-<pre><code class="language-sql">CREATE TABLE orders (id SERIAL, created_at TIMESTAMPTZ);
-</code></pre>
+<pre><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> orders (id SERIAL, created_at TIMESTAMPTZ);
+</pre>
 <p>Let’s set up two concurrent connections to the database. Each will have the same
 instructions. I started the first one yesterday:</p>
-<pre><code class="language-sql">-- Connection 1
-BEGIN;
-</code></pre>
+<pre><span class="hljs-comment">-- Connection 1</span>
+<span class="hljs-keyword">BEGIN</span>;
+</pre>
 <p>I launch the second one today:</p>
-<pre><code class="language-sql">-- Connection 2
-BEGIN;
-INSERT INTO orders (created_at) VALUES (NOW());
-COMMIT;
-</code></pre>
+<pre><span class="hljs-comment">-- Connection 2</span>
+<span class="hljs-keyword">BEGIN</span>;
+<span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> orders (created_at) <span class="hljs-keyword">VALUES</span> (NOW());
+<span class="hljs-keyword">COMMIT</span>;
+</pre>
 <p>Let’s go back to the first one:</p>
-<pre><code class="language-sql">-- Connection 1
-INSERT INTO orders (created_at) VALUES (NOW());
-COMMIT;
-</code></pre>
+<pre><span class="hljs-comment">-- Connection 1</span>
+<span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> orders (created_at) <span class="hljs-keyword">VALUES</span> (NOW());
+<span class="hljs-keyword">COMMIT</span>;
+</pre>
 <p>Simple enough. But we actually just got the order violation:</p>
-<pre><code class="language-sql">SELECT * FROM orders ORDER BY created_at;
-</code></pre>
+<pre><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> orders <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> created_at;
+</pre>
 <pre><code> id |          created_at           
 ----+-------------------------------
   2 | 2019-09-04 21:10:38.392352+02
@@ -161,11 +163,11 @@ steel.</p>
 timestamps, by having a <code>TIMESTAMPTZ</code> field, only inserting rows within
 serializable transactions, and setting the <code>created_at</code> field to now, or after
 the latest insertion:</p>
-<pre><code class="language-sql">BEGIN ISOLATION LEVEL SERIALIZABLE;
-INSERT INTO orders (created_at)
-SELECT GREATEST(NOW(), MAX(created_at) + INTERVAL '1 microsecond') FROM orders;
-COMMIT;
-</code></pre>
+<pre><span class="hljs-keyword">BEGIN</span> ISOLATION LEVEL SERIALIZABLE;
+<span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> orders (created_at)
+<span class="hljs-keyword">SELECT</span> GREATEST(NOW(), <span class="hljs-built_in">MAX</span>(created_at) <span class="hljs-operator">+</span> <span class="hljs-type">INTERVAL</span> <span class="hljs-string">&#x27;1 microsecond&#x27;</span>) <span class="hljs-keyword">FROM</span> orders;
+<span class="hljs-keyword">COMMIT</span>;
+</pre>
 <p>Indeed, PostgreSQL’s <code>TIMESTAMPTZ</code> has a precision up to the microsecond. You
 don’t want to have conflicts in your <code>created_at</code> (otherwise you could not
 determine causal order between the conflicting rows), so you add a microsecond
@@ -173,13 +175,13 @@ to the current time if there is a conflict.</p>
 <p>However, here, concurrent operations are likely to fail, as we acquire a
 (non-blocking) SIReadLock on the whole table (what the documentation calls a
 relation lock):</p>
-<pre><code class="language-sql">SELECT l.mode, l.relation::regclass, l.page, l.tuple, substring(a.query from 0 for 19)
-FROM pg_stat_activity a JOIN pg_locks l ON l.pid = a.pid
-WHERE l.relation::regclass::text LIKE 'orders%'
-  AND datname = current_database()
-  AND granted
-ORDER BY a.query_start;
-</code></pre>
+<pre><span class="hljs-keyword">SELECT</span> l.mode, l.relation::regclass, l.page, l.tuple, <span class="hljs-built_in">substring</span>(a.query <span class="hljs-keyword">from</span> <span class="hljs-number">0</span> <span class="hljs-keyword">for</span> <span class="hljs-number">19</span>)
+<span class="hljs-keyword">FROM</span> pg_stat_activity a <span class="hljs-keyword">JOIN</span> pg_locks l <span class="hljs-keyword">ON</span> l.pid <span class="hljs-operator">=</span> a.pid
+<span class="hljs-keyword">WHERE</span> l.relation::regclass::text <span class="hljs-keyword">LIKE</span> <span class="hljs-string">&#x27;orders%&#x27;</span>
+  <span class="hljs-keyword">AND</span> datname <span class="hljs-operator">=</span> current_database()
+  <span class="hljs-keyword">AND</span> granted
+<span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> a.query_start;
+</pre>
 <pre><code>       mode       | relation | page | tuple |     substring
 ------------------+----------+------+-------+--------------------
  SIReadLock       | orders   |      |       | INSERT INTO orders
@@ -195,8 +197,8 @@ as the <a href="https://www.postgresql.org/docs/current/using-explain.html">EXPL
          -&gt;  Seq Scan on orders orders_1  (cost=0.00..32.60 rows=2260 width=8)
 </code></pre>
 <p>With an <a href="https://www.postgresql.org/docs/current/sql-createindex.html">index</a>, concurrent operations are much more likely to work:</p>
-<pre><code class="language-sql">CREATE INDEX created_at_idx ON orders (created_at);
-</code></pre>
+<pre><span class="hljs-keyword">CREATE</span> INDEX created_at_idx <span class="hljs-keyword">ON</span> orders (created_at);
+</pre>
 <p>We then only take a tuple lock on the table:</p>
 <pre><code>       mode       | relation | page | tuple |     substring      
 ------------------+----------+------+-------+--------------------
@@ -211,17 +213,17 @@ the others will need to be retried until they do too.</p>
 <h2>Subset Ordering</h2>
 <p>In cases where you only need a unique ordering for a subset of rows based on
 another field, you can set a combined index with that other field:</p>
-<pre><code class="language-sql">CREATE TABLE orders (
-  account_id UUID DEFAULT gen_random_uuid(),
+<pre><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> orders (
+  account_id UUID <span class="hljs-keyword">DEFAULT</span> gen_random_uuid(),
   created_at TIMESTAMPTZ);
-CREATE INDEX account_created_at_idx ON orders (account_id, created_at DESC);
-</code></pre>
+<span class="hljs-keyword">CREATE</span> INDEX account_created_at_idx <span class="hljs-keyword">ON</span> orders (account_id, created_at <span class="hljs-keyword">DESC</span>);
+</pre>
 <p>Then the <a href="https://www.postgresql.org/docs/current/using-explain.html">query planner</a> goes through the account index:</p>
-<pre><code class="language-sql">INSERT INTO orders (account_id, created_at)
-SELECT account_id, GREATEST(NOW(), created_at + INTERVAL '1 microsecond')
-FROM orders WHERE account_id = '9c99bef6-a05a-48c4-bba3-6080a6ce4f2e'::uuid
-ORDER BY created_at DESC LIMIT 1
-</code></pre>
+<pre><span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> orders (account_id, created_at)
+<span class="hljs-keyword">SELECT</span> account_id, GREATEST(NOW(), created_at <span class="hljs-operator">+</span> <span class="hljs-type">INTERVAL</span> <span class="hljs-string">&#x27;1 microsecond&#x27;</span>)
+<span class="hljs-keyword">FROM</span> orders <span class="hljs-keyword">WHERE</span> account_id <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;9c99bef6-a05a-48c4-bba3-6080a6ce4f2e&#x27;</span>::uuid
+<span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> created_at <span class="hljs-keyword">DESC</span> LIMIT <span class="hljs-number">1</span>
+</pre>
 <pre><code>                                                      QUERY PLAN
 -----------------------------------------------------------------------------------------------------------------------
  Insert on orders  (cost=0.15..3.69 rows=1 width=24)

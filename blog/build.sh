@@ -24,7 +24,7 @@ echo "$publications" | {
     time=$(date +'%-d %B %Y' -d "$isotime")
     markdown=$(cat "$dir/src/$name".md)
     title=$(echo "$markdown" | head -1 | sed 's/^# //')
-    content=$(echo "$markdown" | commonmark --smart)
+    content=$(echo "$markdown" | latexmarkdown --body)
     keywords=$(echo "$markdown" |
       awk '/^<script type="application\/ld/ {keep=1;next} /^<\/script>/ {keep=0} keep' |
       jq -r .keywords)

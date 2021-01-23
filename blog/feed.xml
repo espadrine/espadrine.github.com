@@ -4,7 +4,70 @@
   <link rel="alternate" type="text/html" href="https://espadrine.github.io/blog/"/>
   <link rel="self" type="application/atom+xml" href="https://espadrine.github.io/blog/feed.xml"/>
   <id>https://espadrine.github.io/blog/feed.xml</id>
-  <updated>2020-11-11T19:18:25Z</updated>
+  <updated>2021-01-13T19:21:50Z</updated>
+      <entry>
+        <id>https://espadrine.github.io/blog/posts/mean-range-of-bell-curve-distributions.html</id>
+        <link rel="alternate" type="text/html" href="https://espadrine.github.io/blog/posts/mean-range-of-bell-curve-distributions.html"/>
+        <title>Mean Range of Bell Curve Distributions</title>
+        <published>2021-01-13T19:21:50Z</published>
+        <category term="stats"/>
+<category term="crypto"/>
+        <content type="html">
+          <![CDATA[ <h1>Mean Range of Bell Curve Distributions</h1>
+<p><strong>Abstract:</strong>
+When sampling several data points from a known statistical distribution,
+a valuable indication of the spread is the range of the set of values obtained.
+Since the sampling is probabilistic,
+the best estimate we can hope for is the expected value of the range.
+That mean range,
+along with the expected maximum and minimum values of the sampling set,
+are traditionally difficult to compute with existing means.
+We present a novel method to perform that computation,
+and its implications on the correct computation of the balls-into-bins problem.</p>
+<h2>Generic Derivation</h2>
+<p>Consider a distribution with probability density function <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϕ</mi></mrow><annotation encoding="application/x-tex">\phi</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal">ϕ</span></span></span></span>.
+Its associated random variable, <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi></mrow><annotation encoding="application/x-tex">X</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.07847em;">X</span></span></span></span>, can be either real-valued or discrete.</p>
+<p>We observe a sample of <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span></span></span></span> independent values taken from that distribution.</p>
+<p>The question we ask is:
+What is the range of values that have a probability ≥ <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>γ</mi></mrow><annotation encoding="application/x-tex">\gamma</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.05556em;">γ</span></span></span></span>
+(across samplings of N values) of appearing in the sample?
+For instance, for a mean range, one would pick <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>γ</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></mrow><annotation encoding="application/x-tex">\gamma = \frac{1}{2}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.05556em;">γ</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.190108em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.845108em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span>.</p>
+<p>Despite being potentially continuous, we can research the probability
+that a given value appears at least once in the sample.
+That is <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>−</mo><msub><mi>P</mi><mrow><mi>e</mi><mi>x</mi><mi>c</mi><mi>l</mi><mi>u</mi><mi>d</mi><mi>e</mi><mi>d</mi></mrow></msub></mrow><annotation encoding="application/x-tex">1 - P_{excluded}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">e</span><span class="mord mathnormal mtight">x</span><span class="mord mathnormal mtight">c</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mathnormal mtight">u</span><span class="mord mathnormal mtight">d</span><span class="mord mathnormal mtight">e</span><span class="mord mathnormal mtight">d</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>, where <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mrow><mi>e</mi><mi>x</mi><mi>c</mi><mi>l</mi><mi>u</mi><mi>d</mi><mi>e</mi><mi>d</mi></mrow></msub></mrow><annotation encoding="application/x-tex">P_{excluded}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">e</span><span class="mord mathnormal mtight">x</span><span class="mord mathnormal mtight">c</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mathnormal mtight">u</span><span class="mord mathnormal mtight">d</span><span class="mord mathnormal mtight">e</span><span class="mord mathnormal mtight">d</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> is the probability
+that the value does not appear in the sample.</p>
+<p>In turn, given that the sample is independently drawn each time,
+the probability that a value is not drawn once,
+is <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mrow><mi>e</mi><mi>x</mi><mi>c</mi><mi>l</mi><mi>u</mi><mi>d</mi><mi>e</mi><mi>d</mi></mrow></msub><mo>=</mo><mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><mi>ϕ</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><msup><mo stretchy="false">)</mo><mi>N</mi></msup></mrow><annotation encoding="application/x-tex">P_{excluded} = (1 - \phi(x))^N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">e</span><span class="mord mathnormal mtight">x</span><span class="mord mathnormal mtight">c</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mathnormal mtight">u</span><span class="mord mathnormal mtight">d</span><span class="mord mathnormal mtight">e</span><span class="mord mathnormal mtight">d</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.0913309999999998em;vertical-align:-0.25em;"></span><span class="mord mathnormal">ϕ</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)</span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8413309999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.10903em;">N</span></span></span></span></span></span></span></span></span></span></span>.</p>
+<p>Thus, the probability that a given value is in the sample,
+is <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>−</mo><mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><mi>ϕ</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><msup><mo stretchy="false">)</mo><mi>N</mi></msup></mrow><annotation encoding="application/x-tex">1 - (1 - \phi(x))^N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.0913309999999998em;vertical-align:-0.25em;"></span><span class="mord mathnormal">ϕ</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)</span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8413309999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.10903em;">N</span></span></span></span></span></span></span></span></span></span></span>.
+By definition, that probability is equal to <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>γ</mi></mrow><annotation encoding="application/x-tex">\gamma</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.05556em;">γ</span></span></span></span>.</p>
+<p>We can therefore derive that the values <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal">x</span></span></span></span> that are in range,
+follow the equation:</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>ϕ</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo>≥</mo><mn>1</mn><mo>−</mo><mroot><mrow><mn>1</mn><mo>−</mo><mi>γ</mi></mrow><mi>N</mi></mroot></mrow><annotation encoding="application/x-tex">\phi(x) \geq 1 - \sqrt[N]{1 - \gamma}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">ϕ</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">≥</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.24em;vertical-align:-0.28112499999999985em;"></span><span class="mord sqrt"><span class="root"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7483150000000002em;"><span style="top:-2.90665em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size6 size1 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.10903em;">N</span></span></span></span></span></span></span></span><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.9588750000000001em;"><span class="svg-align" style="top:-3.2em;"><span class="pstrut" style="height:3.2em;"></span><span class="mord" style="padding-left:1em;"><span class="mord">1</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord mathnormal" style="margin-right:0.05556em;">γ</span></span></span><span style="top:-2.9188750000000003em;"><span class="pstrut" style="height:3.2em;"></span><span class="hide-tail" style="min-width:1.02em;height:1.28em;"><svg width='400em' height='1.28em' viewBox='0 0 400000 1296' preserveAspectRatio='xMinYMin slice'><path d='M263,681c0.7,0,18,39.7,52,119
+c34,79.3,68.167,158.7,102.5,238c34.3,79.3,51.8,119.3,52.5,120
+c340,-704.7,510.7,-1060.3,512,-1067
+l0 -0
+c4.7,-7.3,11,-11,19,-11
+H40000v40H1012.3
+s-271.3,567,-271.3,567c-38.7,80.7,-84,175,-136,283c-52,108,-89.167,185.3,-111.5,232
+c-22.3,46.7,-33.8,70.3,-34.5,71c-4.7,4.7,-12.3,7,-23,7s-12,-1,-12,-1
+s-109,-253,-109,-253c-72.7,-168,-109.3,-252,-110,-252c-10.7,8,-22,16.7,-34,26
+c-22,17.3,-33.3,26,-34,26s-26,-26,-26,-26s76,-59,76,-59s76,-60,76,-60z
+M1001 80h400000v40h-400000z'/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.28112499999999985em;"><span></span></span></span></span></span></span></span></span></span>
+<h2>Application to the Normal</h2>
+<h2>Application to the Binomial</h2>
+<h2>Balls Into Bins</h2>
+<h2>Conclusion</h2>
+<script type="application/ld+json">
+{ "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "datePublished": "2021-01-13T19:21:50Z",
+  "keywords": "stats, crypto" }
+</script> ]]>
+        </content>
+      </entry>
       <entry>
         <id>https://espadrine.github.io/blog/posts/nato-phonetic-alphabet.html</id>
         <link rel="alternate" type="text/html" href="https://espadrine.github.io/blog/posts/nato-phonetic-alphabet.html"/>
@@ -859,12 +922,12 @@ for reasons that will slowly become obvious along the article.</p>
 <p>It looks like this:</p>
 <p><img src="../assets/shishua-the-fastest-prng-in-the-world/shishua-diagram.svg" alt="SHISHUA diagram" /></p>
 <p>Let’s dive in line by line.</p>
-<pre><code class="language-c">typedef struct prng_state {
-  __m256i state[2];
+<pre><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">prng_state</span> {</span>
+  __m256i state[<span class="hljs-number">2</span>];
   __m256i output;
   __m256i counter;
 } prng_state;
-</code></pre>
+</pre>
 <p>Our state is cut in two pieces that both fit in an AVX2 register (256 bits).
 We keep output around in the state to get a bit of speed,
 but it is not actually part of the state.</p>
@@ -876,17 +939,17 @@ two CPU instructions (<code>MOV</code> to the stack, <code>VMOV</code> from the 
 <p>We’re now going to look at generation.
 We start by loading everything, then we loop over the buffer,
 filling it up by 32 bytes at each iteration.</p>
-<pre><code class="language-c">inline void prng_gen(prng_state *s, __uint64_t buf[], __uint64_t size) {
-  __m256i s0 = s-&gt;state[0], counter = s-&gt;counter,
-          s1 = s-&gt;state[1],       o = s-&gt;output;
-  for (__uint64_t i = 0; i &lt; size; i += 4) {
+<pre><span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-keyword">void</span> <span class="hljs-title">prng_gen</span><span class="hljs-params">(prng_state *s, <span class="hljs-keyword">__uint64_t</span> buf[], <span class="hljs-keyword">__uint64_t</span> size)</span> </span>{
+  __m256i s0 = s-&gt;state[<span class="hljs-number">0</span>], counter = s-&gt;counter,
+          s1 = s-&gt;state[<span class="hljs-number">1</span>],       o = s-&gt;output;
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">__uint64_t</span> i = <span class="hljs-number">0</span>; i &lt; size; i += <span class="hljs-number">4</span>) {
     _mm256_storeu_si256((__m256i*)&amp;buf[i], o);
-    // …
+    <span class="hljs-comment">// …</span>
   }
-  s-&gt;state[0] = s0; s-&gt;counter = counter;
-  s-&gt;state[1] = s1; s-&gt;output  = o;
+  s-&gt;state[<span class="hljs-number">0</span>] = s0; s-&gt;counter = counter;
+  s-&gt;state[<span class="hljs-number">1</span>] = s1; s-&gt;output  = o;
 }
-</code></pre>
+</pre>
 <p>Since the function is inlined, the buffer being immediately filled at the start
 lets the CPU execute the instructions that depend on it in the calling function right away,
 through out-of-order execution.</p>
@@ -898,8 +961,8 @@ through out-of-order execution.</p>
 </ol>
 <p>Hence the name, SHISHUA!</p>
 <h3>First, the shift</h3>
-<pre><code class="language-c">u0 = _mm256_srli_epi64(s0, 1);              u1 = _mm256_srli_epi64(s1, 3);
-</code></pre>
+<pre>u0 = _mm256_srli_epi64(s0, <span class="hljs-number">1</span>);              u1 = _mm256_srli_epi64(s1, <span class="hljs-number">3</span>);
+</pre>
 <p>AVX2 does not support rotations, sadly.
 But I want to entangle bits from one position in the 64-bit numbers,
 to other bit positions! And shift is the next best thing for that.</p>
@@ -912,17 +975,17 @@ which should help lower the similarity of their self-correlation.</p>
 <p>We use rightward shift because the rightmost bits have the least diffusion in addition:
 the low bit of <code>A+B</code> is just a XOR of the low bits of <code>A</code> and <code>B</code>, for instance.</p>
 <h3>Second, the shuffle</h3>
-<pre><code class="language-c">t0 = _mm256_permutevar8x32_epi32(s0, shu0); t1 = _mm256_permutevar8x32_epi32(s1, shu1);
-</code></pre>
+<pre>t0 = _mm256_permutevar8x32_epi32(s0, shu0); t1 = _mm256_permutevar8x32_epi32(s1, shu1);
+</pre>
 <p>We use a 32-bit shuffle because it is the only one that is both a different granularity
 than the 64-bit operations that we do everywhere else (which breaks 64-bit alignment),
 and that can also cross lanes
 (other shuffles can only move bits within the left 128 bits if they started on the left,
 or within the right 128 bits if they started on the right).</p>
 <p>Here are the shuffle constants:</p>
-<pre><code class="language-c">__m256i shu0 = _mm256_set_epi32(4, 3, 2, 1, 0, 7, 6, 5),
-        shu1 = _mm256_set_epi32(2, 1, 0, 7, 6, 5, 4, 3);
-</code></pre>
+<pre>__m256i shu0 = _mm256_set_epi32(<span class="hljs-number">4</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">7</span>, <span class="hljs-number">6</span>, <span class="hljs-number">5</span>),
+        shu1 = _mm256_set_epi32(<span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">7</span>, <span class="hljs-number">6</span>, <span class="hljs-number">5</span>, <span class="hljs-number">4</span>, <span class="hljs-number">3</span>);
+</pre>
 <p>To make the shuffle really strenghten the output, we move weak (low-diffusion) 32-bit parts
 of the 64-bit additions to strong positions, so that the next addition will enrich it.</p>
 <p>The low 32-bit part of a 64-bit chunk never moves to the same 64-bit chunk as its high part.
@@ -933,8 +996,8 @@ are simply those two 256-bit rotations (rotation by 96 bits and 160 bits rightwa
 <h3>Third, the addition</h3>
 <p>Let’s add 64-bit chunks from the two temporary variables,
 the shift one and the shuffle one, together.</p>
-<pre><code class="language-c">s0 = _mm256_add_epi64(t0, u0);              s1 = _mm256_add_epi64(t1, u1);
-</code></pre>
+<pre>s0 = _mm256_add_epi64(t0, u0);              s1 = _mm256_add_epi64(t1, u1);
+</pre>
 <p>The addition is the main source of diffusion: it combines bits
 into irreducible combinations of XOR and AND expressions across 64-bit positions.</p>
 <p>Storing the result of the addition in the state keeps that diffusion permanently.</p>
@@ -954,9 +1017,9 @@ as <code>u0</code> and <code>t1</code> are ready to be read before <code>s0</cod
 <p>You may have noticed that we did not talk about the counter yet.
 It turns out we handle it at the start of the loop.
 We first change the state, and then increment the counter:</p>
-<pre><code class="language-c">s1 = _mm256_add_epi64(s1, counter);
+<pre>s1 = _mm256_add_epi64(s1, counter);
 counter = _mm256_add_epi64(counter, increment);
-</code></pre>
+</pre>
 <p>The reason we change the state first, and then update the counter,
 is so that <code>s1</code> becomes available sooner,
 reducing the risk that later instructions that will read it get stalled
@@ -973,8 +1036,8 @@ we only start repeating the cycle after one millenia at 10 GiB/s,
 which is unlikely to ever be too low for practical applications in the coming centuries.
 Thanks to this, there are no bad seeds.</p>
 <p>Here are the increments:</p>
-<pre><code class="language-c">__m256i increment = _mm256_set_epi64x(1, 3, 5, 7);
-</code></pre>
+<pre>__m256i increment = _mm256_set_epi64x(<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">5</span>, <span class="hljs-number">7</span>);
+</pre>
 <p>The increments are picked as odd numbers,
 since only coprimes of the base cover the full cycle of the finite field GF(2<sup>64</sup>),
 and all odd numbers are coprime of 2.</p>
@@ -990,39 +1053,39 @@ which makes them diverge more, and adds a tiny bit of stirring.</p>
 <h3>Initialization</h3>
 <p>We initialize the state with the hex digits of Φ,
 the irrational number that is least approximable by a fraction.</p>
-<pre><code class="language-c">static __uint64_t phi[8] = {
-  0x9E3779B97F4A7C15, 0xF39CC0605CEDC834, 0x1082276BF3A27251, 0xF86C6A11D0C18E95,
-  0x2767F0B153D27B7F, 0x0347045B5BF1827F, 0x01886F0928403002, 0xC1D64BA40F335E36,
+<pre><span class="hljs-keyword">static</span> <span class="hljs-keyword">__uint64_t</span> phi[<span class="hljs-number">8</span>] = {
+  <span class="hljs-number">0x9E3779B97F4A7C15</span>, <span class="hljs-number">0xF39CC0605CEDC834</span>, <span class="hljs-number">0x1082276BF3A27251</span>, <span class="hljs-number">0xF86C6A11D0C18E95</span>,
+  <span class="hljs-number">0x2767F0B153D27B7F</span>, <span class="hljs-number">0x0347045B5BF1827F</span>, <span class="hljs-number">0x01886F0928403002</span>, <span class="hljs-number">0xC1D64BA40F335E36</span>,
 };
-</code></pre>
+</pre>
 <p>We take a 256-bit seed, which is common in cryptography,
 and doesn’t really hurt in non-cryptographic PRNGs:</p>
-<pre><code class="language-c">prng_state prng_init(SEEDTYPE seed[4]) {
+<pre><span class="hljs-function">prng_state <span class="hljs-title">prng_init</span><span class="hljs-params">(SEEDTYPE seed[<span class="hljs-number">4</span>])</span> </span>{
   prng_state s;
-  // …
-  return s;
+  <span class="hljs-comment">// …</span>
+  <span class="hljs-keyword">return</span> s;
 }
-</code></pre>
+</pre>
 <p>We don’t want to override a whole piece of state (<code>s0</code> nor <code>s1</code>) with the seed;
 we only want to affect half.
 That way, we avoid having debilitating seeds that,
 purposefully or accidentally, set the state to a known weak start.</p>
 <p>With half of each state intact, they still keep control over 128 bits of state,
 which is enough entropy to start and stay strong.</p>
-<pre><code class="language-c">s.state[0] = _mm256_set_epi64x(phi[3], phi[2] ^ seed[1], phi[1], phi[0] ^ seed[0]);
-s.state[1] = _mm256_set_epi64x(phi[7], phi[6] ^ seed[3], phi[5], phi[4] ^ seed[2]);
-</code></pre>
+<pre>s.state[<span class="hljs-number">0</span>] = _mm256_set_epi64x(phi[<span class="hljs-number">3</span>], phi[<span class="hljs-number">2</span>] ^ seed[<span class="hljs-number">1</span>], phi[<span class="hljs-number">1</span>], phi[<span class="hljs-number">0</span>] ^ seed[<span class="hljs-number">0</span>]);
+s.state[<span class="hljs-number">1</span>] = _mm256_set_epi64x(phi[<span class="hljs-number">7</span>], phi[<span class="hljs-number">6</span>] ^ seed[<span class="hljs-number">3</span>], phi[<span class="hljs-number">5</span>], phi[<span class="hljs-number">4</span>] ^ seed[<span class="hljs-number">2</span>]);
+</pre>
 <p>Then we do the following thing a <code>ROUNDS</code> number of times:</p>
 <ol>
 <li>Run <code>STEPS</code> iterations of SHISHUA,</li>
 <li>Set one piece of the state to the other, and the other to the output.</li>
 </ol>
-<pre><code class="language-c">for (char i = 0; i &lt; ROUNDS; i++) {
-  prng_gen(&amp;s, buf, 4 * STEPS);
-  s.state[0] = s.state[1];
-  s.state[1] = s.output;
+<pre><span class="hljs-keyword">for</span> (<span class="hljs-keyword">char</span> i = <span class="hljs-number">0</span>; i &lt; ROUNDS; i++) {
+  prng_gen(&amp;s, buf, <span class="hljs-number">4</span> * STEPS);
+  s.state[<span class="hljs-number">0</span>] = s.state[<span class="hljs-number">1</span>];
+  s.state[<span class="hljs-number">1</span>] = s.output;
 }
-</code></pre>
+</pre>
 <p>Setting to the output increases the diffusion of the state.
 In the initialization, the added work and state correlation don’t matter,
 since this is only done a few times, once.
@@ -1090,11 +1153,11 @@ has <em>terrible statistical biases</em> that fail many simple tests.</p>
 outputting their thing one after the other.</p>
 <p>But with more state, we can output even more stuff,
 by combining the four states pairwise:</p>
-<pre><code class="language-c">o0 = _mm256_xor_si256(u0, t1);
+<pre>o0 = _mm256_xor_si256(u0, t1);
 o1 = _mm256_xor_si256(u2, t3);
 o2 = _mm256_xor_si256(s0, s3);
 o3 = _mm256_xor_si256(s2, s1);
-</code></pre>
+</pre>
 <p>And that is how you get SHISHUA, and its <strong>0.06 cpb</strong> speed.</p>
 <p>Five times faster than the previously-fastest in the world
 that passes 32 TiB of PractRand.
