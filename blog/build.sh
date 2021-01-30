@@ -23,8 +23,6 @@ echo "$publications" | {
     mdfile="$dir/src/$name".md
     htmlfile="$dir/posts/$name".html
     htmlcachefile="$dir/.cache/html/$name".html
-    titlecachefile="$dir/.cache/title/$name".title
-    metacachefile="$dir/.cache/meta/$name".meta
     isotime=$(echo "$post" | cut -d$'\t' -f1)
     last_publication_date="$isotime"
     time=$(date +'%-d %B %Y' -d "$isotime")
@@ -32,6 +30,7 @@ echo "$publications" | {
     # Metadata update.
     markdown=$(cat "$mdfile")
     title=$(echo "$markdown" | head -1 | sed 's/^# //')
+    titlehtml=$(echo "$title" | sed 's/&/&amp;/g')
     meta=$(echo "$markdown" |
       awk '/^<script type="application\/ld/ {keep=1;next} /^<\/script>/ {keep=0} keep')
     keywords=$(echo "$meta" | jq -r .keywords)
@@ -55,7 +54,7 @@ echo "$publications" | {
               fi)'
             d
           }
-          sTITLE'"$title"'
+          sTITLE'"$titlehtml"'
           sPUBCOUNT'"$pubcount"'
           sISOTIME'"$isotime"'
           sTIME'"$time"'
@@ -72,7 +71,7 @@ echo "$publications" | {
     done | sed '$!s/$/,/')
     post_links=$(cat <<EOF
       <li data-tags="$keywords">
-        <a href="posts/$name.html">$title</a>
+        <a href="posts/$name.html">$titlehtml</a>
         $(if [[ "$index_html_tags" ]]; then
           echo "<span class=post-tags>Tags:$index_html_tags</span>";
         fi)
@@ -104,7 +103,7 @@ EOF
       <entry>
         <id>https://espadrine.github.io/blog/posts/$name.html</id>
         <link rel="alternate" type="text/html" href="https://espadrine.github.io/blog/posts/$name.html"/>
-        <title>$(echo "$title" | sed 's,<,&lt;,g'$'\n''s,>,&gt;,g')</title>
+        <title>$(echo "$titlehtml" | sed 's,<,&lt;,g'$'\n''s,>,&gt;,g')</title>
         <published>$isotime</published>
         $atom_categories
         <content type="html">
