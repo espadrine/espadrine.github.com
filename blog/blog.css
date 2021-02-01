@@ -152,3 +152,22 @@ article footer {
   margin-top: 3rem;
   text-align: right;
 }
+
+/* LaTeXMarkdown */
+
+h1 .autolink-clicker,
+h2 .autolink-clicker,
+h3 .autolink-clicker,
+h4 .autolink-clicker,
+h5 .autolink-clicker,
+h6 .autolink-clicker {
+  visibility: hidden;
+}
+h1:hover .autolink-clicker,
+h2:hover .autolink-clicker,
+h3:hover .autolink-clicker,
+h4:hover .autolink-clicker,
+h5:hover .autolink-clicker,
+h6:hover .autolink-clicker {
+  visibility: visible;
+}

@@ -13,7 +13,7 @@
     <object type='image/svg+xml' data='https://img.shields.io/twitter/follow/espadrine?label=Twitter&style=social'></object>
   </nav>
   <article class=relative>
-<h1>Two PostgreSQL Sequence Misconceptions</h1>
+<h1 id="Two_PostgreSQL_Sequence_Misconceptions">Two PostgreSQL Sequence Misconceptions <a href="#Two_PostgreSQL_Sequence_Misconceptions" class="autolink-clicker" aria-hidden="true">§</a></h1>
 <p>✨ <em>With Examples!</em> ✨</p>
 <p>Some constructs seem more powerful than the promises they make.</p>
 <p>PostgreSQL sequences are like that. Many assume it offers stronger properties
@@ -32,7 +32,7 @@ system, but even in a centralized system with the possibility of failure.</li>
 monotonically strictly increasing atomically throughout the distributed
 system, but they often are not, which causes subtle bugs.</li>
 </ol>
-<h2>The problem space</h2>
+<h2 id="The_problem_space">The problem space <a href="#The_problem_space" class="autolink-clicker" aria-hidden="true">§</a></h2>
 <p>To design your system’s properties right, it is often useful or necessary to
 determine the order in which events happened. Ideally, you wish for the <strong>“wall
 clock” order</strong> (looking at your watch), although instantaneity gets tricky when
@@ -84,7 +84,7 @@ yield values out of order (1 3 2).</p>
 <p>All a sequence promises is to give values that have an order. Not a continuous
 order, nor a time order.</p>
 <p>Let’s demonstrate both.</p>
-<h2>Gaps</h2>
+<h2 id="Gaps">Gaps <a href="#Gaps" class="autolink-clicker" aria-hidden="true">§</a></h2>
 <p>Let’s create a table with a <code>SERIAL</code> identifier. For the purpose of showing
 things going right, let’s insert a row.</p>
 <pre><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> gaps (id SERIAL);
@@ -119,7 +119,7 @@ Now, there is a gap.</p>
 not keep the information necessary to undo the <code>nextval()</code> without potentially
 breaking other operations.</p>
 <p>Let’s now break the other assumption.</p>
-<h2>Order violation</h2>
+<h2 id="Order_violation">Order violation <a href="#Order_violation" class="autolink-clicker" aria-hidden="true">§</a></h2>
 <p>First, a table with a sequence and a timestamp:</p>
 <pre><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> orders (id SERIAL, created_at TIMESTAMPTZ);
 </pre>
@@ -153,7 +153,7 @@ ordering by timestamp, expecting an identical order. That incorrect assumption
 may break their business logic.</p>
 <p>Lest you turn your heart to another false god, that behavior remains the same
 with serializable transactions.</p>
-<h2>Are we doomed?</h2>
+<h2 id="Are_we_doomed_">Are we doomed? <a href="#Are_we_doomed_" class="autolink-clicker" aria-hidden="true">§</a></h2>
 <p>No.</p>
 <p>Sure, the systems we use have weak assumptions. But that is true at every level.
 The nice thing about the world is that you can combine weak things to make
@@ -210,7 +210,7 @@ as the <a href="https://www.postgresql.org/docs/current/using-explain.html">EXPL
 concurrent insertions will definitely read from the same one: the one with the
 latest <code>created_at</code>. Therefore, only one of concurrent insertion will succeed;
 the others will need to be retried until they do too.</p>
-<h2>Subset Ordering</h2>
+<h2 id="Subset_Ordering">Subset Ordering <a href="#Subset_Ordering" class="autolink-clicker" aria-hidden="true">§</a></h2>
 <p>In cases where you only need a unique ordering for a subset of rows based on
 another field, you can set a combined index with that other field:</p>
 <pre><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> orders (

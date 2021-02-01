@@ -13,11 +13,11 @@
     <object type='image/svg+xml' data='https://img.shields.io/twitter/follow/espadrine?label=Twitter&style=social'></object>
   </nav>
   <article class=relative>
-<h1>Markdown Quote Styling</h1>
+<h1 id="Markdown_Quote_Styling">Markdown Quote Styling <a href="#Markdown_Quote_Styling" class="autolink-clicker" aria-hidden="true">§</a></h1>
 <p><img src="https://78.media.tumblr.com/a9772210bc6152b53f050fc120bb41ae/tumblr_inline_o38eu6lCgM1qmhxug_540.png" alt="" /></p>
 <p>After four iterations, I am finally happy with the rendering I have for Markdown quotes.</p>
 <p><em>(You can see an example of one <a href="https://thefiletree.com/demo/markdown.md?plug=markdown">in this example page</a>. The CSS is <a href="https://github.com/espadrine/plugs/blob/master/lib/css/markdown.css">here</a>. If you don’t like reading, I made a <a href="https://youtu.be/DNbhgWHPGbQ">video</a>.)</em></p>
-<h2>Plain border</h2>
+<h2 id="Plain_border">Plain border <a href="#Plain_border" class="autolink-clicker" aria-hidden="true">§</a></h2>
 <p>The most straightforward implementation is as a dumb <strong>border on the left</strong>.</p>
 <blockquote>
 <p>.markdown blockquote {
@@ -30,7 +30,7 @@
 <img src="https://78.media.tumblr.com/1f55dc119962b11b386640fc478cdafb/tumblr_inline_o38eahxxeA1qmhxug_540.png" alt="" /></p>
 <p>However, the edges of that border are very sharp. How should we round them?</p>
 <p>A border radius would only work on the left edges, not the right ones. We have to get creative.</p>
-<h2>Bitmap border image</h2>
+<h2 id="Bitmap_border_image">Bitmap border image <a href="#Bitmap_border_image" class="autolink-clicker" aria-hidden="true">§</a></h2>
 <p>CSS provides a <strong>border-image</strong> property. Given an image that roughly pictures a square, it can map the top left part of the image to the top left edge of the border, the middle top part to the middle top border, and so on.</p>
 <p>It is flexible enough that we can cheat: we can set it to map the whole picture to the left part of the border.</p>
 <blockquote>
@@ -51,7 +51,7 @@ border-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAFCAYAAABi
 <p>That is not overwhelming.</p>
 <p>However, now, there is a bit of space at the top and at the bottom of the blockquote, for no good reason.
 <img src="https://78.media.tumblr.com/a9772210bc6152b53f050fc120bb41ae/tumblr_inline_o38eujiA0N1qmhxug_540.png" alt="" /></p>
-<h2>Gradient border image</h2>
+<h2 id="Gradient_border_image">Gradient border image <a href="#Gradient_border_image" class="autolink-clicker" aria-hidden="true">§</a></h2>
 <p>Instead of using a bitmap image, we can rely on a <strong>radial gradient</strong> to generate an ellipse. We can use the border-image parameters to cut almost all of the upper part of the ellipse so that it gets mapped to the top left corner of the border, and similarly for the bottom left, leaving a slim band at the center of the ellipse that will get stretched.</p>
 <blockquote>
 <p>border-image: radial-gradient(2px 50% ellipse at 2px 50%, #dadada, #dadada 98%, transparent) 45% 0 45% 4;</p>
@@ -65,7 +65,7 @@ border-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAFCAYAAABi
 </blockquote>
 <p>However, the border would then look different (and stretched) depending on the height of the blockquote.
 <img src="https://78.media.tumblr.com/340fb2f3fa239da867401b99d6741340/tumblr_inline_o38fb4Lskz1qmhxug_540.png" alt="" /></p>
-<h2>Before pseudo-element</h2>
+<h2 id="Before_pseudo_element">Before pseudo-element <a href="#Before_pseudo_element" class="autolink-clicker" aria-hidden="true">§</a></h2>
 <p>One last hope is to rely on the ::before pseudo-element. We can style it as if it was a block, and make it float on the left.</p>
 <blockquote>
 <p>.markdown blockquote::before {

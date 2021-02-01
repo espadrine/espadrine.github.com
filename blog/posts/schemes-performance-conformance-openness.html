@@ -13,7 +13,7 @@
     <object type='image/svg+xml' data='https://img.shields.io/twitter/follow/espadrine?label=Twitter&style=social'></object>
   </nav>
   <article class=relative>
-<h1>Schemes: Performance, Conformance, Openness</h1>
+<h1 id="Schemes_Performance_Conformance_Openness">Schemes: Performance, Conformance, Openness <a href="#Schemes_Performance_Conformance_Openness" class="autolink-clicker" aria-hidden="true">§</a></h1>
 <p>As <a href="http://lists.gnu.org/archive/html/info-gnu/2014-03/msg00006.html">Guile 2.0.10</a> just rolled out, I wished to re-acquaint myself with the status of Schemes. I downloaded the new version, compiled it (boy, is it slow to compile), installed it. It is designed as a language to extend existing programs, much like Lua. One goal is obviously to make the interpreter as fast as can be. Ideally, it should be the LuaJIT of Scheme-land.</p>
 <p>The other approach used to make Scheme run fast is to compile it. Other projects, such as Chicken Scheme, compile the code to C, and the result tends to have reasonable performance. They do also cut corners, as we’ll see.</p>
 <p>Let’s make one of the most simple non-trivial program. A looped factorial.</p>

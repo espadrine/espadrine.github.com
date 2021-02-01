@@ -13,10 +13,10 @@
     <object type='image/svg+xml' data='https://img.shields.io/twitter/follow/espadrine?label=Twitter&style=social'></object>
   </nav>
   <article class=relative>
-<h1>Canvas SVG</h1>
+<h1 id="Canvas_SVG">Canvas SVG <a href="#Canvas_SVG" class="autolink-clicker" aria-hidden="true">§</a></h1>
 <p>The other night, I was dreaming of colorful lines.</p>
 <p>I was racing on this roller-coaster of red, green, blue pathways, occasionally jumping from one platform to the next. It felt like being part of this <a href="http://acko.net/">acko.net</a> front page. I hurt myself quite a bit and, slowly and surely, ended up coloring everything in red. That’s until I fell down into this bright light surrounding me, only to realize that space was circular; falling from the bottom made me land on the top. The sound of my knees breaking made me wake up.</p>
-<h2>That is when I realized that an effort I had ongoing had a simple and elegant solution.</h2>
+<h2 id="That_is_when_I_realized_that_an_effort_I_had_ongoing_had_a_simple_and_elegant_solution_">That is when I realized that an effort I had ongoing had a simple and elegant solution. <a href="#That_is_when_I_realized_that_an_effort_I_had_ongoing_had_a_simple_and_elegant_solution_" class="autolink-clicker" aria-hidden="true">§</a></h2>
 <p>You may know that I made and maintain the <a href="http://shields.io">http://shields.io</a> service. An effort in providing badges for use in GitHub and elsewhere, this website promotes the use of SVG as a means to diminish bandwidth costs for images and solve the zoom / retina / <a href="http://fremycompany.com/BG/2013/Why-Super-Retina-screens-are-worthwhile-172/">4x</a> / <code>&lt;picture&gt;</code> problem that so many web developers are losing hair on. You see, images are either photos, textures, or icons / banners / logos / badges / all this ilk.</p>
 <ul>
 <li>For photos: use JPEG / WebP with <code>&lt;picture&gt;</code> and store a 4x version of it.</li>
@@ -29,7 +29,7 @@
 <li>WebGL is already built for interactivity.</li>
 <li>SVG has animations, but, more importantly, it shares the same DOM that we can JSify.</li>
 </ul>
-<h2>But I digress.</h2>
+<h2 id="But_I_digress_">But I digress. <a href="#But_I_digress_" class="autolink-clicker" aria-hidden="true">§</a></h2>
 <p>The issue that has itched me as I provided those badges was fonts. I could not freely choose them. Either bundling a font in the image would make it weigh <em>way too much</em>, or subsetting the font dynamically would take <em>way too much time</em>. The only thing I had was to hide behind <strong>web-safe fonts</strong>, and compute the probability that the badge would have just the right width, and the text would look just about right for users to have no idea.</p>
 <p>I am serious, by the way, about computing the probabilities. Look at <a href="https://github.com/badges/gh-badges/issues/14">this issue on GitHub</a>. Scroll. Keep scrolling.</p>
 <p>How can we get away from this? In general, how can we use many different fonts on many different images?</p>
@@ -41,13 +41,13 @@ $ ttfsubset -n OpenSans -g glyphs-logo OpenSans.woff OpenSans-icon-subset.woff
 $ node -p 'var fs = require(&quot;fs&quot;); fs.writeFileSync(&quot;OpenSans-icon-subset.woff.base64&quot;, fs.readFileSync(&quot;OpenSans-icon-subset.woff&quot;, &quot;base64&quot;));'
 </code></pre>
 <p>Nonetheless, as I said before, I cannot use this trick for all my badges, since the computation would be too expensive.</p>
-<h2>The Age Of Batik</h2>
+<h2 id="The_Age_Of_Batik">The Age Of Batik <a href="#The_Age_Of_Batik" class="autolink-clicker" aria-hidden="true">§</a></h2>
 <p>Another option was to target a specific font, convert it to SVG paths stored in one obese JSON, and compute the position of each letter with respect to each other. Every letter would then be a distinct SVG path, and our obese JSON would contain kerning information so that we can avoid designers having their eyes bleed.</p>
 <p>There already exists a converter from TTF to SVG fonts called <a href="http://xmlgraphics.apache.org/batik/tools/font-converter.html">Batik</a>. We then could <a href="https://github.com/Leonidas-from-XIV/node-xml2js">parse</a> the XML, extract all the path description attributes, compile them into JSON.</p>
 <p>However, SVG fonts are a bit weird. The paths are upside-down, so that I’d have to parse each path, recompute all the dots by mirroring them along an axis I would have to find, and scale them to our intended font size.</p>
 <p>Then, for every letter I type in, I would have to keep track of the horizontal position, look for the path description, subtract the kerning information, add a <code>&lt;path&gt;</code> element to the badge, move my horizontal ruler, and get ready for the next letter.</p>
 <p>This process was sufficiently complicated that I got stuck between the mirroring computation and the storage of kerning information. It was taking more time than I wanted, as well.</p>
-<h2>The Dawn Of Node-Canvas</h2>
+<h2 id="The_Dawn_Of_Node_Canvas">The Dawn Of Node-Canvas <a href="#The_Dawn_Of_Node_Canvas" class="autolink-clicker" aria-hidden="true">§</a></h2>
 <p>Dawn? How poetic. Yet, it is true that I found a simpler solution while rising from a colorful dream along with a colorful sun, getting ready to go work on making it easier to <a href="https://www.capitainetrain.com/">sell train tickets</a>.</p>
 <p>I was already using <a href="https://github.com/Automattic/node-canvas"><strong>node-canvas</strong></a>. This server-side implementation of HTML’s <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/the-canvas-element.html#canvasrenderingcontext2d">Canvas API</a> helps me compute the width of a badge’s text in a particular font, so that each badge is produced with the correct width.</p>
 <p>I had in the past dabbled with <a href="http://cairographics.org/">Cairo</a>, the amazingly modular graphics engine used in Linux’ Gnome environment, Mozilla’s Firefox browser, WebKit’s GTK+ port, Inkscape and Gnuplot. I won’t admit that I first played with Cairo through <a href="http://shoesrb.com/">Why the Lucky Stiff’s Shoes library</a>.</p>
@@ -63,7 +63,7 @@ $ node -p 'var fs = require(&quot;fs&quot;); fs.writeFileSync(&quot;OpenSans-ico
 Think of subtle animated random background images or pre-generated real-time graphs!</li>
 </ul>
 <p>It isn’t merged yet, but I am already excited!</p>
-<h2>Afterword</h2>
+<h2 id="Afterword">Afterword <a href="#Afterword" class="autolink-clicker" aria-hidden="true">§</a></h2>
 <p>This was going to be part of a talk I wanted to make at JSConf. Unfortunately, I was not selected as a speaker. There are many more things I wanted to cover — the history of those GitHub badges you see everywhere, the technology used to make each badge, to support both SVG, PNG and the like with exactly the same rendering, some nitty-gritty about caching and the story of our interaction with all those services we support… Maybe another blog post, another time?</p>
 <script type="application/ld+json">
 { "@context": "http://schema.org",

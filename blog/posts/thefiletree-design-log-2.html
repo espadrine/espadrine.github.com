@@ -13,9 +13,9 @@
     <object type='image/svg+xml' data='https://img.shields.io/twitter/follow/espadrine?label=Twitter&style=social'></object>
   </nav>
   <article class=relative>
-<h1>TheFileTree Design Log 2: API</h1>
+<h1 id="TheFileTree_Design_Log_2_API">TheFileTree Design Log 2: API <a href="#TheFileTree_Design_Log_2_API" class="autolink-clicker" aria-hidden="true">§</a></h1>
 <p>I have implemented the core API, which powers the folder app.</p>
-<h1>API</h1>
+<h1 id="API">API <a href="#API" class="autolink-clicker" aria-hidden="true">§</a></h1>
 <p>I tried to stay close to WebDAV, even though I will differ from it in one significant fashion: no file locks.</p>
 <ul>
 <li><code>GET /</code>: loads the file type’s app (eg, a text editor, or a file browser).</li>
@@ -31,10 +31,10 @@
 <p>I will implement <code>COPY</code> and <code>MOVE</code> in the future; those operations were not supported in the past.</p>
 <p>Metadata information is autosaved every 5 seconds when it changed.</p>
 <p>I am afraid this whole reimplementation went faster than planned, leaving me in front of the difficult choice that I hoped to delay…</p>
-<h1>Synchronized Editing</h1>
+<h1 id="Synchronized_Editing">Synchronized Editing <a href="#Synchronized_Editing" class="autolink-clicker" aria-hidden="true">§</a></h1>
 <p>I wish to support synchronized editing for text and JSON, with index rebasing to preserve intentions. I see it as a WebSocket JSON stream over <code>/file?op=edit&amp;app=text</code>. But what library should I use, and with which protocol? Canop is functional and efficient, although it requires centralization (which will remain unavoidable), but full-JSON is not implemented yet, nor are compound atomic transactions, only text. Meanwhile, jsonsync is functional and mostly relies on the JSON Patch standard (and also peer-to-peer, but this is useless in our case), but index rebasing is not implemented yet, and not as efficient as it is for Canop.</p>
 <p>(Given proper index rebasing, there is no reason for which we could not support binary editing. However, if you are modifying a binary file, the synchronization cannot know whether the file gets corrupted, as it does not know its semantics, only its serialized form. For instance, a PNG file edited simultaneously may be synchronized to a state where the index rebasing results in an invalid file. To avoid file corruption, I won’t provide binary synchronization.)</p>
-<h1>Accounts</h1>
+<h1 id="Accounts">Accounts <a href="#Accounts" class="autolink-clicker" aria-hidden="true">§</a></h1>
 <p>One of the large, long-term changes I wanted to include for a long time was <strong>accounts</strong>. In the former implementation of TheFileTree, everyone was anonymous, which both made it implausibly hard to scale (for instance, having private files necessitated passwords, one for each file, and giving access to a file meant sharing that password, which if the password is used on another file, means remembering a lot of passwords,etc…) and hard to sell (I wouldn’t pay a subscription for a service that can’t remember that I paid it).</p>
 <p>However, I am unsure of the exact layout I want for the root folder. My initial thoughts:</p>
 <ul>

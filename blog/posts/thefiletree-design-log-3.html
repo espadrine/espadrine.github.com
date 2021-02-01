@@ -13,7 +13,7 @@
     <object type='image/svg+xml' data='https://img.shields.io/twitter/follow/espadrine?label=Twitter&style=social'></object>
   </nav>
   <article class=relative>
-<h1>TheFileTree Design Log 3: Collaborative Editing</h1>
+<h1 id="TheFileTree_Design_Log_3_Collaborative_Editing">TheFileTree Design Log 3: Collaborative Editing <a href="#TheFileTree_Design_Log_3_Collaborative_Editing" class="autolink-clicker" aria-hidden="true">§</a></h1>
 <p>I finally implemented the following API:</p>
 <ul>
 <li><code>GET /file?op=edit&amp;app=text</code> (WebSocket): use the <a href="https://github.com/espadrine/canop">Canop</a> protocol to synchronize the file’s content and autosave it.</li>
@@ -21,10 +21,10 @@
 <p>To get there, I improved Canop to finalize its protocol and survive disconnections. I made it more resilient to edge-cases and streamlined its API. I even added the ability to create brand new fundamental operations as a Canop user.</p>
 <p>I chose to go with <a href="https://github.com/espadrine/canop">Canop</a> instead of <a href="https://github.com/espadrine/jsonsync">jsonsync</a>, even though I appeared to lean towards the latter in previous design logs, because implementing index rebasing is non-trivial (especially for jsonsync), and I had already mostly done so with Canop.</p>
 <p>On the other hand, it only supports strings. The protocol is designed to allow full JSON data, however. Additionally, strings are by far the harders data type to implement synchronization for. Arrays are slightly easier (and the index rebasing necessary to make them work is the same as that for strings), and the others are trivial.</p>
-<h2>User Interface</h2>
+<h2 id="User_Interface">User Interface <a href="#User_Interface" class="autolink-clicker" aria-hidden="true">§</a></h2>
 <p>I have designed Canop with certain events to allow for the display of the synchronization state (unsyncable (ie, offline), syncing, and synced).</p>
 <p>This was problematic in thefiletree.com previously, as it was not at all clear whether we had suddenly been disconnected, and there were no reconnection. Closing the tab could therefore cause us to lose our changes… Yet there was no save button.</p>
-<h2>Details</h2>
+<h2 id="Details">Details <a href="#Details" class="autolink-clicker" aria-hidden="true">§</a></h2>
 <p>I don’t save the edit history server-side, so local operations after a disconnection won’t be able to rebase on top of other operations. I get the feeling that past a few seconds of disconnection, concurrent editing can severely damage the user’s intended edition, as rebased operation may lose what the user entered without them having seen someone’s cursor arrive.</p>
 <p>(Of course, nothing precludes someone from deleting the whole file, removing your changes, but that is malice, not accident. What we want to forbid are accidental loss. Malicious changes are inevitable; or rather, being resistant to them requires complex graph synchronization, solving the byzantine generals problem, and saving the full non-linear edit history.)</p>
 <p>I don’t even save the file’s revision number, so the client cannot tell whether there has been zero changes since the disconnection and apply local changes from there.</p>

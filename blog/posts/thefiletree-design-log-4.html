@@ -13,7 +13,7 @@
     <object type='image/svg+xml' data='https://img.shields.io/twitter/follow/espadrine?label=Twitter&style=social'></object>
   </nav>
   <article class=relative>
-<h1>TheFileTree Design Log 4: Accounts</h1>
+<h1 id="TheFileTree_Design_Log_4_Accounts">TheFileTree Design Log 4: Accounts <a href="#TheFileTree_Design_Log_4_Accounts" class="autolink-clicker" aria-hidden="true">§</a></h1>
 <p>I mentionned needing to add accounts in <a href="./thefiletree-design-log-2.html">design log 2</a>. It is <a href="https://github.com/garden/tree/commit/04a03786d81733aeca35b1ac4fe5b95c57d0e706">now implemented</a>.</p>
 <p>You go to <code>/app/account/</code>, which contains either your account information if you are logged in, or a form to get registered.</p>
 <p><img src="https://i.imgur.com/rlfES3K.png" alt="Create an Account" /></p>
@@ -29,7 +29,7 @@
 <p>It works by setting the <code>acl</code> JSON object in the metadata. It is a map from username to right: <code>-</code> for none, <code>r</code> for reader, <code>w</code> for writer, <code>x</code> for owner.  Does it remind you of Unix permissions?</p>
 <p><img src="https://i.imgur.com/c04V9J9.png" alt="JSON metadata" /></p>
 <p>The <code>*</code> key is for other users (logged in or anonymous).</p>
-<h2>Canop Finishing Touches</h2>
+<h2 id="Canop_Finishing_Touches">Canop Finishing Touches <a href="#Canop_Finishing_Touches" class="autolink-clicker" aria-hidden="true">§</a></h2>
 <p>Code and bugs are lovers. The monster that I am had to crush a handful of the latter, but it really was to save the former.</p>
 <p>For instance, <strong>undo/redo</strong> was semantically wrong.</p>
 <p>Why? Of course, CodeMirror supports undo/redo, but it keeps track of all changes. However, when you are editing code with others, you only want to undo <em>your own changes</em>. If you wrote a word and press <em>Undo</em>, you expect your word to be removed, not the operations that someone else did in the meantime.</p>
@@ -38,7 +38,7 @@
 <p>I received the editing operations CodeMirror gave me from the <code>change</code> events after it had already updated the editor. The operation positions I dealt with could not easily be mapped back to indices, as they related to the editor’s state before the change.</p>
 <p>I tried getting inspiration from <a href="https://github.com/Operational-Transformation/ot.js/blob/8873b7e28e83f9adbf6c3a28ec639c9151a838ae/lib/codemirror-adapter.js#L55">ot.js</a>, but ended up relying on a <a href="https://github.com/espadrine/canop/commit/1bc109bfc6b075b1a59d4e2401f902edfdf8288a">simpler algorithm using the <code>beforeChange</code> event</a>.</p>
 <p>It does have the downside that you don’t automatically have multiple changes that are semantically combined (like deleting multiple selections). Those end up having a single undo entry, for instance. I was getting used to reimplementing CodeMirror things, so naturally I implemented a <a href="https://github.com/espadrine/canop/commit/7beec5d1b8e231e0a52c6402931d5db77c2491da">time-based operation grouping system</a>.</p>
-<h2>Deploying To Production</h2>
+<h2 id="Deploying_To_Production">Deploying To Production <a href="#Deploying_To_Production" class="autolink-clicker" aria-hidden="true">§</a></h2>
 <p>The first version of TheFileTree was located on a server under our college
 dormroom desks; the second in a college server; the third on a friend’s
 subletting server offer; the fourth on an OVH VPS. This one will be on Google

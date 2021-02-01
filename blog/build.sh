@@ -38,7 +38,7 @@ echo "$publications" | {
 
     # Article page generation.
     if [[ ! -a "$htmlcachefile" || "$mdfile" -nt "$htmlcachefile" ]]; then
-      echo -n "Generating $name: "; date -Ins
+      echo -n "Generating $name: "
       # The file has an update; otherwise skip its generation.
       markdown=${markdown:-$(cat "$mdfile")}
       content=$(echo "$markdown" | latexmarkdown --body)

@@ -13,7 +13,7 @@
     <object type='image/svg+xml' data='https://img.shields.io/twitter/follow/espadrine?label=Twitter&style=social'></object>
   </nav>
   <article class=relative>
-<h1>Insanities of a File System Object Storage</h1>
+<h1 id="Insanities_of_a_File_System_Object_Storage">Insanities of a File System Object Storage <a href="#Insanities_of_a_File_System_Object_Storage" class="autolink-clicker" aria-hidden="true">§</a></h1>
 <p><em>(TL;DR: I present <a href="https://www.npmjs.com/package/fsos">fsos</a>; but read on to know why.)</em></p>
 <p>How do you update a file in Node.js?</p>
 <p>Well, let’s browse our dear <a href="https://nodejs.org/api/fs.html">file system API</a>…</p>
@@ -21,7 +21,7 @@
 </code></pre>
 <p>Simple enough, isn’t it?</p>
 <p>And yet, there are so many kinds of wrong in this seemingly obvious answer.</p>
-<h2>POSIX</h2>
+<h2 id="POSIX">POSIX <a href="#POSIX" class="autolink-clicker" aria-hidden="true">§</a></h2>
 <p>Let’s first educate ourselves. Node.js’ file system API is designed to imitate
 and target POSIX, a specification to etch the core Unix experience in granite.
 While the main reason for the success of Unix was portability, ensuring that
@@ -90,7 +90,7 @@ without writing to it</em>. You should essentially never use <code>&quot;w&quot;
 <p>Naturally, Node.js favours <a href="http://pubs.opengroup.org/onlinepubs/9699919799/functions/fopen.html">fopen</a>-style modes, instead of the more elegant
 <a href="http://pubs.opengroup.org/onlinepubs/9699919799/functions/open.html">open</a>.</p>
 <p>Naturally, its default mode for write operations is the useless <code>&quot;w&quot;</code>.</p>
-<h2>Async IO</h2>
+<h2 id="Async_IO">Async IO <a href="#Async_IO" class="autolink-clicker" aria-hidden="true">§</a></h2>
 <p>Now that we have background information, let’s dig into the first issue.</p>
 <p>A long-standing problem in HTTP server software is <a href="http://www.kegel.com/c10k.html">C10K</a>, ie. hitting 10k
 concurrent clients to serve with a single machine. A large part of beating that
@@ -147,7 +147,7 @@ fs.createReadStream(fn).pipe(process.stdout)  // → 2345
 </code></pre>
 <p>Don’t you hate it when you read a blog post, and the author ends two
 consecutive sentences with “right?”, and you just know it means “false!”</p>
-<h2>File Systems</h2>
+<h2 id="File_Systems">File Systems <a href="#File_Systems" class="autolink-clicker" aria-hidden="true">§</a></h2>
 <p>What if your application crashes?</p>
 <p>Having your app crash just after you opened the file for writing, but before it
 is done writing, will unsurprisingly result in a half-written file — or an empty
@@ -195,7 +195,7 @@ to <code>fs.stat()</code> it first.</li>
 <p>All in all, the finished implementation is nontrival. But this is it, right?
 This is the end of our ordeal, right? We finally maintained consistency, right?</p>
 <p>I have good news! According to POSIX, yes, this is the best we can do!</p>
-<h2>Kernel Panics</h2>
+<h2 id="Kernel_Panics">Kernel Panics <a href="#Kernel_Panics" class="autolink-clicker" aria-hidden="true">§</a></h2>
 <p>We settled that <em>write temporary then rename</em> survives app crashes under
 POSIX. However, there is no guarantee for system crashes! In fact, POSIX gives
 absolutely no way to maintain consistency across system crashes with certainty!</p>
@@ -251,7 +251,7 @@ timespan where things can go horribly wrong is only reduced. The fault is
 rejected on the app developers.</p>
 <p>This issue was “fixed” — well, the patch landed at least — in Linux 2.6.30 on
 the most common file systems (ext4 and btrfs).</p>
-<h2>Conclusion</h2>
+<h2 id="Conclusion">Conclusion <a href="#Conclusion" class="autolink-clicker" aria-hidden="true">§</a></h2>
 <p>Here’s one thing to get away from all this: file systems have a design which
 works well with certain operations and… not so well… with others. <strong>Replacing a
 file is costly!</strong> You should know what you are doing (or use <a href="https://www.npmjs.com/package/fsos">fsos</a>, my npm

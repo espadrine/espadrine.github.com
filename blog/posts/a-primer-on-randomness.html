@@ -13,7 +13,7 @@
     <object type='image/svg+xml' data='https://img.shields.io/twitter/follow/espadrine?label=Twitter&style=social'></object>
   </nav>
   <article class=relative>
-<h1>A Primer On Randomness</h1>
+<h1 id="A_Primer_On_Randomness">A Primer On Randomness <a href="#A_Primer_On_Randomness" class="autolink-clicker" aria-hidden="true">§</a></h1>
 <p>Last October, during a one-week hiking holiday in the birthplace of alpinism,
 I got particularly interested in random generators.</p>
 <p>Four reasons why they are fascinating:</p>
@@ -23,7 +23,7 @@ I got particularly interested in random generators.</p>
 <li>Studying them, and trying your hand at making them, helps you understand the <strong>scientific method</strong> better. Most real-world principles can never be proved with absolute certainty; you need to accurately detect a signal in the noise, and measure the likelihood that this signal is not just you seeing patterns in the static.</li>
 <li>Finally, it helps both understand <strong>the virtue of mixing</strong>, and how best to stir. The effect of mixing is exponential, which is unnatural to mentally harness. On the plus side, when done well, you get fluid exchange of information, remix, and cultural explosion. On the minus side, you get COVID-19 everywhere. Striking the right balance gets you far: many optimizing algorithms rely on it such as genetic algorithms, stochastic gradient descent, or cross-validation sampling in machine learning, which each are heavy users of pseudo-random sources. The results speak for themselves: AlphaGo, for instance, beat the best human player at one of the hardest games on Earth, using Monte-Carlo Tree Search. Yes, you guessed it, they call it Monte Carlo for a reason.</li>
 </ol>
-<h2>Information Theory</h2>
+<h2 id="Information_Theory">Information Theory <a href="#Information_Theory" class="autolink-clicker" aria-hidden="true">§</a></h2>
 <p>A good Pseudo-Random Number Generator (or PRNG for short) is indistinguishable from a true random output.</p>
 <p><em>So, where do we get this true random output you speak of?</em></p>
 <p>True randomness has statistical meaning, but it is impossible to prove or disprove.
@@ -50,7 +50,7 @@ So the frequency of the sequence <code>10</code> in the output should converge t
 π being irrational, its formulation is <a href="https://mathworld.wolfram.com/WeylsCriterion.html">orthogonal to any fractional representation</a>, which is what decimals are.
 That gives strong credence to the conjecture that its digits form a truly random sequence.)</p>
 <p>That idea might make you uneasy. After all, it gives an impossible requirement on the memory size of a generator.</p>
-<h3>Memory</h3>
+<h3 id="Memory">Memory <a href="#Memory" class="autolink-clicker" aria-hidden="true">§</a></h3>
 <p>If your state contains <code>i</code> bits, what is the largest sequence of consecutive ones it can output?</p>
 <p>Well, since the PRNG is deterministic, a given state will always yield the same output.
 There are <code>2ⁱ</code> possible state configurations, so with this entropy, you can at best output <code>i·2ⁱ</code> bits
@@ -71,7 +71,7 @@ A statistical deviation that you can detect to disprove that a generator is trul
 All current algorithms need more memory the more digits are output.)</p>
 <p>In practice, you get around the issue by picking a state size <code>i</code> large enough that
 detecting this statistical anomaly requires a millenia’s worth of random output, too much for anyone to compute.</p>
-<h3>Cycle Analysis</h3>
+<h3 id="Cycle_Analysis">Cycle Analysis <a href="#Cycle_Analysis" class="autolink-clicker" aria-hidden="true">§</a></h3>
 <p>So, once we have picked a state size, now we have an upper bound for the period of the PRNG:
 it will repeat the same sequence at least every <code>2ⁱ</code> bits.</p>
 <p>But of course, your mileage may vary. An imperfect generator might have a much lower period.
@@ -90,7 +90,7 @@ you decrease the proportion of links that are part of small chains exponentially
 <p>The bottom line is this: you can always put lipstick on the pig by increasing the state size,
 and your generator will look good.</p>
 <p>However, a fundamentally better generator would have become even better yet with an increased state size.</p>
-<h3>Reversibility</h3>
+<h3 id="Reversibility">Reversibility <a href="#Reversibility" class="autolink-clicker" aria-hidden="true">§</a></h3>
 <p>If you build out the design at random, a danger lingers.
 Unless you are careful, you might build an irreversible generator.
 Given a state after a generation,
@@ -125,7 +125,7 @@ The average period becomes 2<sup>n-2</sup>, almost the square of the length.</p>
 It just means that each state points to exactly one other state, and has exactly one state leading to it.
 In other words, it is a <em>bijection</em>, but not a <em>circular permutation</em>.</p>
 <p><img alt='Circular permutation example.' src='../assets/a-primer-on-randomness/circular-prng.svg' width=350px'>
-<h3>Diffusion</h3>
+<h3 id="Diffusion">Diffusion <a href="#Diffusion" class="autolink-clicker" aria-hidden="true">§</a></h3>
 <p>Claude Shannon made <a href="https://www.iacr.org/museum/shannon/shannon45.pdf">a very good point the other day</a> (I think it was in 1945?) about ciphers.
 An ideal pseudo-random source is such that any bit of the input flips half the bits of the output.</p>
 <p>More precisely, ideally, the probability that any bit of the stream flips if a given bit of the state flips, should be ½.
@@ -144,7 +144,7 @@ where the seed of the PRNG is essentially the cipher key.
 Their analysis and understanding still matter for PRNG quality;
 although some designs don’t take confusion seriously,
 leading to severe correlation of distinct seeds.</p>
-<h2>Tooling</h2>
+<h2 id="Tooling">Tooling <a href="#Tooling" class="autolink-clicker" aria-hidden="true">§</a></h2>
 <p>Back in the seventies, there was no tooling to pragmatically study the quality of a generator.
 That made the PRNG hobby somewhat impractical.</p>
 <p>As a sad result, some people produced subpar results, such as IBM’s infamous <a href="https://en.wikipedia.org/wiki/RANDU">RANDU</a>:</p>
@@ -153,7 +153,7 @@ That made the PRNG hobby somewhat impractical.</p>
 </blockquote>
 <p>Fortunately, great strides were made since.
 Anyone can get going quickly, up until they start having competitive results.</p>
-<h3>History</h3>
+<h3 id="History">History <a href="#History" class="autolink-clicker" aria-hidden="true">§</a></h3>
 <p>A first step was Donald Knuth’s description of the use of <strong>Chi-Squared tests</strong> in 1969.</p>
 <p>While its application to generators was described in Knuth’s seminal work
 <em>The Art of Computer Programming</em>, we have to thank Karl Pearson for the concept.</p>
@@ -249,7 +249,7 @@ differential cryptanalysis, algebraic and integral attacks.)</em></p>
 I believe it is THE great accelerator of civilization by excellence.
 The step that makes us go from running at 30 km/h, to speeding at 130 km/h, to rocketing at 30 Mm/h.
 In fact, by the end of this series of posts, I hope to publish one more tool to add to the belt.</p>
-<h3>Hands-On</h3>
+<h3 id="Hands_On">Hands-On <a href="#Hands_On" class="autolink-clicker" aria-hidden="true">§</a></h3>
 <p>I don’t actually recommend you start out with PractRand for the following reasons:</p>
 <ul>
 <li>You might make silly mistakes. PractRand can kill generators that looked OK in the 80s fairly instantly. You won’t know if your design didn’t even stand a chance back then, or if it was competitive.</li>
@@ -280,7 +280,7 @@ Then, the program will stop immediately.</p>
 <p>Some tests will fail progressively.
 If the same test shows “unusual” at 4 GiB, and “suspicious” at 8 GiB,
 it will probably fail at 16 GiB.</p>
-<h3>Speed</h3>
+<h3 id="Speed">Speed <a href="#Speed" class="autolink-clicker" aria-hidden="true">§</a></h3>
 <p>Once you beat 32 TiB of PractRand, you know your generator is good —
 but to be useful, it also must be the fastest in its class.</p>
 <p>A few notes can really help you get it up to speed.</p>
@@ -334,7 +334,7 @@ int main() {
   fprintf(stderr, &quot;%f cpb\n&quot;, ((double)cycles) / 1073741824);
 }
 </code></pre>
-<h3>Designs</h3>
+<h3 id="Designs">Designs <a href="#Designs" class="autolink-clicker" aria-hidden="true">§</a></h3>
 <p>The earliest design is the <strong>LCG</strong> (Linear Congruent Generator).
 You can recognize its dirt-simple state transition (a constant addition or multiplication),
 which has neat consequences on the analysis of its cycle length (typically 2^statesize).
@@ -360,7 +360,7 @@ Examples include <a href="https://github.com/wangyi-fudan/wyhash">wyrand</a>, <a
 <p>Finally, the most haphazard of them: <strong>chaotic generators</strong>.
 They typically have no minimal cycle length, and they just try to stir things up in the state.
 For instance, <a href="https://burtleburtle.net/bob/rand/smallprng.html">jsf</a> and <a href="http://www.romu-random.org/">Romu</a>.</p>
-<h2>Parting Fun Facts</h2>
+<h2 id="Parting_Fun_Facts">Parting Fun Facts <a href="#Parting_Fun_Facts" class="autolink-clicker" aria-hidden="true">§</a></h2>
 <p>I mentionned ChaCha20 a lot, because it is one of my favorite cryptographic primitives.
 I’ll give you a few fun facts about it, as goodbye.</p>
 <ol>

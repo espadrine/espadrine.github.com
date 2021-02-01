@@ -13,13 +13,13 @@
     <object type='image/svg+xml' data='https://img.shields.io/twitter/follow/espadrine?label=Twitter&style=social'></object>
   </nav>
   <article class=relative>
-<h1>JSON Diff With First-Class Move Operations</h1>
+<h1 id="JSON_Diff_With_First_Class_Move_Operations">JSON Diff With First-Class Move Operations <a href="#JSON_Diff_With_First_Class_Move_Operations" class="autolink-clicker" aria-hidden="true">§</a></h1>
 <p><em>(This was first posted <a href="https://blog.trainline.fr/12389-algorithme-diff-json">here</a> in French and <a href="https://engineering.thetrainline.com/2016/10/05/how-we-switched-without-a-hitch-to-a-new-api/">there</a> in English.)</em></p>
 <p>Back in January, here at Trainline Europe, we learnt that SNCF, the main French railway company, wanted to update their fare system — that is, the set of rules which determine their ticket prices. The plan was to scrap congestion pricing on TGVs (France’s high-speed trains), reduce sudden price increases, introduce so many offers to discount card owners that it would feel like Christmas!</p>
 <p>However, those goals were not without challenges. Just as a princess must defeat a dragon to free her Prince Charming, SNCF had to fight the complexity of its current fare system to extract a pearl from its ashes. The blood from this fight had to drip onto their partners: counter agents, travel agencies, <a href="https://en.wikipedia.org/wiki/Global_Distribution_System">GDS</a>es… and yours truly.</p>
 <p><img src="https://i.imgur.com/dR3cNUW.png" alt="" /></p>
 <p><em>Fighting fare systems requires extensive equipment.</em></p>
-<h2>A New Search API Is Born</h2>
+<h2 id="A_New_Search_API_Is_Born">A New Search API Is Born <a href="#A_New_Search_API_Is_Born" class="autolink-clicker" aria-hidden="true">§</a></h2>
 <p>Someone at Trainline Europe (formerly Captain Train) had to update our code to the new fare system, and I volunteered. It would be a large and sensitive project, as we had to port our SNCF search engine to use a different <a href="https://en.wikipedia.org/wiki/Application_programming_interface">API</a>. We taught a new language to our train search engine, in a way.</p>
 <p>Detect changes between old and new results</p>
 <p>This engine converts (carrier-specific) search results into an intermediate format for internal use, common to all carriers. The input to this conversion was about to change significantly, but the output needed to stay identical. Indeed, the new SNCF search API, to which we were about to connect, can offer both the old and the new fare system, up to the very day on which the new fare system would be released to the world.</p>
@@ -28,7 +28,7 @@
 <p>Had a <code>diff</code> been possible, it would still not have helped me understand why the two files were different, since it only sees line changes, not structural ones. I needed a diff which was able to understand the structure of JSON. Each difference was a bug.</p>
 <p>I went looking for such an algorithm, I hopped from library to program, all claiming they could diff me some JSON. What I found gave reasonable results, but they all suffered from tremendous false-positive flagging. In particular, they all broke their teeth against having JSON lists used as sets. Although the order of the items was irrelevant, it was flagged as a complex reconstruction of the list. None of these tools could tell that the order of the items in the list had merely been shuffled around.</p>
 <p>Why?</p>
-<h2>The Issue</h2>
+<h2 id="The_Issue">The Issue <a href="#The_Issue" class="autolink-clicker" aria-hidden="true">§</a></h2>
 <p>How would you describe a change?</p>
 <p>We could simply perform a bitwise comparison and declare: “Hello! Nothing has changed!” or “Everything is different!” Of course, our analytical abilities are then tiny. Imagine a gargantuan database in which a single insignificant integer is incremented. If your diff is only able to tell, “Remove the whole database, and recreate a brand new one that happens to be nearly identical”, your diff is much too fat. Additionally, you remove the intention hiding behind the change.</p>
 <p>In JSON, most values cannot be nested; let’s call them atoms. For most uses, having a diff that uses a trivial comparison for atoms is fine. On the other hand, it needs to walk through the structures to be of any use. Objects are fine: unless you want to detect key renames, you simply compare values key-for-key. (For most uses, key renames are irrelevant.)</p>
@@ -40,7 +40,7 @@
 <p>It is so wonderful that everybody uses it, from <code>diff</code> to <code>git</code> to numerous DNA comparison software products. It is also what most libraries I found use. <a href="https://github.com/cqql/rfc6902-json-diff-js">rfc6902-json-diff</a> relies on a variant, the Levenshtein distance, which also detects substitutions (literally equivalent to an addition followed by a deletion). <a href="https://github.com/benjamine/jsondiffpatch">jsondiffpatch</a> tries to be smart by asking the user to feed it an object-identity algorithm, with which it can detect changes in position of list items. Finally, <a href="https://github.com/liufengyun/hashdiff">hashdiff</a> includes a similarity algorithm which <a href="https://github.com/liufengyun/hashdiff/blob/fff6fc28b51db16cdb6f005ef6aaea9a9a1f4d1e/lib/hashdiff/lcs.rb#L22">tells LCS</a> that two elements are identical if they are sufficiently similar, but it does not detect positional changes (and it is fairly slow).</p>
 <p>Fundamentally, LCS only has fundamental operations: insertion and deletion. That is not enough to easily guess that an element has switched places! In fact, we would be better off if moving objects were a fundamental operation as well.</p>
 <p>Furthermore, LCS is designed for lists where identity is unambiguous. Even <a href="https://github.com/benjamine/jsondiffpatch">jsondiffpatch</a> ends up performing a trivial <a href="https://github.com/benjamine/jsondiffpatch/blob/b7b7dfe52bbb4e88f3ecb87e2efbbb3af5f9c365/src/filters/arrays.js#L52">index-wise</a> comparison when it has nothing else to work with! To be free from that flawed assumption, <a href="https://github.com/liufengyun/hashdiff">hashdiff</a>’s idea is interesting: let’s compare the similarity of items!</p>
-<h2>The Similarity</h2>
+<h2 id="The_Similarity">The Similarity <a href="#The_Similarity" class="autolink-clicker" aria-hidden="true">§</a></h2>
 <p>You can probably get eight definitions of what JSON similarity is by asking five passers-by. I don’t pretend to have a better definition, but I did try to have one that works well with move operations.</p>
 <p>The goal is to compute an arbitrary notion of how probable it is that one object is the result of modifying the other.</p>
 <ul>
@@ -49,7 +49,7 @@
 <li>For atoms, we are fine with value equality.</li>
 </ul>
 <p><img src="https://i.imgur.com/EV63274.png" alt="" /></p>
-<h2>Array Pairing</h2>
+<h2 id="Array_Pairing">Array Pairing <a href="#Array_Pairing" class="autolink-clicker" aria-hidden="true">§</a></h2>
 <p>Finding an ideal match between two lists sounds a lot like the <a href="https://en.wikipedia.org/wiki/Assignment_problem">assignment problem for bipartite graphs</a>. Imagine you own a fleet of available taxis. A set of passengers need picking up across town. The assignment problem wants to minimize the overall time that it takes for each taxi to arrive at a passenger’s location.</p>
 <p><img src="https://i.imgur.com/8IYXM63.png" alt="" /></p>
 <p><em>Above, minimizing the overall time. Below, minimizing the best time.</em></p>
@@ -59,7 +59,7 @@
 <p>In fact, this problem is closer to the <a href="https://en.wikipedia.org/wiki/Stable_marriage_problem">weakly stable marriage problem</a>. However, it too can yield suboptimal results. Instead of optimizing for the highest similarity, it is content with any pairing for which no change could produce a pair with a higher similarity than each element of the pair had before. Depending on the ordering of elements in the lists, it can choose poorer pairings for our purposes.</p>
 <p>Some diffs offer move operations (such as <a href="https://github.com/cqql/rfc6902-json-diff-js">rfc6902-json-diff</a>, <a href="https://github.com/benjamine/jsondiffpatch">jsondiffpatch</a>). However, array pairing is not just about detecting moves; we want to detect the most logical moves. The root of the problem with LCS is that it needs to know about exact equality. Our fuzzy pairing can detect the most likely equality. LCS targets a response with the highest number of elements remaining in the same order; our pairing targets one with the most intuitive moves.</p>
 <p>Its weakness is the quality of the similarity function, which empirically seems to give good answers, and can be improved by user-provided heuristics.</p>
-<h2>Index Shifting</h2>
+<h2 id="Index_Shifting">Index Shifting <a href="#Index_Shifting" class="autolink-clicker" aria-hidden="true">§</a></h2>
 <p>There is quite a bit of fun in turning the indices we got from pairing (which come directly from the positions of the source and target arrays) to ones that can be used for patching purposes. Indeed, when applying the diff, we take each operation and apply it sequentially. We expect indices to be offset by previous operations.</p>
 <p>For instance, <code>[3, 2]</code> diffed with <code>[1, 2, 3]</code> will detect a pairing from index 0 of the source to index 2 of the target, but since an element is inserted at the beginning of the list prior to the move operation, that operation must be from index 1 to 2, instead of 0 to 2.</p>
 <p>First, we need to perform all removals from the list, starting with the removal with the highest index (to avoid offsetting the subsequent removals). We compute from them a function that maps indices of elements of the list from where they were before the removals to where they are afterwards. We do the same, reversed, with the additions we plan to perform after the removals and the moves are done.</p>
@@ -69,13 +69,13 @@
 <li>Each ring will rotate exactly once. When it does, no other element of the list will change position. As a result, a ring’s operations won’t offset the indices of the other rings.</li>
 </ol>
 <p>As a result, the trickiest bit of the implementation is merely to detect offset changes in operations within a ring. Then we register the operations: first the removals, then the moves, then the additions. Done!</p>
-<h2>Format Design</h2>
+<h2 id="Format_Design">Format Design <a href="#Format_Design" class="autolink-clicker" aria-hidden="true">§</a></h2>
 <p>I will readily admit that producing a format that pleases all is impossible. That won’t stop me from judging them.</p>
 <p>The <a href="https://github.com/liufengyun/hashdiff">HashDiff</a> format for paths (eg. <code>foo[0].bar</code>) is awkward for machines and not that nice for humans to read.</p>
 <p><a href="http://tools.ietf.org/html/rfc6902">RFC 6902</a> is the go-to standard. Unfortunately, it chose to use <a href="http://tools.ietf.org/html/rfc6901">RFC 6901</a>, aka. JSON pointer, for paths (eg. <code>/foo/0/bar</code>).</p>
 <p>I have no idea why <a href="http://tools.ietf.org/html/rfc6902">RFC 6902</a> did not simply use a list of strings and numbers. It is easy for humans to read, easy for machines to traverse (they have to convert the string to that list otherwise), and while it does save a few bytes when serialized, <a href="http://tools.ietf.org/html/rfc6902">RFC 6902</a> is far from being a dense format to begin with. Finally, JSON pointer is forced to use a quirky escaping system: slashes are converted to <code>~1</code> and tildes to <code>~0</code>.</p>
 <p>But it is the standard… so I accepted its flaws and rolled with it.</p>
-<h2>The road is long but fogless</h2>
+<h2 id="The_road_is_long_but_fogless">The road is long but fogless <a href="#The_road_is_long_but_fogless" class="autolink-clicker" aria-hidden="true">§</a></h2>
 <p>As I wished that this had existed when I went fishing for an appropriate library, I published this new algorithm as a <a href="https://rubygems.org/gems/json-diff">gem</a>, whose open-source repository is <a href="https://github.com/espadrine/json-diff">right here</a>.</p>
 <p>There are countless possible improvements we could make. Off the top of my head:</p>
 <ul>
@@ -83,7 +83,7 @@
 <li>String diffing,</li>
 <li>SVG output.</li>
 </ul>
-<h2>Epilogue</h2>
+<h2 id="Epilogue">Epilogue <a href="#Epilogue" class="autolink-clicker" aria-hidden="true">§</a></h2>
 <p>This diffing algorithm allowed me to detect three problematic bugs which therefore never impacted anyone. When we switched to the new search engine, we gradually increased the proportion of users that it impacted. The higher it went, the more confident we were, until we reached 100%.</p>
 <p>We changed the engine with the train at full throttle. Nobody noticed a thing!</p>
 <script type="application/ld+json">

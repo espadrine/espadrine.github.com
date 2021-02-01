@@ -13,7 +13,7 @@
     <object type='image/svg+xml' data='https://img.shields.io/twitter/follow/espadrine?label=Twitter&style=social'></object>
   </nav>
   <article class=relative>
-<h1>Go Channels Are Stacks And Would Benefit From STM</h1>
+<h1 id="Go_Channels_Are_Stacks_And_Would_Benefit_From_STM">Go Channels Are Stacks And Would Benefit From STM <a href="#Go_Channels_Are_Stacks_And_Would_Benefit_From_STM" class="autolink-clicker" aria-hidden="true">§</a></h1>
 <p>I was experimenting with <strong>Go channels</strong>, the other day,
 and for some reason the following code surprised me.</p>
 <pre><code>package main
@@ -54,7 +54,7 @@ func main() {
 2 get 5
 </code></pre>
 <p>Something to note is that this output is predictable, and depends only on the number of cores available on the machine it runs on. I’ll discuss this more in length later.</p>
-<h2>What Happened There?</h2>
+<h2 id="What_Happened_There_">What Happened There? <a href="#What_Happened_There_" class="autolink-clicker" aria-hidden="true">§</a></h2>
 <p>If channels worked like FIFO, each channel would have an entry point and an end point. Sending an element to the channel would put something to the entry point, and that element would be obtained, in the same order, at the end point.</p>
 <p>However, as can be noticed from the output, we receive the 1 before the 0. The reason for that is, well, that Go’s duplex channels are stacks. Senders and receivers use the same end point to put data in and to get data out.</p>
 <ul>
@@ -65,7 +65,7 @@ func main() {
 <li>The second get goroutine then reads the channel, and gets the 0 that was first sent to the channel.</li>
 <li>The rest of the output is pretty straightforward.</li>
 </ul>
-<h2>Locks Are Bad</h2>
+<h2 id="Locks_Are_Bad">Locks Are Bad <a href="#Locks_Are_Bad" class="autolink-clicker" aria-hidden="true">§</a></h2>
 <p>Remember that “double 1, but no 3” issue we saw? How would we solve that?</p>
 <p>The issue here is: there is a variable shared between two goroutines. That variable acts like a structure that only stays coherent if the following operation is atomic:</p>
 <ol>
@@ -115,7 +115,7 @@ is so simple and so bright that Intel has decided to implement it in hardware
 in future chips.</p>
 <p>I can only hope that programming languages make it easy to use this capability.
 Especially considering how long we have been struggling with those issues.</p>
-<h2>One Last Thing…</h2>
+<h2 id="One_Last_Thing_">One Last Thing… <a href="#One_Last_Thing_" class="autolink-clicker" aria-hidden="true">§</a></h2>
 <p>Some in-depth information.</p>
 <p>Right now, each goroutine has a segmented stack that starts with 4kB and increases if, at
 the start of each function call, the needed augmentation of stack size requires more

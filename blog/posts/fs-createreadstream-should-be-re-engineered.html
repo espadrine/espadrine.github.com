@@ -13,7 +13,7 @@
     <object type='image/svg+xml' data='https://img.shields.io/twitter/follow/espadrine?label=Twitter&style=social'></object>
   </nav>
   <article class=relative>
-<h1><code>fs.createReadStream</code> Should Be Re-engineered</h1>
+<h1 id="fs_createReadStream_Should_Be_Re_engineered"><code>fs.createReadStream</code> Should Be Re-engineered <a href="#fs_createReadStream_Should_Be_Re_engineered" class="autolink-clicker" aria-hidden="true">§</a></h1>
 <p>I just had a strange WTF moment with node.</p>
 <p>To avoid the state of dismay I went in, just remember this:</p>
 <p>In node, streams have a <code>on('error', function(err) {})</code> method which they run when some errors happen.

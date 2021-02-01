@@ -13,7 +13,7 @@
     <object type='image/svg+xml' data='https://img.shields.io/twitter/follow/espadrine?label=Twitter&style=social'></object>
   </nav>
   <article class=relative>
-<h1>SHISHUA: The Fastest Pseudo-Random Generator In the World</h1>
+<h1 id="SHISHUA_The_Fastest_Pseudo_Random_Generator_In_the_World">SHISHUA: The Fastest Pseudo-Random Generator In the World <a href="#SHISHUA_The_Fastest_Pseudo_Random_Generator_In_the_World" class="autolink-clicker" aria-hidden="true">§</a></h1>
 <p><em>(TLDR: see the <a href="#benchmark">benchmark</a> and the <a href="https://github.com/espadrine/shishua">code</a>.)</em></p>
 <p>Six months ago, I wanted to make the best PRNG with an unconventional design,
 whatever that design may be.
@@ -35,7 +35,7 @@ It wasn’t just about having a construction that emitted ten megabytes a second
 <p>I got there.</p>
 <p>In <a href="https://espadrine.github.io/blog/posts/a-primer-on-randomness.html">the previous entry to the series</a>, I explained all the things I learnt to reach it.
 Here, I’ll detail how the winning design works.</p>
-<h2>Target</h2>
+<h2 id="Target">Target <a href="#Target" class="autolink-clicker" aria-hidden="true">§</a></h2>
 <p>Let’s start with the obvious: <strong>speed is platform-dependent</strong>.
 I focused my optimization on the modern x86-64 architecture (so, Intel and AMD chips).</p>
 <p>The classic metric used to compare performance there is <strong>cpb</strong>:
@@ -88,7 +88,7 @@ refill it as needed.</p>
 But it averages out the same.</p>
 <p>So now we generate more bytes for the same amount of work.
 Next step: how do we parallelize work?</p>
-<h2>Parallelism</h2>
+<h2 id="Parallelism">Parallelism <a href="#Parallelism" class="autolink-clicker" aria-hidden="true">§</a></h2>
 <p>The CPU offers an incredible wealth of parallelism at every level.</p>
 <p>First, of course, are the SIMD instructions (Single-Instruction, Multiple Data).
 For instance, AVX2 does four 64-bit additions in parallel, or eight 32-bit ones, etc.</p>
@@ -117,7 +117,7 @@ by making the write part happen long before the read.</p>
 even though a previous instruction is not yet done, if the later instruction has no
 read/write dependency to it.</p>
 <p>All right, let’s dig our hands into the implementation!</p>
-<h2>Design</h2>
+<h2 id="Design">Design <a href="#Design" class="autolink-clicker" aria-hidden="true">§</a></h2>
 <p>Let’s walk through the design of something we will call SHISHUA-half,
 for reasons that will slowly become obvious along the article.</p>
 <p>It looks like this:</p>
@@ -161,7 +161,7 @@ through out-of-order execution.</p>
 <li><strong>A</strong>dd</li>
 </ol>
 <p>Hence the name, SHISHUA!</p>
-<h3>First, the shift</h3>
+<h3 id="First_the_shift">First, the shift <a href="#First_the_shift" class="autolink-clicker" aria-hidden="true">§</a></h3>
 <pre>u0 = _mm256_srli_epi64(s0, <span class="hljs-number">1</span>);              u1 = _mm256_srli_epi64(s1, <span class="hljs-number">3</span>);
 </pre>
 <p>AVX2 does not support rotations, sadly.
@@ -175,7 +175,7 @@ We use different shift values to increase divergence between the two sides,
 which should help lower the similarity of their self-correlation.</p>
 <p>We use rightward shift because the rightmost bits have the least diffusion in addition:
 the low bit of <code>A+B</code> is just a XOR of the low bits of <code>A</code> and <code>B</code>, for instance.</p>
-<h3>Second, the shuffle</h3>
+<h3 id="Second_the_shuffle">Second, the shuffle <a href="#Second_the_shuffle" class="autolink-clicker" aria-hidden="true">§</a></h3>
 <pre>t0 = _mm256_permutevar8x32_epi32(s0, shu0); t1 = _mm256_permutevar8x32_epi32(s1, shu1);
 </pre>
 <p>We use a 32-bit shuffle because it is the only one that is both a different granularity
@@ -194,7 +194,7 @@ That way, they do not remain in the same chunk, encouraging mixing between chunk
 <p>Each 32-bit part eventually reaches all positions circularly: A to B, B to C, … H to A.</p>
 <p>You might notice that the simplest shuffle that follows all those requirements
 are simply those two 256-bit rotations (rotation by 96 bits and 160 bits rightward, respectively).</p>
-<h3>Third, the addition</h3>
+<h3 id="Third_the_addition">Third, the addition <a href="#Third_the_addition" class="autolink-clicker" aria-hidden="true">§</a></h3>
 <p>Let’s add 64-bit chunks from the two temporary variables,
 the shift one and the shuffle one, together.</p>
 <pre>s0 = _mm256_add_epi64(t0, u0);              s1 = _mm256_add_epi64(t1, u1);
@@ -202,7 +202,7 @@ the shift one and the shuffle one, together.</p>
 <p>The addition is the main source of diffusion: it combines bits
 into irreducible combinations of XOR and AND expressions across 64-bit positions.</p>
 <p>Storing the result of the addition in the state keeps that diffusion permanently.</p>
-<h3>Output function</h3>
+<h3 id="Output_function">Output function <a href="#Output_function" class="autolink-clicker" aria-hidden="true">§</a></h3>
 <p>So, where do we get the output from?</p>
 <p>Easy: the structure we built is laid out in such a way that
 we are growing two independent pieces of state: <code>s0</code> and <code>s1</code>,
@@ -251,7 +251,7 @@ which makes them diverge more, and adds a tiny bit of stirring.</p>
 <p>I picked the smallest odd numbers so that they don’t look like magic numbers.</p>
 <p>So, there we go! That is how the state transition and output function work.</p>
 <p>Now, how do we initialize them?</p>
-<h3>Initialization</h3>
+<h3 id="Initialization">Initialization <a href="#Initialization" class="autolink-clicker" aria-hidden="true">§</a></h3>
 <p>We initialize the state with the hex digits of Φ,
 the irrational number that is least approximable by a fraction.</p>
 <pre><span class="hljs-keyword">static</span> <span class="hljs-keyword">__uint64_t</span> phi[<span class="hljs-number">8</span>] = {
@@ -295,7 +295,7 @@ You only care about diffusion in initialization.</p>
 after looking at how much they impacted seed correlation.</p>
 <p>(I computed seed correlation by counting the “unusual” and “suspicious” anomalies
 coming out of the PractRand PRNG quality tool.)</p>
-<h2>Performance</h2>
+<h2 id="Performance">Performance <a href="#Performance" class="autolink-clicker" aria-hidden="true">§</a></h2>
 <p>Speed measurement benchmarks are tricky for so many reasons.</p>
 <ul>
 <li><strong>Clock</strong> measurements can lack precision.</li>
@@ -370,7 +370,7 @@ but I want to stick to my benchmark promises.
 Maybe we lose a tiny bit of performance on early AVX-512 CPUs.)</p>
 <p>Hopefully, SHISHUA stays the fastest in the world for at least a few weeks?
 (Please make it so.)</p>
-<h2>Quality</h2>
+<h2 id="Quality">Quality <a href="#Quality" class="autolink-clicker" aria-hidden="true">§</a></h2>
 <p>It passes BigCrush and 32 TiB of PractRand without suspicion.</p>
 <p>In fact, all of its four outputs do.</p>
 <p>One of the not-ideal aspects of the design is that SHISHUA is <strong>not reversible</strong>.</p>
@@ -416,7 +416,7 @@ a more appropriate measurement is in number of bits generated per CPU cycle.
 Not only do I find it easier to grasp,
 it is also much easier to compare huge differences on the graph:</p>
 <p><img src="../assets/shishua-the-fastest-prng-in-the-world/speed-total.svg" alt="Speed plot" /></p>
-<h2>Next</h2>
+<h2 id="Next">Next <a href="#Next" class="autolink-clicker" aria-hidden="true">§</a></h2>
 <p>While there are no practical issue with irreversibility in our case,
 it also means that we can improve on SHISHUA.</p>
 <p>My ideal PRNG would have the following properties:</p>

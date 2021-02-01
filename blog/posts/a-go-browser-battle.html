@@ -13,7 +13,7 @@
     <object type='image/svg+xml' data='https://img.shields.io/twitter/follow/espadrine?label=Twitter&style=social'></object>
   </nav>
   <article class=relative>
-<h1>A Go Browser Battle</h1>
+<h1 id="A_Go_Browser_Battle">A Go Browser Battle <a href="#A_Go_Browser_Battle" class="autolink-clicker" aria-hidden="true">§</a></h1>
 <p>I learned Go from my Dad — after all, we lived in Japan for a short while when I was little — but DeepMind’s <a href="https://events.google.com/alphago2017/">foray</a> into the venerable board game definitely renewed my interest.</p>
 <p>My friend <a href="https://github.com/jankeromnes/">Jan</a>, also intrigued, had started working on a browser-based interface to play the game.</p>
 <p>So I offered him a playful challenge: we would both try to build an interesting AI for the game, and we would pit them against each other.
@@ -27,7 +27,7 @@ I took machine learning classes at University; time to apply what I learned!</p>
 <p>I definitely don’t have the computing power or the time to reach the level that AlphaGo achieved.
 It took months of training and self-play on tens of GPUs and hundreds of CPUs.
 My dream is to reach 1d; a rank roughly equivalent to a black belt in martial arts.</p>
-<h2>Stepping Stones</h2>
+<h2 id="Stepping_Stones">Stepping Stones <a href="#Stepping_Stones" class="autolink-clicker" aria-hidden="true">§</a></h2>
 <p>Go games are typically saved as <a href="http://www.red-bean.com/sgf/">SGF</a> files, which are plentiful on the Web.
 Therefore, the first step I needed to achieve was to have an SGF parser and a Go execution engine.
 The engine is designed to give me a wealth of information about the game: what group is a stone part of, how many liberties that group has…</p>
@@ -66,7 +66,7 @@ Yet again, it depends on what that yields, and how much time I have.</p>
 <li>update the node’s ancestors in the search tree to count the number of wins and losses, which may change what is the best move.</li>
 </ol>
 <p>When a node is walked through enough times, it gets expanded with the strong move guesser.</p>
-<h2>Into The Browser</h2>
+<h2 id="Into_The_Browser">Into The Browser <a href="#Into_The_Browser" class="autolink-clicker" aria-hidden="true">§</a></h2>
 <p>I plan on training the networks in Python with <a href="https://keras.io/">Keras</a>, which will use <a href="https://www.tensorflow.org">TensorFlow</a> to benefit from its optimized C++ engine.
 I own a desktop computer that unfortunately features a weak-ish Nvidia GPU, but it will have to do!</p>
 <p>Keras is fast becoming the standard API to train and export neural nets; Microsoft recently touted its support as a front-end for <a href="https://www.microsoft.com/en-us/cognitive-toolkit/">CNTK</a> when they unveiled <a href="https://docs.microsoft.com/en-us/cognitive-toolkit/ReleaseNotes/CNTK_2_0_Release_Notes">version 2</a> of the library.
@@ -76,7 +76,7 @@ Maybe when all browsers implement <a href="https://html.spec.whatwg.org/multipag
 <p>And there’s <a href="https://mil-tokyo.github.io/webdnn/">WebDNN</a>, which I will use.</p>
 <p>WebDNN is fastest when using <a href="https://webkit.org/blog/7504/webgpu-prototype-and-demos/">WebGPU</a>, a standard that I hope will get traction, but that is currently Safari-only.
 However, it can compile the neural network to <a href="http://webassembly.org/">WebAssembly</a>, which should fit in a <a href="https://html.spec.whatwg.org/multipage/workers.html#workers">WebWorker</a>.</p>
-<h2>Dreams and Work</h2>
+<h2 id="Dreams_and_Work">Dreams and Work <a href="#Dreams_and_Work" class="autolink-clicker" aria-hidden="true">§</a></h2>
 <p>This will all be a free-time effort.
 There is no planned date for the final confrontation.</p>
 <p>The code for the SGF parser, Go engine, and AIs will be <a href="https://github.com/espadrine/badukjs">here</a>, and the UI code will be <a href="https://github.com/jankeromnes/metaboard">there</a>.</p>

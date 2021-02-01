@@ -13,7 +13,7 @@
     <object type='image/svg+xml' data='https://img.shields.io/twitter/follow/espadrine?label=Twitter&style=social'></object>
   </nav>
   <article class=relative>
-<h1>How to implement Go</h1>
+<h1 id="How_to_implement_Go">How to implement Go <a href="#How_to_implement_Go" class="autolink-clicker" aria-hidden="true">§</a></h1>
 <p>As I wanted to make an automated Go player, as I planned <a href="http://espadrine.github.io/blog/posts/a-go-browser-battle.html">on a previous
 article</a>, I first needed a full implementation of the game
 of Go.</p>
@@ -41,7 +41,7 @@ bonus to white to compensate for the asymmetry of who starts first), wins.
 The Komi usually has a half point to ensure that there can be no equal
 scores, again to forbid draws.</li>
 </ol>
-<h2>The board</h2>
+<h2 id="The_board">The board <a href="#The_board" class="autolink-clicker" aria-hidden="true">§</a></h2>
 <p><img src="https://thefiletree.com/metaboard/go/blog/how-to-implement-go/capture.png" alt="AlphaGo vs. AlphaGo game, where white is about to capture 66 stones." /></p>
 <p>Since the board is a compact 2-dimensional space, we use an array, with each
 slot containing an intersection which includes its state (empty, with a white
@@ -61,13 +61,13 @@ turn, it did not seem to matter that much for now.</p>
 <p>Counting final or partial points also requires maintaining territory
 information. Yet again, we use a set to keep the intersections, and each move
 updates the territory information corresponding to its surroundings.</p>
-<h2>Play</h2>
+<h2 id="Play">Play <a href="#Play" class="autolink-clicker" aria-hidden="true">§</a></h2>
 <p>The most complicated function is inevitably the logic for computing a move. We
 must look at surrounding intersections and their groups, to assess whether the
 move is a suicide (and therefore invalid), and when it captures enemy stones.</p>
 <p>Most operations are essentially constant-time, apart from group merging, since
 the number of impacted groups is bounded, and all operations are set updates.</p>
-<h2>Superko</h2>
+<h2 id="Superko">Superko <a href="#Superko" class="autolink-clicker" aria-hidden="true">§</a></h2>
 <p>Detecting a match into previous board configurations is probably the trickier
 part of the system. Fortunately, a subtle algorithm for it already exists:
 <strong>Zobrist hashing</strong>.</p>
@@ -87,7 +87,7 @@ the random value associated with this particular change.</p>
 B19, you will XOR the hash with the random value for “black A19”, and then XOR
 it with “white B19”. <em>Fun fact</em>: it yields the same value if you do it the other
 way around.</p>
-<h2>Score</h2>
+<h2 id="Score">Score <a href="#Score" class="autolink-clicker" aria-hidden="true">§</a></h2>
 <p>The bulk of scoring is establishing territories. To make things simple, we
 assume the game went to its final conclusion, where there are no gray zones. All
 regions are either surrounded by white or black, and there are no capturable
@@ -98,7 +98,7 @@ potentially joining two larger territories together if necessary. Any stone that
 is next to the territory gives it its color.</p>
 <p>It makes counting points fairly easy: add komi, capture, stones on board, and
 own territory, and the trick is done.</p>
-<h2>Ongoing</h2>
+<h2 id="Ongoing">Ongoing <a href="#Ongoing" class="autolink-clicker" aria-hidden="true">§</a></h2>
 <p>Having implemented the game rules is not enough to properly train bots on it.</p>
 <p>For starters, we need an <strong>SGF parser</strong> to extract information about the moves
 of existing games. SGF (Simple Game Format) is the main format for serializing

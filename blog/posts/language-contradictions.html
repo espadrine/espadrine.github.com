@@ -13,10 +13,10 @@
     <object type='image/svg+xml' data='https://img.shields.io/twitter/follow/espadrine?label=Twitter&style=social'></object>
   </nav>
   <article class=relative>
-<h1>Language Contradictions</h1>
+<h1 id="Language_Contradictions">Language Contradictions <a href="#Language_Contradictions" class="autolink-clicker" aria-hidden="true">§</a></h1>
 <p>Nobody notices how absurd programming languages are until you try and build a new one.</p>
 <p>Cat-and-mouse questions spring everywhere. Here’s a few.</p>
-<h2>Overloading</h2>
+<h2 id="Overloading">Overloading <a href="#Overloading" class="autolink-clicker" aria-hidden="true">§</a></h2>
 <p>Back in the 1960s, overloading meant overhead for compiler writers, so they threw it out of their language. Back then, floating-point implemented in hardware was still a thing! Then came Ada and C++, which featured function overloading. For completeness’ sake, C++ added operator overloading. After all, operators behave much like functions, don’t they?</p>
 <p>Do you want overloading?</p>
 <p>This question is still relevant today. Proof is, the Go language <a href="http://golang.org/doc/go_faq.html#overloading">forbids it</a>. How old is Go? It was unveiled in 2008. Bummer.</p>
@@ -67,7 +67,7 @@ Overloading allows a namespace mechanism. A function named <code>draw</code> can
 <p>On the other hand, Java is right that overloading operators isn’t the same.
 Until now, I’ve implicitly assumed that operators behave like functions, but unless you are using Lisp, this simply isn’t true.
 Nonetheless, they could have allowed overloading, with a word of warning etched beneath in the brightest red: BEWARE OF THE PRECEDENCE!</p>
-<h2>Precedence</h2>
+<h2 id="Precedence">Precedence <a href="#Precedence" class="autolink-clicker" aria-hidden="true">§</a></h2>
 <p>All modern programming languages have built-in types.</p>
 <p>All modern programming languages allow users to define their own types.</p>
 <p>There should be nothing special between the former and the latter. Yet, there is.</p>

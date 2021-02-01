@@ -13,7 +13,7 @@
     <object type='image/svg+xml' data='https://img.shields.io/twitter/follow/espadrine?label=Twitter&style=social'></object>
   </nav>
   <article class=relative>
-<h1>CSS Variables vs. Multiple Background Images</h1>
+<h1 id="CSS_Variables_vs_Multiple_Background_Images">CSS Variables vs. Multiple Background Images <a href="#CSS_Variables_vs_Multiple_Background_Images" class="autolink-clicker" aria-hidden="true">§</a></h1>
 <p>I was working on <a href="https://github.com/garden/tree">Tree</a> today. While in the process of adding file selection, I realized I was duplicating a lot of code for no good reason but the limitations of CSS3.</p>
 <p>Tree is a collaborative file system. As such, it needs a file explorer. So far, that file explorer, dubbed Gateway, lacks the UI to delete files. Since there are many operations that work on one or more files, I needed to create a system to select multiple files. As it stands, files currently have a number of backgrounds: one image to indicate what type of file it is, and a background color to show which file is currently focused.</p>
 <p>So far, that hasn’t caused any issue, since for some reason, setting the background color and a background image isn’t considered a multiple background. However, adding another background image to indicate that the file is selected, and another to hint, while hovering over a file, that you can click it to select it, forces it to go into multiple-background mode, and that distinction is no longer valid. As a result, I now have four backgrounds.</p>
