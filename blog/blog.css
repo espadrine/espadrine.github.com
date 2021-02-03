@@ -6,11 +6,6 @@ html {
   background-attachment:fixed;
 }
 
-h1 {
-  text-align: center;
-  margin: 1rem 0 2rem;
-}
-nav > ul { list-style: none; }
 a {
   color: #f55b2c;
   text-decoration: none;
@@ -26,29 +21,43 @@ body {
   padding: 0 8px;
 }
 
-.relative {
-  position: relative;
+/* Index page. */
+
+.index nav > ul { list-style: none; }
+
+.index > hgroup {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.rss {
-  position: absolute;
-  height: 1rem;
-  top: 0.7rem;
-  left: 5.5rem;
+.index .rss {
+  position: relative;
+  top: .2rem;
+  left: -2.5rem;
+  width: 0;  /* Ensures the title is centered. */
 }
-.rss > img { height: 1rem; }
+
+.index .rss > img { height: 1rem; }
+
+.index nav > ul > li {
+  margin-bottom: .4rem;
+}
 
 /* Post tags in index */
-main > nav > ul > li > .post-tags {
+.index nav > ul > li > .post-tags {
   visibility: hidden;
   font-style: italic;
   font-size: 0.7rem;
   float: right;
 }
 
-main > nav > ul > li:hover > .post-tags {
+.index nav > ul > li:hover > .post-tags {
   visibility: visible;
 }
+
+
+/* Article page */
 
 /* Used on articles top links. */
 main > nav.social-links {
@@ -60,8 +69,6 @@ main > nav.social-links {
 main > nav.social-links > object {
   height: 20px;
 }
-
-/* Article and Markdown */
 
 main {
   background: #fff;
