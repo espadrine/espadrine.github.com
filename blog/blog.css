@@ -23,8 +23,6 @@ body {
 
 /* Index page. */
 
-.index nav > ul { list-style: none; }
-
 .index > hgroup {
   display: flex;
   align-items: center;
@@ -39,6 +37,12 @@ body {
 }
 
 .index .rss > img { height: 1rem; }
+
+.index nav > ul { list-style: none; }
+
+.index nav > ul > li {
+  list-style-type: '–\00A0\00A0\00A0\00A0\00A0';
+}
 
 .index nav > ul > li {
   margin-bottom: .4rem;
