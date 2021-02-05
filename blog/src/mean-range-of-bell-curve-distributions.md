@@ -13,14 +13,14 @@ and its implications on the correct computation of the balls-into-bins problem.
 
 ## 1. Generic Derivation
 
-Consider a distribution with probability density function $`\phi`.
+Consider a distribution with probability density function $`\varphi`.
 Its associated random variable, $`X`, can be either real-valued or discrete.
 
 We observe a sample of $`N` independent values taken from that distribution.
 
 The question we ask is:
 What is the range of values that have a probability ≥ $`\gamma`
-(across samplings of N values) of appearing in the sample?
+(across samplings of $`N` values) of appearing in the sample?
 For instance, for a mean range, one would pick $`\gamma = \frac{1}{2}`.
 
 Despite being potentially continuous, we can research the probability
@@ -30,20 +30,20 @@ that the value does not appear in the sample.
 
 In turn, given that the sample is independently drawn each time,
 the probability that a value is not drawn once,
-is $`P_{excluded} = (1 - \phi(x))^N`.
+is $`P_{excluded} = (1 - \varphi(x))^N`.
 
 Thus, the probability that a given value is in the sample,
-is $`1 - (1 - \phi(x))^N`.
+is $`1 - (1 - \varphi(x))^N`.
 By definition, that probability is equal to $`\gamma`.
 
 We can therefore derive that the values $`x` that are in range,
 follow the equation:
 
 ```latex
-\phi(x) \geq 1 - \sqrt[N]{1 - \gamma}
+\varphi(x) \geq 1 - \sqrt[N]{1 - \gamma}
 ```
 
-When $`\phi` is a bell curve distribution,
+When $`\varphi` is a bell curve distribution,
 the corresponding equality has two solutions for $`x`.
 
 ## 2. Application to the Normal
@@ -54,10 +54,10 @@ which will enable us to produce good estimations for all distributions,
 thanks to the **central limit theorem**.
 
 First, let us derive the exact Normal solution.
-We have $`\phi(x) = \mathcal{N}(\mu, \sigma^2)`:
+We have $`\varphi(x) = \mathcal{N}(\mu, \sigma^2)`:
 
 ```latex
-\phi(x) = \frac{e^{-\frac{(x-\mu)^2}{2\sigma^2}}}{\sqrt{2\sigma^2\pi}}
+\varphi(x) = \frac{e^{-\frac{(x-\mu)^2}{2\sigma^2}}}{\sqrt{2\sigma^2\pi}}
 ```
 
 Thus the solution to the general inequality is:
@@ -77,6 +77,61 @@ along with the mean range, which follows this formula:
 ```
 
 ## 3. Application to the Binomial
+
+The PDF of a binomial distribution $`\varphi(x) = \mathcal{B}(m, p)`,
+the probability of a number $`x` of positive events
+among $`m` events with probability $`p` of positivity,
+follows this equation:
+
+```latex
+\varphi(x) = {m \choose x} p^x (1-p)^{m-x}
+```
+
+While $`x` is a discrete integer,
+the distribution of $`\varphi` is also is bell-shaped.
+Thus the generic derivation above can also be applied.
+
+Two issues arise when using that derivation, however:
+
+- Unlike the Normal, the binomial coefficient cannot be elegantly **inverted**,
+  which prevents us from producing an exact formula.
+- For large values of $`m - x` (around $`2^{128}`),
+  calculating that binomial coefficient exactly
+  is **too computationally expensive** to yield a result within a lifetime.
+
+We can however devise an algorithmic method
+by which we obtain an exact answer regardless.
+
+The first issue can be solved by computing $`\varphi(x)` for all values of $`x`
+until the bell curve plummets back below $`1-\sqrt[N]{1-\gamma}`.
+However, that method is impractical when $`x_{max}` is too large.
+
+Instead of going through each value of $`x`,
+our algorithm can search for the right value
+through increasingly accurate approximations,
+similar to the way Newton’s method works.
+
+This convergence works by:
+
+1. Using the best model we have of the distribution,
+2. Gathering information from the estimated root,
+3. Updating the model to be even more precise,
+4. Iterating, similar to a binary search,
+   until eventually, we find two consecutive integers
+   $`x_{max}` and $`x_{max}+1` where the first is above the limit
+   (obtained from the generic derivation),
+   and the other is not.
+
+The two challenges in implementing this algorithm are:
+
+- Problem 1: Evaluating $`\varphi(x)` is too expensive for large $`x`
+  using integer arithmetic operations,
+- Problem 2: Establishing a good and computable model for the distribution,
+  and updating it in such a way that ensures eventual and fast convergence.
+
+### 3.1. Evaluating the PDF
+
+### 3.2. Converging to the range extrema
 
 ## 4. Balls Into Bins
 
