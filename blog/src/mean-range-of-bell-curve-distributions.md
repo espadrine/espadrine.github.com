@@ -131,6 +131,27 @@ The two challenges in implementing this algorithm are:
 
 ### 3.1. Evaluating the PDF
 
+We use the classic solution:
+first, convert the binomial coefficient formula to use the Gamma function.
+
+```latex
+\varphi(x) = \frac{\Gamma(m+1)}{\Gamma(x+1)\Gamma(m-x+1)} p^x (1-p)^{m-x}
+```
+
+Then, to avoid handling large gamma results,
+we rely on an exact computation of the log-gamma.
+We can use an arbitrary-precision library
+to ensure we get an error below the integer result we end up with.
+(To find the right precision to set for the algorithm,
+we can rely on exponential binary search.)
+
+```latex
+\varphi(x) = e^{
+  \ln\Gamma(m+1) - \ln\Gamma(x+1) - \ln\Gamma(m-x+1)
+  + x \ln(p) + (m-x) \ln(1-p)
+}
+```
+
 ### 3.2. Converging to the range extrema
 
 ## 4. Balls Into Bins
