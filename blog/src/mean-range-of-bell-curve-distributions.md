@@ -116,7 +116,7 @@ This convergence works by:
 1. Using the best model we have of the distribution,
 2. Gathering information from the estimated root,
 3. Updating the model to be even more precise,
-4. Iterating, similar to a binary search,
+4. Iterating, similar to an interpolation search,
    until eventually, we find two consecutive integers
    $`x_{max}` and $`x_{max}+1` where the first is above the limit
    (obtained from the generic derivation),
@@ -153,6 +153,30 @@ we can rely on exponential binary search.)
 ```
 
 ### 3.2. Converging to the range extrema
+
+<script src="../assets/mean-range-of-a-bell-curve-distribution/mp-wasm.js"></script>
+<script src="../assets/mean-range-of-a-bell-curve-distribution/normal-mean-range.js"></script>
+<script src="../assets/mean-range-of-a-bell-curve-distribution/binomial-mean-range.js"></script>
+<script>
+fetchMPWasm('../assets/mean-range-of-a-bell-curve-distribution/mp.wasm')
+.then(mpWasm => {
+  const mpf = this.mpf = mpWasm.mpf;
+  mpf.setDefaultPrec(256);
+  const two256 = mpf(2).pow(256);
+  const two128 = mpf(2).pow(128);
+  const twom128 = mpf(2).pow(-128);
+  const res128 = binomialRange(two128, twom128, two128);
+  console.log(`min ${res128.min}`);
+  console.log(`max ${res128.max}`);
+  console.log(`range ${res128.range}`);
+  const res256 = binomialRange(two256, twom128, two256);
+  //console.log(`B(4,.5)(2) = ${binomialProb(2, 4, .5)}`);
+  console.log(`min ${res256.min}`);
+  console.log(`max ${res256.max}`);
+  console.log(`range ${res256.range}`);
+  //debugger;
+});
+</script>
 
 ## 4. Balls Into Bins
 
