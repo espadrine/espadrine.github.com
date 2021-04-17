@@ -88,6 +88,7 @@ function binomialRange(events, posprob, samples, prob = .5, mpf = this.mpf) {
   // Binary search: (2^128,2^-128,2^128): 129; (2^256,2^-128,2^256): 384
   // Interp search: (2^128,2^-128,2^128): 9;   (2^256,2^-128,2^256): 136
 
+  max = max.ceil();
   return { min, max, range: max.sub(min) };
 }
 

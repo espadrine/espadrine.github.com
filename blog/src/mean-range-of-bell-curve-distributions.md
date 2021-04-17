@@ -8,8 +8,39 @@ the best estimate we can hope for is the expected value of the range.
 That mean range,
 along with the expected maximum and minimum values of the sampling set,
 are traditionally difficult to compute with existing means.
-We present a novel method to perform that computation,
+We present a method to perform that computation,
 and its implications on the correct computation of the balls-into-bins problem.
+
+<style>
+.ballsIntoBins {
+  width: 90%;
+  margin: auto;
+  padding: .6em 2em;
+  border: 1px solid lightgray;
+  border-radius: 50px;
+  background-color: #fafaff;
+}
+.ballsIntoBins p {
+  text-align: center;
+}
+.ballsIntoBins input {
+  width: 7ex;
+}
+</style>
+<div class=ballsIntoBins>
+  <p> Randomly placing this number of balls:
+    <input id=ballsInput value='2^128'>
+    = <output id=ballsOutput>340282366920938463463374607431768211456</output>,
+  <br> in this number of bins:
+    <input id=binsInput value='2^128'>
+    = <output id=binsOutput>340282366920938463463374607431768211456</output>,
+  <br> causes the least filled bin to contain
+    <output id=minOutput>0</output>
+    balls, whilst the most filled bin contains
+    <output id=maxOutput>33</output>
+    balls.
+  <p id=ballsErrors>
+</div>
 
 ## 1. Generic Derivation
 
@@ -154,27 +185,63 @@ we can rely on exponential binary search.)
 
 ### 3.2. Converging to the range extrema
 
-<script src="../assets/mean-range-of-a-bell-curve-distribution/mp-wasm.js"></script>
-<script src="../assets/mean-range-of-a-bell-curve-distribution/normal-mean-range.js"></script>
-<script src="../assets/mean-range-of-a-bell-curve-distribution/binomial-mean-range.js"></script>
-<script>
-fetchMPWasm('../assets/mean-range-of-a-bell-curve-distribution/mp.wasm')
-.then(mpWasm => {
-  const mpf = this.mpf = mpWasm.mpf;
-  mpf.setDefaultPrec(256);
-  const two256 = mpf(2).pow(256);
-  const two128 = mpf(2).pow(128);
-  const twom128 = mpf(2).pow(-128);
-  const res128 = binomialRange(two128, twom128, two128);
-  console.log(`min ${res128.min}`);
-  console.log(`max ${res128.max}`);
-  console.log(`range ${res128.range}`);
-  const res256 = binomialRange(two256, twom128, two256);
-  //console.log(`B(4,.5)(2) = ${binomialProb(2, 4, .5)}`);
-  console.log(`min ${res256.min}`);
-  console.log(`max ${res256.max}`);
-  console.log(`range ${res256.range}`);
-  //debugger;
+<script async src="../assets/mean-range-of-a-bell-curve-distribution/mp-wasm.js"></script>
+<script async src="../assets/mean-range-of-a-bell-curve-distribution/normal-mean-range.js"></script>
+<script async src="../assets/mean-range-of-a-bell-curve-distribution/binomial-mean-range.js"></script>
+<script async type=module src="../assets/mean-range-of-a-bell-curve-distribution/cli-calculator.js"></script>
+<script defer type=module>
+import Calculator from '../assets/mean-range-of-a-bell-curve-distribution/cli-calculator.js';
+
+function initBallsIntoBins(mpWasm) {
+  const calc = new Calculator(mpWasm);
+  calc.mpf.setDefaultPrec(512);
+  const updateBallsIntoBins = function() {
+    ballsErrors.textContent = '';
+    const balls = calc.compute(ballsInput.value);
+    if (balls.errors.length > 0) {
+      ballsErrors.innerHTML = balls.errors.map(e => e.toString()).join('<br>');
+      return;
+    }
+    const nballs = balls.result[0];
+    ballsOutput.value = nballs.toString();
+
+    const bins = calc.compute(binsInput.value);
+    if (bins.errors.length > 0) {
+      ballsErrors.innerHTML = bins.errors.map(e => e.toString()).join('<br>');
+      return;
+    }
+    const nbins = bins.result[0];
+    binsOutput.value = nbins.toString();
+
+    const range = binomialRange(nballs, calc.mpf(1).div(nbins), nballs);
+    minOutput.value = range.min.toString();
+    maxOutput.value = range.max.toString();
+  };
+  ballsInput.addEventListener('input', updateBallsIntoBins);
+  binsInput.addEventListener('input', updateBallsIntoBins);
+}
+
+addEventListener('DOMContentLoaded', () => {
+  fetchMPWasm('../assets/mean-range-of-a-bell-curve-distribution/mp.wasm')
+  .then(mpWasm => {
+    const mpf = window.mpf = mpWasm.mpf;
+    mpf.setDefaultPrec(256);
+    initBallsIntoBins(mpWasm);
+
+    const two256 = mpf(2).pow(256);
+    const two128 = mpf(2).pow(128);
+    const twom128 = mpf(2).pow(-128);
+    const res128 = binomialRange(two128, twom128, two128);
+    console.log(`min ${res128.min}`);
+    console.log(`max ${res128.max}`);
+    console.log(`range ${res128.range}`);
+    const res256 = binomialRange(two256, twom128, two256);
+    //console.log(`B(4,.5)(2) = ${binomialProb(2, 4, .5)}`);
+    console.log(`min ${res256.min}`);
+    console.log(`max ${res256.max}`);
+    console.log(`range ${res256.range}`);
+    //debugger;
+  });
 });
 </script>
 

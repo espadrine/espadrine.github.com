@@ -22,8 +22,38 @@ the best estimate we can hope for is the expected value of the range.
 That mean range,
 along with the expected maximum and minimum values of the sampling set,
 are traditionally difficult to compute with existing means.
-We present a novel method to perform that computation,
+We present a method to perform that computation,
 and its implications on the correct computation of the balls-into-bins problem.</p>
+<style>
+.ballsIntoBins {
+  width: 90%;
+  margin: auto;
+  padding: .6em 2em;
+  border: 1px solid lightgray;
+  border-radius: 50px;
+  background-color: #fafaff;
+}
+.ballsIntoBins p {
+  text-align: center;
+}
+.ballsIntoBins input {
+  width: 7ex;
+}
+</style>
+<div class=ballsIntoBins>
+  <p> Randomly placing this number of balls:
+    <input id=ballsInput value='2^128'>
+    = <output id=ballsOutput>340282366920938463463374607431768211456</output>,
+  <br> in this number of bins:
+    <input id=binsInput value='2^128'>
+    = <output id=binsOutput>340282366920938463463374607431768211456</output>,
+  <br> causes the least filled bin to contain
+    <output id=minOutput>0</output>
+    balls, whilst the most filled bin contains
+    <output id=maxOutput>33</output>
+    balls.
+  <p id=ballsErrors>
+</div>
 <h2 id="Generic_Derivation">1. Generic Derivation <a href="#Generic_Derivation" class="autolink-clicker" aria-hidden="true">§</a></h2>
 <p>Consider a distribution with probability density function <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>φ</mi></mrow><annotation encoding="application/x-tex">\varphi</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord mathnormal">φ</span></span></span></span>.
 Its associated random variable, <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi></mrow><annotation encoding="application/x-tex">X</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.07847em;">X</span></span></span></span>, can be either real-valued or discrete.</p>
@@ -221,27 +251,63 @@ we can rely on exponential binary search.)</p>
 }
 </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">φ</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.938em;vertical-align:0em;"></span><span class="mord"><span class="mord mathnormal">e</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.938em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mop mtight"><span class="mtight">l</span><span class="mtight">n</span></span><span class="mspace mtight" style="margin-right:0.19516666666666668em;"></span><span class="mord mtight">Γ</span><span class="mopen mtight">(</span><span class="mord mathnormal mtight">m</span><span class="mbin mtight">+</span><span class="mord mtight">1</span><span class="mclose mtight">)</span><span class="mbin mtight">−</span><span class="mop mtight"><span class="mtight">l</span><span class="mtight">n</span></span><span class="mspace mtight" style="margin-right:0.19516666666666668em;"></span><span class="mord mtight">Γ</span><span class="mopen mtight">(</span><span class="mord mathnormal mtight">x</span><span class="mbin mtight">+</span><span class="mord mtight">1</span><span class="mclose mtight">)</span><span class="mbin mtight">−</span><span class="mop mtight"><span class="mtight">l</span><span class="mtight">n</span></span><span class="mspace mtight" style="margin-right:0.19516666666666668em;"></span><span class="mord mtight">Γ</span><span class="mopen mtight">(</span><span class="mord mathnormal mtight">m</span><span class="mbin mtight">−</span><span class="mord mathnormal mtight">x</span><span class="mbin mtight">+</span><span class="mord mtight">1</span><span class="mclose mtight">)</span><span class="mbin mtight">+</span><span class="mord mathnormal mtight">x</span><span class="mspace mtight" style="margin-right:0.19516666666666668em;"></span><span class="mop mtight"><span class="mtight">l</span><span class="mtight">n</span></span><span class="mopen mtight">(</span><span class="mord mathnormal mtight">p</span><span class="mclose mtight">)</span><span class="mbin mtight">+</span><span class="mopen mtight">(</span><span class="mord mathnormal mtight">m</span><span class="mbin mtight">−</span><span class="mord mathnormal mtight">x</span><span class="mclose mtight">)</span><span class="mspace mtight" style="margin-right:0.19516666666666668em;"></span><span class="mop mtight"><span class="mtight">l</span><span class="mtight">n</span></span><span class="mopen mtight">(</span><span class="mord mtight">1</span><span class="mbin mtight">−</span><span class="mord mathnormal mtight">p</span><span class="mclose mtight">)</span></span></span></span></span></span></span></span></span></span></span></span></span>
 <h3 id="Converging_to_the_range_extrema">3.2. Converging to the range extrema <a href="#Converging_to_the_range_extrema" class="autolink-clicker" aria-hidden="true">§</a></h3>
-<script src="../assets/mean-range-of-a-bell-curve-distribution/mp-wasm.js"></script>
-<script src="../assets/mean-range-of-a-bell-curve-distribution/normal-mean-range.js"></script>
-<script src="../assets/mean-range-of-a-bell-curve-distribution/binomial-mean-range.js"></script>
-<script>
-fetchMPWasm('../assets/mean-range-of-a-bell-curve-distribution/mp.wasm')
-.then(mpWasm => {
-  const mpf = this.mpf = mpWasm.mpf;
-  mpf.setDefaultPrec(256);
-  const two256 = mpf(2).pow(256);
-  const two128 = mpf(2).pow(128);
-  const twom128 = mpf(2).pow(-128);
-  const res128 = binomialRange(two128, twom128, two128);
-  console.log(`min ${res128.min}`);
-  console.log(`max ${res128.max}`);
-  console.log(`range ${res128.range}`);
-  const res256 = binomialRange(two256, twom128, two256);
-  //console.log(`B(4,.5)(2) = ${binomialProb(2, 4, .5)}`);
-  console.log(`min ${res256.min}`);
-  console.log(`max ${res256.max}`);
-  console.log(`range ${res256.range}`);
-  //debugger;
+<script async src="../assets/mean-range-of-a-bell-curve-distribution/mp-wasm.js"></script>
+<script async src="../assets/mean-range-of-a-bell-curve-distribution/normal-mean-range.js"></script>
+<script async src="../assets/mean-range-of-a-bell-curve-distribution/binomial-mean-range.js"></script>
+<script async type=module src="../assets/mean-range-of-a-bell-curve-distribution/cli-calculator.js"></script>
+<script defer type=module>
+import Calculator from '../assets/mean-range-of-a-bell-curve-distribution/cli-calculator.js';
+
+function initBallsIntoBins(mpWasm) {
+  const calc = new Calculator(mpWasm);
+  calc.mpf.setDefaultPrec(512);
+  const updateBallsIntoBins = function() {
+    ballsErrors.textContent = '';
+    const balls = calc.compute(ballsInput.value);
+    if (balls.errors.length > 0) {
+      ballsErrors.innerHTML = balls.errors.map(e => e.toString()).join('<br>');
+      return;
+    }
+    const nballs = balls.result[0];
+    ballsOutput.value = nballs.toString();
+
+    const bins = calc.compute(binsInput.value);
+    if (bins.errors.length > 0) {
+      ballsErrors.innerHTML = bins.errors.map(e => e.toString()).join('<br>');
+      return;
+    }
+    const nbins = bins.result[0];
+    binsOutput.value = nbins.toString();
+
+    const range = binomialRange(nballs, calc.mpf(1).div(nbins), nballs);
+    minOutput.value = range.min.toString();
+    maxOutput.value = range.max.toString();
+  };
+  ballsInput.addEventListener('input', updateBallsIntoBins);
+  binsInput.addEventListener('input', updateBallsIntoBins);
+}
+
+addEventListener('DOMContentLoaded', () => {
+  fetchMPWasm('../assets/mean-range-of-a-bell-curve-distribution/mp.wasm')
+  .then(mpWasm => {
+    const mpf = window.mpf = mpWasm.mpf;
+    mpf.setDefaultPrec(256);
+    initBallsIntoBins(mpWasm);
+
+    const two256 = mpf(2).pow(256);
+    const two128 = mpf(2).pow(128);
+    const twom128 = mpf(2).pow(-128);
+    const res128 = binomialRange(two128, twom128, two128);
+    console.log(`min ${res128.min}`);
+    console.log(`max ${res128.max}`);
+    console.log(`range ${res128.range}`);
+    const res256 = binomialRange(two256, twom128, two256);
+    //console.log(`B(4,.5)(2) = ${binomialProb(2, 4, .5)}`);
+    console.log(`min ${res256.min}`);
+    console.log(`max ${res256.max}`);
+    console.log(`range ${res256.range}`);
+    //debugger;
+  });
 });
 </script>
 <h2 id="Balls_Into_Bins">4. Balls Into Bins <a href="#Balls_Into_Bins" class="autolink-clicker" aria-hidden="true">§</a></h2>
