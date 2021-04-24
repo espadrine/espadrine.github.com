@@ -26,6 +26,7 @@ and its implications on the correct computation of the balls-into-bins problem.
 .ballsIntoBins input {
   width: 7ex;
 }
+output { word-break: break-all; }
 </style>
 <div class=ballsIntoBins>
   <p> Randomly placing this number of balls:
@@ -38,7 +39,9 @@ and its implications on the correct computation of the balls-into-bins problem.
     <output id=minOutput>0</output>
     balls, whilst the most filled bin contains
     <output id=maxOutput>33</output>
-    balls.
+    balls, which is
+    <output id=rangeOutput>33</output>
+    more.
   <p id=ballsErrors>
 </div>
 
@@ -85,7 +88,7 @@ which will enable us to produce good estimations for all distributions,
 thanks to the **central limit theorem**.
 
 First, let us derive the exact Normal solution.
-We have $`\varphi(x) = \mathcal{N}(\mu, \sigma^2)`:
+We have $`\varphi(x) : \mathcal{N}(\mu, \sigma^2)`:
 
 ```latex
 \varphi(x) = \frac{e^{-\frac{(x-\mu)^2}{2\sigma^2}}}{\sqrt{2\sigma^2\pi}}
@@ -109,17 +112,17 @@ along with the mean range, which follows this formula:
 
 ## 3. Application to the Binomial
 
-The PDF of a binomial distribution $`\varphi(x) = \mathcal{B}(m, p)`,
+The PDF of a binomial distribution $`\beta(x) : \mathcal{B}(m, p)`,
 the probability of a number $`x` of positive events
 among $`m` events with probability $`p` of positivity,
 follows this equation:
 
 ```latex
-\varphi(x) = {m \choose x} p^x (1-p)^{m-x}
+\beta(x) = {m \choose x} p^x (1-p)^{m-x}
 ```
 
 While $`x` is a discrete integer,
-the distribution of $`\varphi` is also is bell-shaped.
+the distribution of $`\mathcal{B}(m, p)` is also is bell-shaped.
 Thus the generic derivation above can also be applied.
 
 Two issues arise when using that derivation, however:
@@ -133,8 +136,8 @@ Two issues arise when using that derivation, however:
 We can however devise an algorithmic method
 by which we obtain an exact answer regardless.
 
-The first issue can be solved by computing $`\varphi(x)` for all values of $`x`
-until the bell curve plummets back below $`1-\sqrt[N]{1-\gamma}`.
+The first issue can be solved by computing $`\beta(x)` for all values of $`x`
+until the bell curve plummets back below $`\tau = 1-\sqrt[N]{1-\gamma}`.
 However, that method is impractical when $`x_{max}` is too large.
 
 Instead of going through each value of $`x`,
@@ -155,7 +158,7 @@ This convergence works by:
 
 The two challenges in implementing this algorithm are:
 
-- Problem 1: Evaluating $`\varphi(x)` is too expensive for large $`x`
+- Problem 1: Evaluating $`\beta(x)` is too expensive for large $`x`
   using integer arithmetic operations,
 - Problem 2: Establishing a good and computable model for the distribution,
   and updating it in such a way that ensures eventual and fast convergence.
@@ -166,7 +169,7 @@ We use the classic solution:
 first, convert the binomial coefficient formula to use the Gamma function.
 
 ```latex
-\varphi(x) = \frac{\Gamma(m+1)}{\Gamma(x+1)\Gamma(m-x+1)} p^x (1-p)^{m-x}
+\beta(x) = \frac{\Gamma(m+1)}{\Gamma(x+1)\Gamma(m-x+1)} p^x (1-p)^{m-x}
 ```
 
 Then, to avoid handling large gamma results,
@@ -177,13 +180,85 @@ to ensure we get an error below the integer result we end up with.
 we can rely on exponential binary search.)
 
 ```latex
-\varphi(x) = e^{
+\beta(x) = e^{
   \ln\Gamma(m+1) - \ln\Gamma(x+1) - \ln\Gamma(m-x+1)
   + x \ln(p) + (m-x) \ln(1-p)
 }
 ```
 
 ### 3.2. Converging to the range extrema
+
+Given the shape of the PDF, and its reflectional symmetry,
+we can *bound* the expected maximum sample to be between the mean
+and the end of the curve.
+
+```latex
+mp \leq x_{max} \leq m
+```
+
+We set those bounds as $`x_{low}` and $`x_{high}`,
+and estimate the value of $`x_{max}` from its Gaussian approximation:
+
+```latex
+\hat{x}_{max} =
+  mp + \sqrt{-2mp(1-p)
+    \ln(\sqrt{2mp(1-p)\pi}(1-\sqrt[N]{1-\gamma}))}
+```
+
+We can then compute the accurate value of $`\beta(\hat{x}_{max})`.
+If that value is below $`\tau`, we are too far:
+we set the upper bound $`x_{high}` to our $`\hat{x}_{max}` estimate.
+Otherwise, we set $`x_{low}` to it instead.
+
+Then, we must **improve our estimated model**.
+
+*Newton’s method* is insufficient,
+because it does not guarantee convergence,
+and because its convergence is comparatively slow
+as a result of the flatness of the curve.
+
+*Binary search*, taking the average of $`x_{low}` and $`x_{high}`,
+produces a reliable convergence in $`O(\log(m))`,
+but it does not use our existing knowledge of the shape of the curve.
+
+The normal curve is quite a good approximation,
+especially with large values.
+(With small values, the convergence is fast anyway.)
+
+However, past the first estimation,
+the normal curve is too far from where the binomial curve intersects $`\tau`.
+Thus we must slide it, either to the left or to the right,
+so that it coincides laterally
+with the real point $`\{\hat{x}_{max}, \beta(\hat{x}_{max})\}`
+whose abscissa is an estimate of $`x_{max}`.
+
+That new curve is another Gaussian distribution,
+with a mean that solves the equation
+$`\varphi_{\mu, \sigma^2}(\hat{x}_{max}) = \beta(\hat{x}_{max})`:
+
+```latex
+\mu = \hat{x}_{max} + \sqrt{-2\sigma^2\ln(
+    \beta(\hat{x}_{max})
+    \sqrt{2\sigma^2\pi}
+  )}
+```
+
+However, there is no guarantee that it will intersect $`\tau`
+between $`x_{low}` and $`x_{high}`.
+As a fallback, if it is out of bounds, we ignore the normal estimate
+and use the average of $`x_{low}` and $`x_{high}`,
+just like binary search.
+
+Once the bounds $`x_{low}` and $`x_{high}`
+have converged into adjacent integers,
+we have found $`x_{max} = x_{low}`.
+
+As for $`x_{min}`, thanks to the symmetry of the Binomial curve,
+we can instantly obtain it as $`x_{min} = 2mp - x_{max}`.
+
+## 4. Balls Into Bins
+
+## Conclusion
 
 <script async src="../assets/mean-range-of-a-bell-curve-distribution/mp-wasm.js"></script>
 <script async src="../assets/mean-range-of-a-bell-curve-distribution/normal-mean-range.js"></script>
@@ -216,6 +291,7 @@ function initBallsIntoBins(mpWasm) {
     const range = binomialRange(nballs, calc.mpf(1).div(nbins), nballs);
     minOutput.value = range.min.toString();
     maxOutput.value = range.max.toString();
+    rangeOutput.value = range.range.toString();
   };
   ballsInput.addEventListener('input', updateBallsIntoBins);
   binsInput.addEventListener('input', updateBallsIntoBins);
@@ -231,23 +307,16 @@ addEventListener('DOMContentLoaded', () => {
     const two256 = mpf(2).pow(256);
     const two128 = mpf(2).pow(128);
     const twom128 = mpf(2).pow(-128);
-    const res128 = binomialRange(two128, twom128, two128);
-    console.log(`min ${res128.min}`);
-    console.log(`max ${res128.max}`);
-    console.log(`range ${res128.range}`);
-    const res256 = binomialRange(two256, twom128, two256);
-    //console.log(`B(4,.5)(2) = ${binomialProb(2, 4, .5)}`);
-    console.log(`min ${res256.min}`);
-    console.log(`max ${res256.max}`);
-    console.log(`range ${res256.range}`);
-    //debugger;
+    [binomialRange(two128, twom128, two128),
+     binomialRange(two256, twom128, two256)].forEach(res => {
+      console.log(`min ${res.min}`);
+      console.log(`max ${res.max}`);
+      console.log(`range ${res.range}`);
+      console.log(`steps: ${res.iterations}`);
+    });
   });
 });
 </script>
-
-## 4. Balls Into Bins
-
-## Conclusion
 
 
 <script type="application/ld+json">
