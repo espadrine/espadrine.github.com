@@ -22,6 +22,8 @@ function binomialRange(events, posprob, samples, prob = .5, mpf = this.mpf) {
 
   // Track lower and upper bounds to the range.
   const mean = n.mul(p), variance = mean.mul(mpf(1).sub(p));
+  let lowMin = mpf(0); // Pr(lowMin) <= targetProb.
+  let highMin = mean;  // Must always be Pr(highMin) > targetProb.
   let lowMax = mean;   // Must always be Pr(lowMax) > targetProb.
   let highMax = n;     // Pr(highMax) <= targetProb.
   let steps = 0;
@@ -56,13 +58,39 @@ function binomialRange(events, posprob, samples, prob = .5, mpf = this.mpf) {
     }
   }
 
-  // The binomial PMF is symmetric around the mean.
-  min = mpf.max(0, mean.sub(max.sub(mean)).round());
+  approxMean = mean;
+  for (;;) {
+    let normal = normalRange(approxMean, variance, samples, prob, mpf);
+    let curMin = normal.min.ceil();
+    // Compute the actual probability at that estimation.
+    let curProb = binomialProb(curMin, n, p, mpf);
+    // Update the approximate mean
+    // to get the normal curve to track the binomial one.
+    approxMean = curMin.add(mpf.sqrt(
+      variance.mul(-2).mul(mpf.log(curProb.mul(
+        mpf.sqrt(variance.mul(2).mul(pi)))))));
+    // Check that we are not stuck on a value.
+    if (curMin.lte(lowMin) || curMin.gte(highMin) || curMin.isNaN()) {
+      // Use binary search instead.
+      curMin = lowMin.div(2).add(highMin.div(2)).floor();
+      curProb = binomialProb(curMin, n, p, mpf);
+    }
+    // Update the bounds.
+    if (curProb.gt(targetProb)) {
+      highMin = curMin;
+    } else {
+      lowMin = curMin;
+    }
+    if (highMin.sub(lowMin).lte(1)) {
+      min = highMin;
+      break;
+    }
+  }
+
   // Binary search: (2^128,2^-128,2^128): 128; (2^256,2^-128,2^256): 256
   // Newton method: (2^128,2^-128,2^128): 128; (2^256,2^-128,2^256): 256
   // Interp search: (2^128,2^-128,2^128): 8;   (2^256,2^-128,2^256): 8
 
-  max = max.ceil();
   return { min, max, range: max.sub(min), iterations: steps };
 }
 
