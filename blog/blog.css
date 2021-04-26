@@ -141,7 +141,8 @@ article p > img {
   max-width: 17cm;
 }
 article p > img:only-child,
-article p > a:only-child > img {
+article p > a:only-child > img,
+article figure > img {
   display: block;
   margin: auto;
   margin-left: 50%;
@@ -150,13 +151,17 @@ article p > a:only-child > img {
   padding: 5px;
   max-width: calc(17cm - 12px);
 }
+article figure > figcaption {
+  font-style: italic;
+}
 @media (max-width: 17cm) {
   article p > img {
     /* 16px for the markdown padding. */
     max-width: calc(100vw - 16px);
   }
   article p > img:only-child,
-  article p > a:only-child > img {
+  article p > a:only-child > img,
+  article figure > img {
     max-width: calc(100vw - 12px - 16px);
   }
 }
