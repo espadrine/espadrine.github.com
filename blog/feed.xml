@@ -409,6 +409,41 @@ degrading to binary search, but is empirically <span class="katex"><span class="
   </figcaption>
 </figure>
 <h2 id="Balls_Into_Bins">4. Balls Into Bins <a href="#Balls_Into_Bins" class="autolink-clicker" aria-hidden="true">§</a></h2>
+<p>This result allows exact computation of solutions for a well-known problem:
+<em>“Given <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span></span></span></span> balls each randomly placed into <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi></mrow><annotation encoding="application/x-tex">R</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span></span></span></span> bins,
+how many do the most and least filled bin have?”</em></p>
+<p>The problem is a sampling of <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span></span></span></span> values
+of the Binomial distribution <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">B</mi><mo stretchy="false">(</mo><mi>N</mi><mo separator="true">,</mo><mfrac><mn>1</mn><mi>R</mi></mfrac><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\mathcal{B}(N, \frac{1}{R})</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.190108em;vertical-align:-0.345em;"></span><span class="mord"><span class="mord mathcal" style="margin-right:0.03041em;">B</span></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.845108em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.00773em;">R</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose">)</span></span></span></span>.
+Thus, the mean maximum and minimum are its solutions.</p>
+<p>The widget at the top of the page gives an instant and exact result
+for this problem, for values below <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mn>1024</mn></msup></mrow><annotation encoding="application/x-tex">2^{1024}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="mord mtight">0</span><span class="mord mtight">2</span><span class="mord mtight">4</span></span></span></span></span></span></span></span></span></span></span></span>.</p>
+<p>One use for this problem is in assessing the worst-case complexity
+of hash table operations to match operational requirements.
+Indeed, the hash output is meant to be uniformly distributed;
+in other words, a <a href="https://eprint.iacr.org/2017/652.pdf">PRF</a>: one such example is <a href="https://www.aumasson.jp/siphash/">SipHash</a>.</p>
+<p>Since the implementation of hash collisions typically require linear probing,
+library developers strive for a bounded maximum number of hashes
+that map to the same table entry. Typically, they use a <a href="https://github.com/rust-lang/hashbrown/blob/805b5e28ac7b12ad901aceba5ee641de50c0a3d1/src/raw/mod.rs#L206-L210">load factor</a>:
+if more than 87.5% of the table is filled,
+the table size is doubled and rehashed.</p>
+<p>The widget above can help show that
+this approach does not yield a bounded maximum,
+by inputting <code>0.875*2^i</code> balls into <code>2^i</code> bins:</p>
+<table>
+  <tr><th> Table size    <th> Max bucket size
+  <tr><td> 2<sup>8</sup> <td> 4
+  <tr><td> 2<sup>16</sup><td> 7
+  <tr><td> 2<sup>32</sup><td> 11
+  <tr><td> 2<sup>64</sup><td> 19
+</table>
+<p>As you can see, the growth is very slow,
+which satisfies engineering constraints.
+If there was some imperative to be bounded below a certain value,
+the table algorithm could use the principles laid out in this article
+to dynamically compute the load factor
+that keeps the maximum bucket size below the imposed limit.</p>
+<p>(A notable exception to this result is <a href="http://www.cs.toronto.edu/~noahfleming/CuckooHashing.pdf">Cuckoo Hashing</a>,
+whose maximum bucket size has a different formula.)</p>
 <h2 id="Conclusion">Conclusion <a href="#Conclusion" class="autolink-clicker" aria-hidden="true">§</a></h2>
 <script async src="../assets/mean-range-of-a-bell-curve-distribution/mp-wasm.js"></script>
 <script async src="../assets/mean-range-of-a-bell-curve-distribution/normal-mean-range.js"></script>

@@ -302,9 +302,57 @@ degrading to binary search, but is empirically $`O(log(log(m)))` on average:
 
 ## 4. Balls Into Bins
 
+This result allows exact computation of solutions for a well-known problem:
+*“Given $`N` balls each randomly placed into $`R` bins,
+how many do the most and least filled bin have?”*
 
+The problem is a sampling of $`N` values
+of the Binomial distribution $`\mathcal{B}(N, \frac{1}{R})`.
+Thus, the mean maximum and minimum are its solutions.
+
+The widget at the top of the page gives an instant and exact result
+for this problem, for values below $`2^{1024}`.
+
+One use for this problem is in assessing the worst-case complexity
+of hash table operations to match operational requirements.
+Indeed, the hash output is meant to be uniformly distributed;
+in other words, a [PRF][]: one such example is [SipHash][].
+
+Since the implementation of hash collisions typically require linear probing,
+library developers strive for a bounded maximum number of hashes
+that map to the same table entry. Typically, they use a [load factor][]:
+if more than 87.5% of the table is filled,
+the table size is doubled and rehashed.
+
+The widget above can help show that
+this approach does not yield a bounded maximum,
+by inputting `0.875*2^i` balls into `2^i` bins:
+
+<table>
+  <tr><th> Table size    <th> Max bucket size
+  <tr><td> 2<sup>8</sup> <td> 4
+  <tr><td> 2<sup>16</sup><td> 7
+  <tr><td> 2<sup>32</sup><td> 11
+  <tr><td> 2<sup>64</sup><td> 19
+</table>
+
+As you can see, the growth is very slow,
+which satisfies engineering constraints.
+If there was some imperative to be bounded below a certain value,
+the table algorithm could use the principles laid out in this article
+to dynamically compute the load factor
+that keeps the maximum bucket size below the imposed limit.
+
+(A notable exception to this result is [Cuckoo Hashing][],
+whose maximum bucket size has a different formula.)
 
 ## Conclusion
+
+[PRF]: https://eprint.iacr.org/2017/652.pdf
+[SipHash]: https://www.aumasson.jp/siphash/
+[load factor]: https://github.com/rust-lang/hashbrown/blob/805b5e28ac7b12ad901aceba5ee641de50c0a3d1/src/raw/mod.rs#L206-L210
+[Cuckoo Hashing]: http://www.cs.toronto.edu/~noahfleming/CuckooHashing.pdf
+
 
 <script async src="../assets/mean-range-of-a-bell-curve-distribution/mp-wasm.js"></script>
 <script async src="../assets/mean-range-of-a-bell-curve-distribution/normal-mean-range.js"></script>

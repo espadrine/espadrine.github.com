@@ -171,6 +171,19 @@ article footer {
   margin-top: 3rem;
   text-align: right;
 }
+article table {
+  table-layout: fixed;
+  margin: auto;
+  border-collapse: collapse;
+  text-align: center;
+}
+article table th {
+  border-bottom: 1px solid black;
+  padding: 0 1em;
+}
+article table tr:nth-child(2n) {
+  background-color: #fafaff;
+}
 
 /* LaTeXMarkdown */
 
