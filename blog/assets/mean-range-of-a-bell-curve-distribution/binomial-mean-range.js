@@ -22,10 +22,10 @@ function binomialRange(events, posprob, samples, prob = .5, mpf = this.mpf) {
 
   // Track lower and upper bounds to the range.
   const mean = n.mul(p), variance = mean.mul(mpf(1).sub(p));
-  let lowMin = mpf(0); // Pr(lowMin) <= targetProb.
-  let highMin = mean;  // Must always be Pr(highMin) > targetProb.
-  let lowMax = mean;   // Must always be Pr(lowMax) > targetProb.
-  let highMax = n;     // Pr(highMax) <= targetProb.
+  let lowMin = mpf(0);        // Pr(lowMin) <= targetProb.
+  let highMin = mean.floor(); // Must always be Pr(highMin) > targetProb.
+  let lowMax = mean.ceil();   // Must always be Pr(lowMax) > targetProb.
+  let highMax = n;            // Pr(highMax) <= targetProb.
   let steps = 0;
 
   let approxMean = mean;

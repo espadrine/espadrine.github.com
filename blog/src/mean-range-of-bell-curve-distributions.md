@@ -313,8 +313,10 @@ Thus, the mean maximum and minimum are its solutions.
 The widget at the top of the page gives an instant and exact result
 for this problem, for values below $`2^{1024}`.
 
+### 4.1. Hash tables
+
 One use for this problem is in assessing the worst-case complexity
-of hash table operations to match operational requirements.
+of **hash table** operations to match operational requirements.
 Indeed, the hash output is meant to be uniformly distributed;
 in other words, a [PRF][]: one such example is [SipHash][].
 
@@ -346,12 +348,48 @@ that keeps the maximum bucket size below the imposed limit.
 (A notable exception to this result is [Cuckoo Hashing][],
 whose maximum bucket size has a different formula.)
 
+### 4.2. Hash chains
+
+Another situation where this problem finds relevance is in **cryptography**.
+First, in the field of collision-resistant functions.
+In a [Merkle chain][], the root hash has a single hash as input.
+The 256-bit input of the SHA-256 primitive randomly maps to its 256-bit output.
+There will be one particular hash output that 57 distinct inputs produce.
+The pigeonhole principle dictates that this removes possible outputs;
+and indeed, about 38% of the $`2^{256}` possible output hashes
+cannot be produced.
+In other words, if you take a random 256-bit hex string,
+it will not be a valid output in one case out of three.
+
+Indeed, the probability that a bin has no balls
+after the first link in the chain is
+$`\beta_{n = 2^{b},\,p = 2^{-b}}(0)
+= (1 - 2^{-b})^{2^{b}}
+\xrightarrow{\, b \rightarrow \infty \,} \frac{1}{e}`
+for a $`b`-bit hash.
+On the $`i`-th chain of the link, the same phenomenon strikes again,
+and only $`h_i = 1 - (1 - 2^{-b})^{2^{b}h_{i-1}}` remain
+(with $`h_0 = 1` since we start with 100%).
+
+Of course, after that initial 38% loss, the subsequent losses are lesser,
+but $`h_i \xrightarrow{\, i \rightarrow \infty \,} 0`.
+After just 100 iterations, only 2% of possible hashes remain.
+After the typical 10k iterations of [PBKDF2][], only 0.02% remain.
+
+It is not a vulnerability per se
+(it only removes about 13 bits off a 256-bit space,
+or 7 bits of security against collision resistance),
+but it is a showcase of how simple designs can have subtle consequences.
+
 ## Conclusion
 
 [PRF]: https://eprint.iacr.org/2017/652.pdf
 [SipHash]: https://www.aumasson.jp/siphash/
 [load factor]: https://github.com/rust-lang/hashbrown/blob/805b5e28ac7b12ad901aceba5ee641de50c0a3d1/src/raw/mod.rs#L206-L210
 [Cuckoo Hashing]: http://www.cs.toronto.edu/~noahfleming/CuckooHashing.pdf
+[Merkle chain]: https://patents.google.com/patent/US4309569
+[PBKDF2]: https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-132.pdf
+[Blowfish]: https://www.schneier.com/academic/blowfish/
 
 
 <script async src="../assets/mean-range-of-a-bell-curve-distribution/mp-wasm.js"></script>
@@ -372,7 +410,7 @@ function initBallsIntoBins(mpWasm) {
       return;
     }
     const nballs = balls.result[0];
-    ballsOutput.value = nballs.toString();
+    ballsOutput.value = nballs.round().toString();
 
     const bins = calc.compute(binsInput.value);
     if (bins.errors.length > 0) {
@@ -380,7 +418,7 @@ function initBallsIntoBins(mpWasm) {
       return;
     }
     const nbins = bins.result[0];
-    binsOutput.value = nbins.toString();
+    binsOutput.value = nbins.round().toString();
 
     const range = binomialRange(nballs, calc.mpf(1).div(nbins), nballs);
     minOutput.value = range.min.toString();
