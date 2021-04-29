@@ -381,6 +381,50 @@ It is not a vulnerability per se
 or 7 bits of security against collision resistance),
 but it is a showcase of how simple designs can have subtle consequences.
 
+### 4.3. Block ciphers
+
+Consider a 128-bit block cipher (PRP), such as [AES-128][AES].
+Let’s say that a single 16-byte block of plaintext was encrypted
+with a fully random 128-bit key.
+An attacker examines the 16-byte ciphertext block.
+
+While it is true that for a given key,
+each plaintext block produces a single ciphertext block and vice-versa,
+for a given ciphertext block, each key maps to a random plaintext block.
+Keys can be seen as balls, and plaintext blocks as bins.
+
+Conversely, about $`\frac{100}{e}\%` of plaintext blocks
+have zero keys that decrypt the ciphertext to them.
+Thus, if the plaintext block contained a single bit of information,
+such as a presidential vote in a majoritarian election,
+*and if finding the number of valid keys was computationally feasible*,
+the adversary could decrypt the vote with probability $`\frac{1}{e}`.
+
+Yet again, it is not a vulnerability,
+since the only currently-known way to do so is to brute-force the key,
+but it creates an unintuitive attack that a larger key would dismiss.
+
+Similarly, in a chosen-ciphertext attack (CPA)
+against a 128-bit block cipher with a 256-bit key such as [AES-256][AES],
+the set of possible couples of plaintext/ciphertext blocks
+is $`2^{128+128} = 2^{256}`, while the set of keys is $`2^{256}`.
+Since the former randomly map to the latter,
+about a third of all keys would be disqualified with a single queried pair,
+and a third of the remaining keys with a second query, and so forth.
+About 387 queries would yield a single possible key.
+However, actually extracting and combining that information
+efficiently and without loss is an open problem related to SAT.
+
+Finally, still in [AES-256][AES], for a given ciphertext block,
+the plaintext block with the most keys decrypting to it
+has about 600 quintillion more keys
+than the plaintext block with the least keys, making it more likely.
+That may superficially seem like a disadvantage
+of using larger keys than the block size.
+However, the advantage gained compared to the least likely plaintext block
+is only an increased probability by $`2^{-187}`,
+which is not only extremely negligible, but also smaller than in AES-128.
+
 ## Conclusion
 
 [PRF]: https://eprint.iacr.org/2017/652.pdf
@@ -389,8 +433,7 @@ but it is a showcase of how simple designs can have subtle consequences.
 [Cuckoo Hashing]: http://www.cs.toronto.edu/~noahfleming/CuckooHashing.pdf
 [Merkle chain]: https://patents.google.com/patent/US4309569
 [PBKDF2]: https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-132.pdf
-[Blowfish]: https://www.schneier.com/academic/blowfish/
-
+[AES]: https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.197.pdf
 
 <script async src="../assets/mean-range-of-a-bell-curve-distribution/mp-wasm.js"></script>
 <script async src="../assets/mean-range-of-a-bell-curve-distribution/normal-mean-range.js"></script>
