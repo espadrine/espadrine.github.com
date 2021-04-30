@@ -521,6 +521,13 @@ However, the advantage gained compared to the least likely plaintext block
 is only an increased probability by <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mrow><mo>−</mo><mn>187</mn></mrow></msup></mrow><annotation encoding="application/x-tex">2^{-187}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">1</span><span class="mord mtight">8</span><span class="mord mtight">7</span></span></span></span></span></span></span></span></span></span></span></span>,
 which is not only extremely negligible, but also smaller than in AES-128.</p>
 <h2 id="Conclusion">Conclusion <a href="#Conclusion" class="autolink-clicker" aria-hidden="true">§</a></h2>
+<p>We described an exact formula for the mean range
+and extrema of a Normal distribution.
+We used it to produce an algorithm
+that can compute the extrema of any bell curve distribution,
+with the example of the Binomial distribution.
+We optimized that algorithm to run in <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>l</mi><mi>o</mi><mi>g</mi><mo stretchy="false">(</mo><mi>l</mi><mi>o</mi><mi>g</mi><mo stretchy="false">(</mo><mi>m</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(log(log(m)))</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mopen">(</span><span class="mord mathnormal">m</span><span class="mclose">)</span><span class="mclose">)</span><span class="mclose">)</span></span></span></span> average time,
+and discussed a few exact consequences that used to be unconfirmed approximations.</p>
 <script async src="../assets/mean-range-of-a-bell-curve-distribution/mp-wasm.js"></script>
 <script async src="../assets/mean-range-of-a-bell-curve-distribution/normal-mean-range.js"></script>
 <script async src="../assets/mean-range-of-a-bell-curve-distribution/binomial-mean-range.js"></script>
@@ -562,19 +569,7 @@ addEventListener('DOMContentLoaded', () => {
   fetchMPWasm('../assets/mean-range-of-a-bell-curve-distribution/mp.wasm')
   .then(mpWasm => {
     const mpf = window.mpf = mpWasm.mpf;
-    mpf.setDefaultPrec(256);
     initBallsIntoBins(mpWasm);
-
-    const two256 = mpf(2).pow(256);
-    const two128 = mpf(2).pow(128);
-    const twom128 = mpf(2).pow(-128);
-    [binomialRange(two128, twom128, two128),
-     binomialRange(two256, twom128, two256)].forEach(res => {
-      console.log(`min ${res.min}`);
-      console.log(`max ${res.max}`);
-      console.log(`range ${res.range}`);
-      console.log(`steps: ${res.iterations}`);
-    });
   });
 });
 </script>

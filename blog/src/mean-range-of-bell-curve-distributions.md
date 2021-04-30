@@ -427,6 +427,14 @@ which is not only extremely negligible, but also smaller than in AES-128.
 
 ## Conclusion
 
+We described an exact formula for the mean range
+and extrema of a Normal distribution.
+We used it to produce an algorithm
+that can compute the extrema of any bell curve distribution,
+with the example of the Binomial distribution.
+We optimized that algorithm to run in $`O(log(log(m)))` average time,
+and discussed a few exact consequences that used to be unconfirmed approximations.
+
 [PRF]: https://eprint.iacr.org/2017/652.pdf
 [SipHash]: https://www.aumasson.jp/siphash/
 [load factor]: https://github.com/rust-lang/hashbrown/blob/805b5e28ac7b12ad901aceba5ee641de50c0a3d1/src/raw/mod.rs#L206-L210
@@ -476,19 +484,7 @@ addEventListener('DOMContentLoaded', () => {
   fetchMPWasm('../assets/mean-range-of-a-bell-curve-distribution/mp.wasm')
   .then(mpWasm => {
     const mpf = window.mpf = mpWasm.mpf;
-    mpf.setDefaultPrec(256);
     initBallsIntoBins(mpWasm);
-
-    const two256 = mpf(2).pow(256);
-    const two128 = mpf(2).pow(128);
-    const twom128 = mpf(2).pow(-128);
-    [binomialRange(two128, twom128, two128),
-     binomialRange(two256, twom128, two256)].forEach(res => {
-      console.log(`min ${res.min}`);
-      console.log(`max ${res.max}`);
-      console.log(`range ${res.range}`);
-      console.log(`steps: ${res.iterations}`);
-    });
   });
 });
 </script>
