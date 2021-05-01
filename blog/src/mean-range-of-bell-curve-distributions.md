@@ -45,6 +45,31 @@ output { word-break: break-all; }
   <p id=ballsErrors>
 </div>
 
+**Introduction:**
+Currently, there does not seem to be any exact, computable formula
+for the expected range of obtaining samples from a distribution.
+The [best known formula][Har54] is:
+
+```latex
+n \int_{0}^{1} x(G)[G^{n-1} - (1-G)^{n-1}] \, \mathrm{d}G
+```
+
+which requires integrating with respect to the the inversed distribution.
+
+In the case of discrete random variables, such as the Binomial distribution,
+[a solution can be computed in a finite number of steps][Abd54]:
+$`\sum_{x=1}^{N-t} [G(x+t)-G(x-1)]^n - [G(x+t)-G(x)]^n - [G(x+t-1)-G(x-1)]^n + [G(x+t-1)-G(x)]^n, t > 0`.
+
+However, the number of iterations scales with $`n`,
+and I wish to compute exact results for values of $`n`
+that cannot be iterated through within the timespan of the universe,
+such as $`n = 2^{256}`.
+
+As a consequence,
+[solving the problem of the balls into bins is done inexactly][Gon81],
+through approximations such as $`\frac{\log(n)}{\log(\log(n))}`.
+We wish to compute exact results here.
+
 ## 1. Generic Derivation
 
 Consider a distribution with probability density function $`\varphi`.
@@ -282,8 +307,8 @@ and using the following, reminiscent mean update:
   )}
 ```
 
-The algorithmic complexity of the convergence is in $`O(log(m))` worst-case,
-degrading to binary search, but is empirically $`O(log(log(m)))` on average:
+The algorithmic complexity of the convergence is in $`O(\log(m))` worst-case,
+degrading to binary search, but is empirically $`O(\log(\log(m)))` on average:
 
 
 <figure>
@@ -432,9 +457,12 @@ and extrema of a Normal distribution.
 We used it to produce an algorithm
 that can compute the extrema of any bell curve distribution,
 with the example of the Binomial distribution.
-We optimized that algorithm to run in $`O(log(log(m)))` average time,
+We optimized that algorithm to run in $`O(\log(\log(m)))` average time,
 and discussed a few exact consequences that used to be unconfirmed approximations.
 
+[Har54]: https://sci-hub.se/10.1214/aoms/1177728848
+[Abd54]: https://sci-hub.se/10.1111/j.1467-9574.1954.tb00442.x
+[Gon81]: https://sci-hub.se/10.1145/322248.322254
 [PRF]: https://eprint.iacr.org/2017/652.pdf
 [SipHash]: https://www.aumasson.jp/siphash/
 [load factor]: https://github.com/rust-lang/hashbrown/blob/805b5e28ac7b12ad901aceba5ee641de50c0a3d1/src/raw/mod.rs#L206-L210
@@ -442,6 +470,12 @@ and discussed a few exact consequences that used to be unconfirmed approximation
 [Merkle chain]: https://patents.google.com/patent/US4309569
 [PBKDF2]: https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-132.pdf
 [AES]: https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.197.pdf
+
+**Bibliography:**
+
+- [Hartley, H. O., & David, H. A. (1954). Universal Bounds for Mean Range and Extreme Observation. The Annals of Mathematical Statistics, 25(1), 85–99. doi:10.1214/aoms/1177728848][Har54]
+- [Abdel-Aty, S. H. (1954). Ordered variables in discontinuous distributions. Statistica Neerlandica, 8(2), 61–82. doi:10.1111/j.1467-9574.1954.tb00442.x][Abd54]
+- [Gonnet, G. H. (1981). Expected Length of the Longest Probe Sequence in Hash Code Searching. Journal of the ACM, 28(2), 289–304. doi:10.1145/322248.322254][Gon81]
 
 <script async src="../assets/mean-range-of-a-bell-curve-distribution/mp-wasm.js"></script>
 <script async src="../assets/mean-range-of-a-bell-curve-distribution/normal-mean-range.js"></script>
@@ -488,7 +522,6 @@ addEventListener('DOMContentLoaded', () => {
   });
 });
 </script>
-
 
 <script type="application/ld+json">
 { "@context": "http://schema.org",
