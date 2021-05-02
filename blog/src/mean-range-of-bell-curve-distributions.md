@@ -512,6 +512,7 @@ function initBallsIntoBins(mpWasm) {
   };
   ballsInput.addEventListener('input', updateBallsIntoBins);
   binsInput.addEventListener('input', updateBallsIntoBins);
+  updateBallsIntoBins();
 }
 
 addEventListener('DOMContentLoaded', () => {
@@ -522,6 +523,10 @@ addEventListener('DOMContentLoaded', () => {
   });
 });
 </script>
+
+---
+
+[Comments on Reddit](https://www.reddit.com/r/espadrine/comments/n37wiw/mean_range_of_bell_curve_distributions/).
 
 <script type="application/ld+json">
 { "@context": "http://schema.org",
