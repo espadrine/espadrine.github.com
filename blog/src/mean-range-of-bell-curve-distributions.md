@@ -147,7 +147,7 @@ follows this equation:
 ```
 
 While $`x` is a discrete integer,
-the distribution of $`\mathcal{B}(m, p)` is also is bell-shaped.
+the distribution of $`\mathcal{B}(m, p)` is also bell-shaped.
 Thus the generic derivation above can also be applied.
 
 Two issues arise when using that derivation, however:
@@ -377,7 +377,7 @@ whose maximum bucket size has a different formula.)
 
 Another situation where this problem finds relevance is in **cryptography**.
 First, in the field of collision-resistant functions.
-In a [Merkle chain][], the root hash has a single hash as input.
+In a [hash chain][], the root hash has a single hash as input.
 The 256-bit input of the SHA-256 primitive randomly maps to its 256-bit output.
 There will be one particular hash output that 57 distinct inputs produce.
 The pigeonhole principle dictates that this removes possible outputs;
@@ -467,7 +467,7 @@ and discussed a few exact consequences that used to be unconfirmed approximation
 [SipHash]: https://www.aumasson.jp/siphash/
 [load factor]: https://github.com/rust-lang/hashbrown/blob/805b5e28ac7b12ad901aceba5ee641de50c0a3d1/src/raw/mod.rs#L206-L210
 [Cuckoo Hashing]: http://www.cs.toronto.edu/~noahfleming/CuckooHashing.pdf
-[Merkle chain]: https://patents.google.com/patent/US4309569
+[hash chain]: https://sci-hub.se/10.1145/358790.358797
 [PBKDF2]: https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-132.pdf
 [AES]: https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.197.pdf
 
@@ -476,6 +476,9 @@ and discussed a few exact consequences that used to be unconfirmed approximation
 - [Hartley, H. O., & David, H. A. (1954). Universal Bounds for Mean Range and Extreme Observation. The Annals of Mathematical Statistics, 25(1), 85–99. doi:10.1214/aoms/1177728848][Har54]
 - [Abdel-Aty, S. H. (1954). Ordered variables in discontinuous distributions. Statistica Neerlandica, 8(2), 61–82. doi:10.1111/j.1467-9574.1954.tb00442.x][Abd54]
 - [Gonnet, G. H. (1981). Expected Length of the Longest Probe Sequence in Hash Code Searching. Journal of the ACM, 28(2), 289–304. doi:10.1145/322248.322254][Gon81]
+- [Lamport, L. (1981). Password authentication with insecure communication.
+  Communications of the ACM, 24(11), 770–772. doi:10.1145/358790.358797][hash
+  chain]
 
 <script async src="../assets/mean-range-of-a-bell-curve-distribution/mp-wasm.js"></script>
 <script async src="../assets/mean-range-of-a-bell-curve-distribution/normal-mean-range.js"></script>
@@ -531,6 +534,6 @@ addEventListener('DOMContentLoaded', () => {
 <script type="application/ld+json">
 { "@context": "http://schema.org",
   "@type": "BlogPosting",
-  "datePublished": "2021-01-13T19:21:50Z",
+  "datePublished": "2021-05-02T14:52:56Z",
   "keywords": "stats, crypto" }
 </script>

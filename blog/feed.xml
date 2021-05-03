@@ -4,12 +4,12 @@
   <link rel="alternate" type="text/html" href="https://espadrine.github.io/blog/"/>
   <link rel="self" type="application/atom+xml" href="https://espadrine.github.io/blog/feed.xml"/>
   <id>https://espadrine.github.io/blog/feed.xml</id>
-  <updated>2021-01-13T19:21:50Z</updated>
+  <updated>2021-05-02T14:52:56Z</updated>
       <entry>
         <id>https://espadrine.github.io/blog/posts/mean-range-of-bell-curve-distributions.html</id>
         <link rel="alternate" type="text/html" href="https://espadrine.github.io/blog/posts/mean-range-of-bell-curve-distributions.html"/>
         <title>Mean Range of Bell Curve Distributions</title>
-        <published>2021-01-13T19:21:50Z</published>
+        <published>2021-05-02T14:52:56Z</published>
         <category term="stats"/>
 <category term="crypto"/>
         <content type="html">
@@ -207,7 +207,7 @@ follows this equation:</p>
 <span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>β</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo>=</mo><mrow><mo fence="true">(</mo><mfrac linethickness="0px"><mi>m</mi><mi>x</mi></mfrac><mo fence="true">)</mo></mrow><msup><mi>p</mi><mi>x</mi></msup><mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><mi>p</mi><msup><mo stretchy="false">)</mo><mrow><mi>m</mi><mo>−</mo><mi>x</mi></mrow></msup></mrow><annotation encoding="application/x-tex">\beta(x) = {m \choose x} p^x (1-p)^{m-x}
 </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.05278em;">β</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.40003em;vertical-align:-0.95003em;"></span><span class="mord"><span class="mord"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size3">(</span></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.1075599999999999em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">x</span></span></span><span style="top:-3.6769999999999996em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">m</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size3">)</span></span></span></span><span class="mord"><span class="mord mathnormal">p</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7143919999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">x</span></span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.071331em;vertical-align:-0.25em;"></span><span class="mord mathnormal">p</span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.821331em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">m</span><span class="mbin mtight">−</span><span class="mord mathnormal mtight">x</span></span></span></span></span></span></span></span></span></span></span></span></span>
 <p>While <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal">x</span></span></span></span> is a discrete integer,
-the distribution of <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">B</mi><mo stretchy="false">(</mo><mi>m</mi><mo separator="true">,</mo><mi>p</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\mathcal{B}(m, p)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathcal" style="margin-right:0.03041em;">B</span></span><span class="mopen">(</span><span class="mord mathnormal">m</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal">p</span><span class="mclose">)</span></span></span></span> is also is bell-shaped.
+the distribution of <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">B</mi><mo stretchy="false">(</mo><mi>m</mi><mo separator="true">,</mo><mi>p</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\mathcal{B}(m, p)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathcal" style="margin-right:0.03041em;">B</span></span><span class="mopen">(</span><span class="mord mathnormal">m</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal">p</span><span class="mclose">)</span></span></span></span> is also bell-shaped.
 Thus the generic derivation above can also be applied.</p>
 <p>Two issues arise when using that derivation, however:</p>
 <ul>
@@ -466,7 +466,7 @@ whose maximum bucket size has a different formula.)</p>
 <h3 id="Hash_chains">4.2. Hash chains <a href="#Hash_chains" class="autolink-clicker" aria-hidden="true">§</a></h3>
 <p>Another situation where this problem finds relevance is in <strong>cryptography</strong>.
 First, in the field of collision-resistant functions.
-In a <a href="https://patents.google.com/patent/US4309569">Merkle chain</a>, the root hash has a single hash as input.
+In a <a href="https://sci-hub.se/10.1145/358790.358797">hash chain</a>, the root hash has a single hash as input.
 The 256-bit input of the SHA-256 primitive randomly maps to its 256-bit output.
 There will be one particular hash output that 57 distinct inputs produce.
 The pigeonhole principle dictates that this removes possible outputs;
@@ -551,6 +551,8 @@ and discussed a few exact consequences that used to be unconfirmed approximation
 <li><a href="https://sci-hub.se/10.1214/aoms/1177728848">Hartley, H. O., &amp; David, H. A. (1954). Universal Bounds for Mean Range and Extreme Observation. The Annals of Mathematical Statistics, 25(1), 85–99. doi:10.1214/aoms/1177728848</a></li>
 <li><a href="https://sci-hub.se/10.1111/j.1467-9574.1954.tb00442.x">Abdel-Aty, S. H. (1954). Ordered variables in discontinuous distributions. Statistica Neerlandica, 8(2), 61–82. doi:10.1111/j.1467-9574.1954.tb00442.x</a></li>
 <li><a href="https://sci-hub.se/10.1145/322248.322254">Gonnet, G. H. (1981). Expected Length of the Longest Probe Sequence in Hash Code Searching. Journal of the ACM, 28(2), 289–304. doi:10.1145/322248.322254</a></li>
+<li><a href="https://sci-hub.se/10.1145/358790.358797">Lamport, L. (1981). Password authentication with insecure communication.
+Communications of the ACM, 24(11), 770–772. doi:10.1145/358790.358797</a></li>
 </ul>
 <script async src="../assets/mean-range-of-a-bell-curve-distribution/mp-wasm.js"></script>
 <script async src="../assets/mean-range-of-a-bell-curve-distribution/normal-mean-range.js"></script>
@@ -603,7 +605,7 @@ addEventListener('DOMContentLoaded', () => {
 <script type="application/ld+json">
 { "@context": "http://schema.org",
   "@type": "BlogPosting",
-  "datePublished": "2021-01-13T19:21:50Z",
+  "datePublished": "2021-05-02T14:52:56Z",
   "keywords": "stats, crypto" }
 </script> ]]>
         </content>

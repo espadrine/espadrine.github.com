@@ -119,6 +119,9 @@ article a:hover {
   color: #616566;
   background-color: #fff7a5;
 }
+article ul li {
+  list-style: none;
+}
 article ul li:before {
   content: "\25CF";
   font-weight: 400;
