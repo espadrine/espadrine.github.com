@@ -436,7 +436,7 @@ Similarly, in an indistinguishability under chosen-plaintext attack (IND-CPA)
 against an ideal $`b`-bit block cipher with a $`2b`-bit key,
 as [AES-256][AES] is assumed to be,
 the set of possible couples of plaintext/ciphertext blocks
-has $`2^{b+b} = 2^{2b}`, while the set of keys has $`2^{b}`.
+has $`2^{b+b} = 2^{2b}`, while the set of keys has $`2^{2b}`.
 Since the latter randomly map to the former,
 when sending two plaintexts and receiving the encryption of one of them,
 there is no possible key that encrypts the secretly discarded plaintext
