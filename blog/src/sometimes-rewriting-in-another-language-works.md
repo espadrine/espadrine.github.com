@@ -206,7 +206,7 @@ which the next guesses narrow down to 1.
 [jlimpl]: https://github.com/espadrine/optimal-wordle/blob/2e71cb4ca461ded5111a001ceb398ec2f4b08494/play-optimally.jl
 [Julia]: https://julialang.org/
 [jlperf]: https://julialang.org/benchmarks/
-[rsimpl]: https://github.com/espadrine/optimal-wordle/blob/2e71cb4ca461ded5111a001ceb398ec2f4b08494/src/main.rs
+[rsimpl]: https://github.com/espadrine/optimal-wordle/blob/934dffd9781b6067b6de7b0f136a519867570fa3/src/main.rs
 [optimal-blog]: https://sonorouschocolate.com/notes/index.php?title=The_best_strategies_for_Wordle
 
 <script type="application/ld+json">
