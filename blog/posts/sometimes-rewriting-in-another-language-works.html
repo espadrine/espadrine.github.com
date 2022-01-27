@@ -45,7 +45,7 @@ output { word-break: break-all; }
  </form>
  <p> The constraint should be 5 characters:<br>
   o = letter at right spot, x = wrong spot, . = not in the word.</p>
- <script src="../assets/sometimes-rewriting-in-another-language-works/main.js "></script>
+ <script src="../assets/sometimes-rewriting-in-another-language-works/main.js"></script>
 </div>
 <p>This month, the game of <a href="https://www.powerlanguage.co.uk/wordle/">Wordle</a> has exploded in popularity.</p>
 <p><img src="../assets/sometimes-rewriting-in-another-language-works/google-trends.png" alt="Google trends shows a sudden spike in January 2022" /></p>
@@ -66,7 +66,7 @@ helps narrow down possibilities very fast.</li>
 </ol>
 <p>Many <a href="https://typon.github.io/wordle.html">bloggers</a> have <a href="https://slc.is/#Best%20Wordle%20Strategy%20%E2%80%94%20Explore%20or%20Exploit">tried</a> their <a href="https://bert.org/2021/11/24/the-best-starting-word-in-wordle/">hand</a> at
 <a href="https://github.com/jakearchibald/wordle-analyzer/">optimal</a> strategies.
-While skimming through them, it felt like each approach had issues.
+At the time, While skimming through them, it felt like each approach had issues.
 That motivated me to add to the pile of suboptimal techniques with my own,
 hopefully less flawed, algorithm.</p>
 <h2 id="Principles">Principles <a href="#Principles" class="autolink-clicker" aria-hidden="true">§</a></h2>
@@ -167,15 +167,19 @@ consider that a first guess could leave only 5 possible solutions
 which all next guesses would narrow down to 2;
 whilst a better first guess could leave 6 possible solutions
 which the next guesses narrow down to 1.</p>
-<p>Algorithms do matter in the end too.</p>
+<p><a href="https://sonorouschocolate.com/notes/index.php?title=The_best_strategies_for_Wordle">Algorithms do matter in the end too.</a></p>
+<p>—</p>
+<p><a href="https://www.reddit.com/r/programming/comments/se16m0/sometimes_rewriting_in_another_language_works/">Reddit comments here.</a>
+<a href="https://news.ycombinator.com/item?id=30101862">HN comments here.</a>
+<a href="https://www.reddit.com/r/espadrine/comments/se187i/sometimes_rewriting_in_another_language_works/">Other comments here.</a></p>
 <script type="application/ld+json">
 { "@context": "http://schema.org",
   "@type": "BlogPosting",
-  "datePublished": "2022-01-23T17:43:40Z",
+  "datePublished": "2022-01-27T16:36:40Z",
   "keywords": "julia, rust, optimization" }
 </script>
     <footer>
-      Published <time itemprop=datePublished datetime="2022-01-23T17:43:40Z">23 January 2022</time>.
+      Published <time itemprop=datePublished datetime="2022-01-27T16:36:40Z">27 January 2022</time>.
       <br>
       Tags: <a class=tag href="../index.html?tags=julia">julia</a>,
  <a class=tag href="../index.html?tags=rust">rust</a>,

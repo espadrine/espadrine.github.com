@@ -57,7 +57,7 @@ Playing the game, there are many strategies you quickly pick up.
 
 Many [bloggers][blog1] have [tried][blog2] their [hand][blog3] at
 [optimal][blog4] strategies.
-While skimming through them, it felt like each approach had issues.
+At the time, While skimming through them, it felt like each approach had issues.
 That motivated me to add to the pile of suboptimal techniques with my own,
 hopefully less flawed, algorithm.
 
@@ -190,7 +190,13 @@ which all next guesses would narrow down to 2;
 whilst a better first guess could leave 6 possible solutions
 which the next guesses narrow down to 1.
 
-Algorithms do matter in the end too.
+[Algorithms do matter in the end too.][optimal-blog]
+
+—
+
+[Reddit comments here.](https://www.reddit.com/r/programming/comments/se16m0/sometimes_rewriting_in_another_language_works/)
+[HN comments here.](https://news.ycombinator.com/item?id=30101862)
+[Other comments here.](https://www.reddit.com/r/espadrine/comments/se187i/sometimes_rewriting_in_another_language_works/)
 
 [Wordle]: https://www.powerlanguage.co.uk/wordle/
 [blog1]: https://typon.github.io/wordle.html
@@ -201,10 +207,11 @@ Algorithms do matter in the end too.
 [Julia]: https://julialang.org/
 [jlperf]: https://julialang.org/benchmarks/
 [rsimpl]: https://github.com/espadrine/optimal-wordle/blob/2e71cb4ca461ded5111a001ceb398ec2f4b08494/src/main.rs
+[optimal-blog]: https://sonorouschocolate.com/notes/index.php?title=The_best_strategies_for_Wordle
 
 <script type="application/ld+json">
 { "@context": "http://schema.org",
   "@type": "BlogPosting",
-  "datePublished": "2022-01-23T17:43:40Z",
+  "datePublished": "2022-01-27T16:36:40Z",
   "keywords": "julia, rust, optimization" }
 </script>
