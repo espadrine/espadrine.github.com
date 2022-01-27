@@ -35,8 +35,8 @@ output { word-break: break-all; }
 <div class=wordleSolver>
  <section id="logParagraph"></section>
  <form action="javascript:void 0">
-  <p><label> Guess: <input id="guessInput" placeholder="salet"></label>
-   <label> Constraint: <input id="constraintInput" placeholder="ox..."></label>
+  <p><label> Guess: <input id="guessInput" placeholder="salet" autocomplete="off"></label>
+   <label> Constraint: <input id="constraintInput" placeholder="ox..." autocomplete="off"></label>
   </p>
   <p>
    <button id="guessButton">Guess</button>
@@ -104,7 +104,7 @@ That is 1,737,996,667,500 steps.</p>
 <p>That number is in that weird range of brute-force expectations:
 <em>it is not unreachable, but it is not trivial either</em>.
 Converting to nanoseconds, it is about half an hour;
-but we can just feel our gut feeling yelling
+but we can just feel our gut yelling
 that each operation will take a bit more than a nanosecond.</p>
 <h2 id="Optimism_is_healthy_right_">Optimism is healthy, right? <a href="#Optimism_is_healthy_right_" class="autolink-clicker" aria-hidden="true">§</a></h2>
 <p>Off I went, candidly <a href="https://github.com/espadrine/optimal-wordle/blob/2e71cb4ca461ded5111a001ceb398ec2f4b08494/play-optimally.jl">implementing the algorithm</a> in <a href="https://julialang.org/">Julia</a>.</p>

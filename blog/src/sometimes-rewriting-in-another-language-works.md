@@ -20,8 +20,8 @@ output { word-break: break-all; }
 <div class=wordleSolver>
  <section id="logParagraph"></section>
  <form action="javascript:void 0">
-  <p><label> Guess: <input id="guessInput" placeholder="salet"></label>
-   <label> Constraint: <input id="constraintInput" placeholder="ox..."></label>
+  <p><label> Guess: <input id="guessInput" placeholder="salet" autocomplete="off"></label>
+   <label> Constraint: <input id="constraintInput" placeholder="ox..." autocomplete="off"></label>
   </p>
   <p>
    <button id="guessButton">Guess</button>
@@ -106,7 +106,7 @@ That is 1,737,996,667,500 steps.
 That number is in that weird range of brute-force expectations:
 *it is not unreachable, but it is not trivial either*.
 Converting to nanoseconds, it is about half an hour;
-but we can just feel our gut feeling yelling
+but we can just feel our gut yelling
 that each operation will take a bit more than a nanosecond.
 
 ## Optimism is healthy, right?

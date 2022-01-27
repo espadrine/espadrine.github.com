@@ -2387,9 +2387,9 @@ class WordleGame {
 
   async reset() {
     this.solutions = solutions.slice();
-    computingParagraph.style.visibility = 'visible';
+    computingParagraph.style.display = 'inline';
     this.suggestedGuesses = await this.suggestGuess();
-    computingParagraph.style.visibility = 'hidden';
+    computingParagraph.style.display = 'none';
     this.guesses = [];
   }
 }
@@ -2418,9 +2418,9 @@ async function guessListener() {
   }
   const avgSolsForGuess = game.avgSolutionsLeftForGuess(guess);
   await game.guess(guess, constraint);
-  computingParagraph.style.visibility = 'visible';
+  computingParagraph.style.display = 'inline';
   const guesses = await game.suggestGuess();
-  computingParagraph.style.visibility = 'hidden';
+  computingParagraph.style.display = 'none';
   console.log(guesses);
   if (guesses.length <= 0) {
     logToUser('There are no suggested guesses. Please restart.');
@@ -2454,7 +2454,7 @@ async function guessListener() {
   } else {
     logToUser(`The guess <code>${guess}</code> ` +
       `kept ${game.solutions.length} possible solutions ` +
-      `(from an average ${avgSolsForGuess}).`);
+      `(from an average ${avgSolsForGuess.toFixed(4)}).`);
     logToUser(`A good guess now is <code>${guesses[0].word}</code>: ` +
       `it keeps ${guesses[0].avg_remaining.toFixed(4)} words on average. `);
   }
