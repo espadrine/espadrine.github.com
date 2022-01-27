@@ -1,4 +1,4 @@
-const worker = new Worker('./pkg/optimal_wordle.js');
+const worker = new Worker('../assets/sometimes-rewriting-in-another-language-works/pkg/optimal_wordle.js');
 
 const solutions = [
   "aback",

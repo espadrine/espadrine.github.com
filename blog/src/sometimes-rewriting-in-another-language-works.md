@@ -31,7 +31,7 @@ output { word-break: break-all; }
  </form>
  <p> The constraint should be 5 characters:<br>
   o = letter at right spot, x = wrong spot, . = not in the word.</p>
- <script src="../assets/sometimes-rewriting-in-another-language-works/main.js "></script>
+ <script src="../assets/sometimes-rewriting-in-another-language-works/main.js"></script>
 </div>
 
 This month, the game of [Wordle][] has exploded in popularity.
