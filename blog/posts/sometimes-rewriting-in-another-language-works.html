@@ -1,0 +1,185 @@
+<!doctype html><meta charset=utf-8>
+<title> Sometimes, rewriting in another language works </title>
+<link href=../blog.css rel=stylesheet>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.5.0/build/styles/default.min.css">
+<link rel="alternate" type="application/atom+xml" title="Atom 1.0" href="feed.xml"/>
+<link rel="alternate" type="application/json" title="JSON Feed" href="feed.json" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<main>
+  <nav class=social-links>
+    <object type='image/svg+xml' data='https://img.shields.io/badge/blog-47-green?style=social&logo=rss&logoColor=e5732f&link=https://espadrine.github.io/blog/&link=https://espadrine.github.io/blog/feed.xml'></object>
+    <object type='image/svg+xml' data='https://img.shields.io/github/followers/espadrine?label=Github&style=social&link=https%3A%2F%2Fgithub.com%2Fespadrine&link=https%3A%2F%2Fgithub.com%2Fespadrine%3Ftab%3Dfollowers'></object>
+    <object type='image/svg+xml' data='https://img.shields.io/twitter/follow/espadrine?label=Twitter&style=social'></object>
+  </nav>
+  <article class=relative>
+<h1 id="Sometimes_rewriting_in_another_language_works">Sometimes, rewriting in another language works <a href="#Sometimes_rewriting_in_another_language_works" class="autolink-clicker" aria-hidden="true">§</a></h1>
+<style>
+.wordleSolver {
+  width: 90%;
+  margin: auto;
+  padding: .6em 2em;
+  border: 1px solid lightgray;
+  border-radius: 50px;
+  background-color: #fafaff;
+}
+.wordleSolver p {
+  text-align: center;
+}
+.wordleSolver input {
+  width: 7ex;
+}
+output { word-break: break-all; }
+</style>
+<div class=wordleSolver>
+ <section id="logParagraph"></section>
+ <form action="javascript:void 0">
+  <p><label> Guess: <input id="guessInput" placeholder="salet"></label>
+   <label> Constraint: <input id="constraintInput" placeholder="ox..."></label>
+  </p>
+  <p>
+   <button id="guessButton">Guess</button>
+   <button id="restartButton">Restart</button>
+    <span id="computingParagraph">Computing…</span>
+  <p>
+ </form>
+ <p> The constraint should be 5 characters:<br>
+  o = letter at right spot, x = wrong spot, . = not in the word.</p>
+ <script src="../assets/sometimes-rewriting-in-another-language-works/main.js "></script>
+</div>
+<p>This month, the game of <a href="https://www.powerlanguage.co.uk/wordle/">Wordle</a> has exploded in popularity.</p>
+<p><img src="../assets/sometimes-rewriting-in-another-language-works/google-trends.png" alt="Google trends shows a sudden spike in January 2022" /></p>
+<p>The principle is simple: every day, a secret 5-letter word must be guessed
+by everyone on the planet from the comfort of their confinement.
+We each have 6 guesses: every time we make one,
+the website lists all <strong>correctly positioned letters</strong>,
+all <strong>incorrectly positioned ones</strong>,
+and the letters that are <strong>not in the solution</strong>.</p>
+<h2 id="Strategy">Strategy <a href="#Strategy" class="autolink-clicker" aria-hidden="true">§</a></h2>
+<p>Playing the game, there are many strategies you quickly pick up.</p>
+<ol>
+<li>English letter frequencies help choose guesses that divide the search space faster.</li>
+<li>You can make guesses that don’t follow previously reveiled constraints:
+a completely different guess can narrow down the possibilities much more.</li>
+<li>Using common vowels on the first guess and common consonants on the second,
+helps narrow down possibilities very fast.</li>
+</ol>
+<p>Many <a href="https://typon.github.io/wordle.html">bloggers</a> have <a href="https://slc.is/#Best%20Wordle%20Strategy%20%E2%80%94%20Explore%20or%20Exploit">tried</a> their <a href="https://bert.org/2021/11/24/the-best-starting-word-in-wordle/">hand</a> at
+<a href="https://github.com/jakearchibald/wordle-analyzer/">optimal</a> strategies.
+While skimming through them, it felt like each approach had issues.
+That motivated me to add to the pile of suboptimal techniques with my own,
+hopefully less flawed, algorithm.</p>
+<h2 id="Principles">Principles <a href="#Principles" class="autolink-clicker" aria-hidden="true">§</a></h2>
+<p>I like to start tackling optimality problems by <em>betting on brute force</em>.
+It sometimes works right off the bat,
+and when it does not, I learn a lot from it on what to improve.</p>
+<p>Many players focus on letter frequency, but while it can feel like brute force,
+it does not brute-force the right solution.
+Indeed, the guess with the most likely letters does not segment the search
+space fairly. A lot of words have the most likely letters, after all.</p>
+<p>One (admittedly suboptimal, but superior) target,
+is to take the list of possible solutions, and find the guess which, on average,
+reduces the search space the most, by eliminating the most candidate words.</p>
+<p>This is where we get our hands dirty with the nitty-gritty details.</p>
+<p>There are two different lists in the JS code of the game’s webpage.</p>
+<ol>
+<li>One contains the <strong>2315</strong> potential solutions,</li>
+<li>and the other contains <strong>10657</strong> other words that will never be solutions,
+but that can still be used as guesses. Red herrings, if you will.</li>
+</ol>
+<p>You may think the red herrings are useless, but in fact,
+they can achieve a greater elimination rate.</p>
+<p>So, the algorithm needs to loop over all guesses.</p>
+<p>For each one, it must compute the number of eliminated solutions,
+for each possible solution.</p>
+<p>To do that, it must loop over all possible solutions,
+compute the constraint information that Wordle would produce for that guess,
+and then loop over all possible solutions again
+to count how many those would reject.</p>
+<p>There are five letters in each guess, producing five constraints to check,
+and some constraints require looping over all letters of the solution.</p>
+<p>Overall, the number of operations is (10657+2315) × 2315 × 2315 × 5 × 5.
+That is 1,737,996,667,500 steps.</p>
+<p>That number is in that weird range of brute-force expectations:
+<em>it is not unreachable, but it is not trivial either</em>.
+Converting to nanoseconds, it is about half an hour;
+but we can just feel our gut feeling yelling
+that each operation will take a bit more than a nanosecond.</p>
+<h2 id="Optimism_is_healthy_right_">Optimism is healthy, right? <a href="#Optimism_is_healthy_right_" class="autolink-clicker" aria-hidden="true">§</a></h2>
+<p>Off I went, candidly <a href="https://github.com/espadrine/optimal-wordle/blob/2e71cb4ca461ded5111a001ceb398ec2f4b08494/play-optimally.jl">implementing the algorithm</a> in <a href="https://julialang.org/">Julia</a>.</p>
+<p>(I like Julia for its type system and extensive standard library,
+which makes it my go-to desk calculator.
+It also <a href="https://julialang.org/benchmarks/">cares about performance</a>,
+relying on an LLVM-based JIT compiler.)</p>
+<p>Since I knew I was in for a long compute time,
+I added a fancy duration estimator based on the average time the top loop took.</p>
+<p>Sadly, this is what I saw:</p>
+<pre><code>$ julia play-optimally.jl
+Ranking guesses... 1/12972 words (24950 min left)
+</code></pre>
+<p>Hang on, that is not half an hour… It is closer to 17 days!</p>
+<p>At that point, I really had three options:</p>
+<ol>
+<li>Optimizing,</li>
+<li>Parallelizing,</li>
+<li>Rewriting in a faster language.</li>
+</ol>
+<h2 id="Pessimism_is_healthy_too">Pessimism is healthy, too <a href="#Pessimism_is_healthy_too" class="autolink-clicker" aria-hidden="true">§</a></h2>
+<p>I felt I could rewrite it in Rust within two hours.
+My mental model of how the compiled assembly should be,
+made me believe that Julia’s compiler was doing something wrong,
+and that Rust would indeed be much faster.</p>
+<p>However, I had no certainty, and a common maxim states that rewriting is usually
+less fruitful than redesigning with better algorithms.</p>
+<p>Parallelizing was another option, but I did not jump with joy at the idea of
+bringing my laptop to its knees by squeezing each of my 8 threads for…
+let me calculate… upwards of 50 continuous hours, at best?!</p>
+<p>So I made a compromise:
+<em>I would spend 2 hours trying to fight the Julia compiler and figure out how to
+get it going fast</em>.</p>
+<p>But the volume of possible compiler bailouts is large,
+and the sweet spot of JIT performance is a needle in a haystack.</p>
+<p>Reader, you know where the story is going:
+those two hours were fruitless,
+and the next two successfully <a href="https://github.com/espadrine/optimal-wordle/blob/2e71cb4ca461ded5111a001ceb398ec2f4b08494/src/main.rs">rewrote it all in Rust</a>.</p>
+<pre><code>$ time cargo run
+Ranking guesses... 11/12972 words (441 min left)
+</code></pre>
+<p>And just like that, I was granted the best Wordle guess in 7h,
+15% of the time that parallelizing Julia would have given me.</p>
+<h2 id="A_warning_on_what_the_moral_is">A warning on what the moral is <a href="#A_warning_on_what_the_moral_is" class="autolink-clicker" aria-hidden="true">§</a></h2>
+<p>Sure, the main conclusion is this:</p>
+<blockquote>
+<p>Sometimes, rewriting in a more suitable language will get you the answer
+faster than any time spent on optimization or parallelization can give you.</p>
+</blockquote>
+<p>Had I rewritten the code directly
+instead of spending two hours vainly optimizing Julia code,
+I would have got the answer two hours earlier.</p>
+<p>But more importantly, this is not about the language itself.
+It is about the quality of the compiler’s optimizers.
+Rewriting it in JS would have given a similar speedup.</p>
+<p>Julia has outstanding qualities, and it can be fast.
+It just has not had the sheer magnitude of optimizational grind
+that V8 and Rust have accumulated over the years.</p>
+<p>And in case you were hoping to know why I called this algorithm suboptimal:
+consider that a first guess could leave only 5 possible solutions
+which all next guesses would narrow down to 2;
+whilst a better first guess could leave 6 possible solutions
+which the next guesses narrow down to 1.</p>
+<p>Algorithms do matter in the end too.</p>
+<script type="application/ld+json">
+{ "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "datePublished": "2022-01-23T17:43:40Z",
+  "keywords": "julia, rust, optimization" }
+</script>
+    <footer>
+      Published <time itemprop=datePublished datetime="2022-01-23T17:43:40Z">23 January 2022</time>.
+      <br>
+      Tags: <a class=tag href="../index.html?tags=julia">julia</a>,
+ <a class=tag href="../index.html?tags=rust">rust</a>,
+ <a class=tag href="../index.html?tags=optimization">optimization</a>.
+    </footer>
+  </article>
+</main>
