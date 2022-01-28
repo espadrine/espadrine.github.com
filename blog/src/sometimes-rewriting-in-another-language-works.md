@@ -165,6 +165,9 @@ and the next two successfully [rewrote it all in Rust][rsimpl].
 And just like that, I was granted the best Wordle guess in 7h,
 15% of the time that parallelizing Julia would have given me.
 
+(Edit: using `time cargo run --release`
+even brings it all the way down to 30 minutes!)
+
 ## A warning on what the moral is
 
 Sure, the main conclusion is this:

@@ -2427,7 +2427,10 @@ async function guessListener() {
     return;
   }
 
-  if (game.solutions.length === 1) {
+  if (game.solutions.length <= 0) {
+    logToUser('There are no possible solutions left. Please restart.');
+
+  } else if (game.solutions.length === 1) {
     let guessCount = game.guesses.length;
     if (constraint !== 'ooooo') {
       guessCount++;
