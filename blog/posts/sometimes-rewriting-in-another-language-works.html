@@ -147,14 +147,29 @@ Ranking guesses... 11/12972 words (441 min left)
 </code></pre>
 <p>And just like that, I was granted the best Wordle guess in 7h,
 15% of the time that parallelizing Julia would have given me.</p>
-<p>(Edit: using <code>time cargo run --release</code>
-even brings it all the way down to 30 minutes!)</p>
+<p><em>(Edit: using <code>time cargo run --release</code>
+even brings it all the way down to 30 minutes!)</em></p>
+<p><em>(Edit 2: <a href="https://discourse.julialang.org/t/rust-julia-comparison-post/75403/16?u=kristoffer.carlsson">a Julia thread investigated the code</a>.
+A big part of the time difference came from a mistake in the Julia code,
+which caused the algorithm to search through all possible guesses
+as potential solutions, instead of only the accepted solutions.
+That brings it down to about 4h on the same machine.</em></p>
+<p><em>The other improvements which allow Julia to match Rust performance involve
+using byte arrays instead of strings,
+using integer types with a fixed number of bits,
+and avoiding non-constant globals.</em></p>
+<p><em>Along with <a href="https://github.com/espadrine/optimal-wordle/pull/1">a few other fascinating tricks</a> that I recommend you read,
+<strong>the Julia version takes a stunning 20 minutes</strong>,
+better than the simple Rust version (which, to be fair,
+can likely achieve it too with similar tricks.))</em></p>
 <h2 id="A_warning_on_what_the_moral_is">A warning on what the moral is <a href="#A_warning_on_what_the_moral_is" class="autolink-clicker" aria-hidden="true">§</a></h2>
 <p>Sure, the main conclusion is this:</p>
 <blockquote>
 <p>Sometimes, rewriting in a more suitable language will get you the answer
 faster than any time spent on optimization or parallelization can give you.</p>
 </blockquote>
+<p><em>(Edit: and, as someone from the Julia thread puts it,
+sometimes you might not make the same bug in both implementations!)</em></p>
 <p>Had I rewritten the code directly
 instead of spending two hours vainly optimizing Julia code,
 I would have got the answer two hours earlier.</p>

@@ -165,8 +165,24 @@ and the next two successfully [rewrote it all in Rust][rsimpl].
 And just like that, I was granted the best Wordle guess in 7h,
 15% of the time that parallelizing Julia would have given me.
 
-(Edit: using `time cargo run --release`
-even brings it all the way down to 30 minutes!)
+*(Edit: using `time cargo run --release`
+even brings it all the way down to 30 minutes!)*
+
+*(Edit 2: [a Julia thread investigated the code][jlthread].
+A big part of the time difference came from a mistake in the Julia code,
+which caused the algorithm to search through all possible guesses
+as potential solutions, instead of only the accepted solutions.
+That brings it down to about 4h on the same machine.*
+
+*The other improvements which allow Julia to match Rust performance involve
+using byte arrays instead of strings,
+using integer types with a fixed number of bits,
+and avoiding non-constant globals.*
+
+*Along with [a few other fascinating tricks][jlpr] that I recommend you read,
+**the Julia version takes a stunning 22 minutes**,
+better than the simple Rust version (which, to be fair,
+can likely achieve it too with similar tricks.))*
 
 ## A warning on what the moral is
 
@@ -174,6 +190,9 @@ Sure, the main conclusion is this:
 
 > Sometimes, rewriting in a more suitable language will get you the answer
 > faster than any time spent on optimization or parallelization can give you.
+
+*(Edit: and, as someone from the Julia thread puts it,
+sometimes you might not make the same bug in both implementations!)*
 
 Had I rewritten the code directly
 instead of spending two hours vainly optimizing Julia code,
@@ -211,6 +230,8 @@ which the next guesses narrow down to 1.
 [jlperf]: https://julialang.org/benchmarks/
 [rsimpl]: https://github.com/espadrine/optimal-wordle/blob/934dffd9781b6067b6de7b0f136a519867570fa3/src/main.rs
 [optimal-blog]: https://sonorouschocolate.com/notes/index.php?title=The_best_strategies_for_Wordle
+[jlthread]: https://discourse.julialang.org/t/rust-julia-comparison-post/75403/16?u=kristoffer.carlsson
+[jlpr]: https://github.com/espadrine/optimal-wordle/pull/1
 
 <script type="application/ld+json">
 { "@context": "http://schema.org",
