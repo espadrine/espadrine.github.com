@@ -152,7 +152,7 @@ article figure > img {
   transform: translateX(-50%);
   border: 1px solid #dadada;
   padding: 5px;
-  max-width: calc(17cm - 12px);
+  max-width: calc(70ch - 22px);
 }
 article figure > figcaption {
   font-style: italic;
