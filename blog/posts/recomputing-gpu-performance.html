@@ -1,5 +1,5 @@
 <!doctype html><meta charset=utf-8>
-<title> ML GPU performance: AMD facing NVIDIA </title>
+<title> Recomputing ML GPU performance: AMD vs. NVIDIA </title>
 <link href=../blog.css rel=stylesheet>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.5.0/build/styles/default.min.css">
@@ -13,7 +13,7 @@
     <object type='image/svg+xml' data='https://img.shields.io/twitter/follow/espadrine?label=Twitter&style=social'></object>
   </nav>
   <article class=relative>
-<h1 id="ML_GPU_performance_AMD_facing_NVIDIA">ML GPU performance: AMD facing NVIDIA <a href="#ML_GPU_performance_AMD_facing_NVIDIA" class="autolink-clicker" aria-hidden="true">§</a></h1>
+<h1 id="Recomputing_ML_GPU_performance_AMD_vs_NVIDIA">Recomputing ML GPU performance: AMD vs. NVIDIA <a href="#Recomputing_ML_GPU_performance_AMD_vs_NVIDIA" class="autolink-clicker" aria-hidden="true">§</a></h1>
 <p>I am pretty impressed seeing <a href="https://twitter.com/LisaSu/status/1669848494637735936">Lisa Su</a> doing her best to steer the AMD ship towards
 better AI support in GPUs, with the <a href="https://huggingface.co/blog/huggingface-and-amd">Huggingface partnership</a> and by convincing
 George Hotz to submit more bug reports.</p>
@@ -22,7 +22,7 @@ prebuilt consumer computer that runs 65B-parameter LLMs. A plethora of driver
 crashes later, he almost <a href="https://github.com/RadeonOpenCompute/ROCm/issues/2198#issuecomment-1574383483">gave up on AMD</a>.)</p>
 <p>There’s quite a few issues to overcome, though.
 While that GPU is great
-(Stable Diffusion iteration speed per GPU cost is top-tier),
+(<a href="https://www.tomshardware.com/news/stable-diffusion-gpu-benchmarks">Stable Diffusion iteration speed per GPU cost</a> is top-tier),
 a cursory study would be flawed:
 public GPU benchmarks like TechPowerUp, TomsHardware, etc. give:</p>
 <ul>
@@ -72,7 +72,7 @@ on which matrix sizes are supported and on how many cycles the instruction takes
 and NVIDIA keeps major aspects of their instruction set secret,
 but on recent 30- and 40-series, this 256 number seems fairly constant.)</p>
 <p><img src="https://www.nvidia.com/content/dam/en-zz/Solutions/gtcs22/tensor-cores/hopper-tensor-core-ampere-2c50-t.jpg" alt="Official image showing the matrix size for third-generation tensor cores with V100 FP32" /></p>
-<p>That puts the actual RTX 4090 at
+<p>That actually puts the RTX 4090 at
 256 × 512 (Tensor Cores) × 2.52 (GHz)
 ÷ 1K (GHz per teracycle/s) = <a href="https://en.wikipedia.org/wiki/GeForce_40_series#Desktop">330 TFLOPS in FP16</a>…
 Much higher than the 123 TFLOPS that impressed Hotz on the RX 7900 XTX!</p>
@@ -147,7 +147,14 @@ Still, it also is lower than the RTX 4090 on that front
   <tr><td> <a href="https://www.nvidia.com/en-us/geforce/graphics-cards/compare/#sectionenhanced_copy_44862952d932bba4_58ad_4ca4_a3d3_84a2295d2b85">RTX 3060</a> </td>
       <td>  €314 </td><td> 51 </td><td> 360 </td><td> 58 </td>
 </table>
-<p>The other thorns on the side of AMD in AI rear their ugly head:</p>
+<p>Thus the RX 7900 XTX is not technically the best TFLOPS per price,
+as was presumed in Hotz’s <a href="https://geohot.github.io//blog/jekyll/update/2023/05/24/the-tiny-corp-raised-5M.html">raise announcement</a>.
+But that metric is not crucial for the purpose of making LLM machines,
+and purely looking at hardware, that GPU is a fine choice for that,
+in part because it has a fairer RAM per dollar offer,
+so that it can hold a large model without needing pricier GPUS,
+yet likely reaching reasonable inference speeds.</p>
+<p>The other thorns on the side of AMD in AI, though, rear their ugly heads:</p>
 <ul>
 <li><a href="https://chipsandcheese.com/2023/01/07/microbenchmarking-amds-rdna-3-graphics-architecture/">The compilers don’t produce great instructions</a>;</li>
 <li>The drivers crash frequently: ML workloads feel experimental;</li>

@@ -1,4 +1,4 @@
-# ML GPU performance: AMD facing NVIDIA
+# Recomputing ML GPU performance: AMD vs. NVIDIA
 
 I am pretty impressed seeing [Lisa Su][] doing her best to steer the AMD ship towards
 better AI support in GPUs, with the [Huggingface partnership][] and by convincing
@@ -10,7 +10,7 @@ crashes later, he almost [gave up on AMD][].)
 
 There’s quite a few issues to overcome, though.
 While that GPU is great
-(Stable Diffusion iteration speed per GPU cost is top-tier),
+([Stable Diffusion iteration speed per GPU cost][] is top-tier),
 a cursory study would be flawed:
 public GPU benchmarks like TechPowerUp, TomsHardware, etc. give:
 
@@ -67,7 +67,7 @@ but on recent 30- and 40-series, this 256 number seems fairly constant.)
 
 ![Official image showing the matrix size for third-generation tensor cores with V100 FP32](https://www.nvidia.com/content/dam/en-zz/Solutions/gtcs22/tensor-cores/hopper-tensor-core-ampere-2c50-t.jpg)
 
-That puts the actual RTX 4090 at
+That actually puts the RTX 4090 at
 256 × 512 (Tensor Cores) × 2.52 (GHz)
 ÷ 1K (GHz per teracycle/s) = [330 TFLOPS in FP16][NVIDIA wiki]…
 Much higher than the 123 TFLOPS that impressed Hotz on the RX 7900 XTX!
@@ -153,8 +153,15 @@ Still, it also is lower than the RTX 4090 on that front
       <td>  €314 </td><td> 51 </td><td> 360 </td><td> 58 </td>
 </table>
 
+Thus the RX 7900 XTX is not technically the best TFLOPS per price,
+as was presumed in Hotz’s [raise announcement][Hotz raised $5M].
+But that metric is not crucial for the purpose of making LLM machines,
+and purely looking at hardware, that GPU is a fine choice for that,
+in part because it has a fairer RAM per dollar offer,
+so that it can hold a large model without needing pricier GPUS,
+yet likely reaching reasonable inference speeds.
 
-The other thorns on the side of AMD in AI rear their ugly head:
+The other thorns on the side of AMD in AI, though, rear their ugly heads:
 - [The compilers don’t produce great instructions][microbenchmark];
 - The drivers crash frequently: ML workloads feel experimental;
 - Software adoption is getting there,
@@ -178,6 +185,7 @@ which is mindboggling coming from NVIDIA’s superior CUDA support.)
 [Huggingface partnership]: https://huggingface.co/blog/huggingface-and-amd
 [Hotz raised $5M]: https://geohot.github.io//blog/jekyll/update/2023/05/24/the-tiny-corp-raised-5M.html
 [gave up on AMD]: https://github.com/RadeonOpenCompute/ROCm/issues/2198#issuecomment-1574383483
+[Stable Diffusion iteration speed per GPU cost]: https://www.tomshardware.com/news/stable-diffusion-gpu-benchmarks
 [RX public perf]: https://www.techpowerup.com/gpu-specs/geforce-rtx-4090.c3889
 [RTX public perf]: https://www.tomshardware.com/reviews/amd-radeon-rx-7900-xtx-and-xt-review-shooting-for-the-top
 [RTX 4090 specs]: https://www.nvidia.com/en-us/geforce/graphics-cards/compare/#sectionenhanced_copy_54756033603dff4c2_db18_46bd_9cc1_e7ad0debbbd0
