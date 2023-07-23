@@ -123,6 +123,8 @@ provided: the amount of time that each model took to train.
 
 ![LLaMA 1 training loss vs GPU-hours spent](../assets/chinchilla-s-death/llama1-training-speed.svg)
 
+[*(Code for generating the graph here.)*][code]
+
 Let’s first mention that the whole Chinchilla graph that we saw,
 covers only a small sliver on the left of this graph.
 In that sliver, we see the same behaviour that Chinchilla documents.
@@ -237,6 +239,7 @@ how should the shape of its tail be instead?
 [llama1]: https://arxiv.org/abs/2302.13971
 [llama2]: https://arxiv.org/abs/2307.09288
 [cosine]: https://arxiv.org/pdf/1608.03983.pdf
+[code]: https://github.com/espadrine/espadrine.github.com/blob/master/blog/assets/chinchilla-s-death/llama-data.py
 
 <script type="application/ld+json">
 { "@context": "http://schema.org",
