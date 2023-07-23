@@ -203,6 +203,10 @@ which is mindboggling coming from NVIDIA’s superior CUDA support.)
 [AMD wiki]: https://en.wikipedia.org/wiki/RDNA_3#Desktop
 [microbenchmark]: https://chipsandcheese.com/2023/01/07/microbenchmarking-amds-rdna-3-graphics-architecture/
 
+---
+
+[Comments on Reddit](https://www.reddit.com/r/espadrine/comments/156bbmj/recomputing_gpu_performance/).
+
 <script type="application/ld+json">
 { "@context": "http://schema.org",
   "@type": "BlogPosting",
