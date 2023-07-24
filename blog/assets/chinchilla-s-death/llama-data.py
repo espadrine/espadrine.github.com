@@ -82,7 +82,7 @@ def gpu_hour_per_gtoken(version, model):
 for version in versions:
     for model in llama_models[version]:
         hpgt = gpu_hour_per_gtoken(version, model)
-        print(f"Version {version} model {model} cruises at {1e9/hpgt/3600} GPU-hours per gigatoken")
+        print(f"Version {version} model {model} cruises at {1e9/hpgt/3600} tokens/second")
         llama[version][model]['gpu_hour_per_gtoken'] = hpgt
         llama[version][model]['hours'] = [gtokens * hpgt for gtokens in llama[version][model]['gtokens']]
 print("First point:", llama['1']['7B']['hours'][0], "hours for", llama['1']['7B']['gtokens'][0], "gtokens (", llama['1']['7B']['gpu_hour_per_gtoken'], "hour/gtoken )")

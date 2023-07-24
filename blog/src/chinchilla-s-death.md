@@ -104,7 +104,7 @@ Sure, they are all trained on the same data;
 but they don’t go through that data at the same speed.
 What we want to know is **not** how sample-efficient the model is
 (on this front, the larger model clearly learns more from what it saw).
-Let’s instead picture instead a race:
+Let’s picture instead a race:
 all those models start at the same time,
 and we want to know which one crosses the finish line first.
 In other words, when throwing a fixed amount of compute at the training,
@@ -168,6 +168,8 @@ We also, again, got the training times:
  <tr><td> LLaMA2-70B </td><td> 1720320  </td><td>     322.1    </td>
 </table>
 
+![LLaMA 2 training loss vs GPU-hours spent](../assets/chinchilla-s-death/llama2-training-speed.svg)
+
 Immediately, at a glance, we notice that the training curves don’t match those
 of LLaMA 1, even when the models are identical.
 As it turns out, LLaMA 2 was trained on double the context size,
@@ -178,7 +180,7 @@ As a result, the 34B model, which in LLaMA 1 remained always better than the 65B
 model at any training time spent, now dips slightly above the 70B model,
 before overtaking it:
 
-![LLaMA 2 training loss vs GPU-hours spent](../assets/chinchilla-s-death/llama2-training-speed.svg)
+![LLaMA 1 vs 2 training loss vs GPU-hours spent](../assets/chinchilla-s-death/llama-training-speed-comparison.webp)
 
 More importantly, comparing the training speeds strongly confirms our suspicions
 from LLaMA 1:
