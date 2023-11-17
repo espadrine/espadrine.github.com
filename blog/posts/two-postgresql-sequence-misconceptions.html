@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <main>
   <nav class=social-links>
-    <object type='image/svg+xml' data='https://img.shields.io/badge/blog-46-green?style=social&logo=rss&logoColor=e5732f&link=https://espadrine.github.io/blog/&link=https://espadrine.github.io/blog/feed.xml'></object>
+    <object type='image/svg+xml' data='https://img.shields.io/badge/blog-49-green?style=social&logo=rss&logoColor=e5732f&link=https://espadrine.github.io/blog/&link=https://espadrine.github.io/blog/feed.xml'></object>
     <object type='image/svg+xml' data='https://img.shields.io/github/followers/espadrine?label=Github&style=social&link=https%3A%2F%2Fgithub.com%2Fespadrine&link=https%3A%2F%2Fgithub.com%2Fespadrine%3Ftab%3Dfollowers'></object>
     <object type='image/svg+xml' data='https://img.shields.io/twitter/follow/espadrine?label=Twitter&style=social'></object>
   </nav>
@@ -87,10 +87,9 @@ order, nor a time order.</p>
 <h2 id="Gaps">Gaps <a href="#Gaps" class="autolink-clicker" aria-hidden="true">§</a></h2>
 <p>Let’s create a table with a <code>SERIAL</code> identifier. For the purpose of showing
 things going right, let’s insert a row.</p>
-<pre><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> gaps (id SERIAL);
-<span class="hljs-keyword">BEGIN</span>;
-<span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> <span class="hljs-keyword">order</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">VALUES</span>;
-<span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> gaps;
+<pre><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> orders (id SERIAL);
+<span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> orders <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">VALUES</span>;
+<span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> orders;
 </pre>
 <pre><code> id 
 ----
@@ -99,13 +98,13 @@ things going right, let’s insert a row.</p>
 </code></pre>
 <p>Now comes the gap.</p>
 <pre><span class="hljs-keyword">BEGIN</span>;
-<span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> <span class="hljs-keyword">order</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">VALUES</span>;
+<span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> orders <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">VALUES</span>;
 <span class="hljs-keyword">ROLLBACK</span>;
 </pre>
 <p>Since we rolled back, nothing happened – or did it?</p>
 <p>Let’s now insert another row.</p>
-<pre><span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> <span class="hljs-keyword">order</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">VALUES</span>;
-<span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> gaps;
+<pre><span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> orders <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">VALUES</span>;
+<span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> orders;
 </pre>
 <pre><code> id 
 ----

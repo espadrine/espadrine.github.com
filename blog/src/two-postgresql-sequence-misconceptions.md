@@ -107,10 +107,9 @@ Let’s create a table with a `SERIAL` identifier. For the purpose of showing
 things going right, let’s insert a row.
 
 ```sql
-CREATE TABLE gaps (id SERIAL);
-BEGIN;
-INSERT INTO order DEFAULT VALUES;
-SELECT * FROM gaps;
+CREATE TABLE orders (id SERIAL);
+INSERT INTO orders DEFAULT VALUES;
+SELECT * FROM orders;
 ```
 
      id 
@@ -122,7 +121,7 @@ Now comes the gap.
 
 ```sql
 BEGIN;
-INSERT INTO order DEFAULT VALUES;
+INSERT INTO orders DEFAULT VALUES;
 ROLLBACK;
 ```
 
@@ -131,8 +130,8 @@ Since we rolled back, nothing happened – or did it?
 Let’s now insert another row.
 
 ```sql
-INSERT INTO order DEFAULT VALUES;
-SELECT * FROM gaps;
+INSERT INTO orders DEFAULT VALUES;
+SELECT * FROM orders;
 ```
 
      id 
