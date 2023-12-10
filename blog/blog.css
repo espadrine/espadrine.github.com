@@ -179,6 +179,7 @@ article table {
   margin: auto;
   border-collapse: collapse;
   text-align: center;
+  width: 100%;
 }
 article table th {
   border-bottom: 1px solid black;
