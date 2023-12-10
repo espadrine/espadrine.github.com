@@ -35,17 +35,17 @@ only [official figures][RX 7900 XTX specs], people widely compute it this way:
 <table>
   <tr><th> Name </th><th> Price </th><th> Processors </th><th> Frequency </th><th> TFLOPS (FP16) </th><th> Perf/€ </th>
   <tr><td> <a href="https://www.amd.com/en/products/graphics/amd-radeon-rx-7900xtx">RX 7900 XTX</a> </td>
-      <td> €1110 </td><td>  6144 </td><td>  2.5 GHz </td><td> 122.88 </td><td> 0.1107 </td>
+      <td> €1110 </td><td>  6144 </td><td>  2.5 GHz </td><td> 122.88 </td><td> .1107 </td>
   <tr><td> <a href="https://www.amd.com/en/products/graphics/amd-radeon-rx-7900xt">RX 7900 XT</a> </td>
-      <td>  €942 </td><td>  5376 </td><td>  2.4 GHz </td><td> 103.22 </td><td> 0.1096 </td>
+      <td>  €942 </td><td>  5376 </td><td>  2.4 GHz </td><td> 103.22 </td><td> .1096 </td>
   <tr><td> <a href="https://www.nvidia.com/en-us/geforce/graphics-cards/compare/#sectionenhanced_copy_54756033603dff4c2_db18_46bd_9cc1_e7ad0debbbd0">RTX 4090</a> </td>
-      <td> €1770 </td><td> 16384 </td><td> 2.52 GHz </td><td>  82.58 </td><td> 0.0467 </td>
+      <td> €1770 </td><td> 16384 </td><td> 2.52 GHz </td><td>  82.58 </td><td> .0467 </td>
   <tr><td> <a href="https://www.nvidia.com/en-us/geforce/graphics-cards/compare/#sectionenhanced_copy_44862952d932bba4_58ad_4ca4_a3d3_84a2295d2b85">RTX 3060</a> </td>
-      <td>  €314 </td><td>  3584 </td><td> 1.78 GHz </td><td>  12.76 </td><td> 0.0405 </td>
+      <td>  €314 </td><td>  3584 </td><td> 1.78 GHz </td><td>  12.76 </td><td> .0405 </td>
   <tr><td> <a href="https://www.nvidia.com/en-us/geforce/graphics-cards/compare/#sectionenhanced_copy_44862952d932bba4_58ad_4ca4_a3d3_84a2295d2b85">RTX 3080</a> </td>
-      <td>  €905 </td><td>  8704 </td><td> 1.71 GHz </td><td>  29.76 </td><td> 0.0329 </td>
+      <td>  €905 </td><td>  8704 </td><td> 1.71 GHz </td><td>  29.76 </td><td> .0329 </td>
   <tr><td> <a href="https://www.nvidia.com/en-us/geforce/graphics-cards/compare/#sectionenhanced_copy_44862952d932bba4_58ad_4ca4_a3d3_84a2295d2b85">RTX 3090</a> </td>
-      <td> €1500 </td><td> 10496 </td><td> 1.70 GHz </td><td>  35.68 </td><td> 0.0238 </td>
+      <td> €1500 </td><td> 10496 </td><td> 1.70 GHz </td><td>  35.68 </td><td> .0238 </td>
 </table>
 
 That is an unjust comparison, though, because AMD’s instruction is more niche
@@ -138,20 +138,22 @@ Still, it also is lower than the RTX 4090 on that front
 (but at a lower price point).
 
 <table>
-  <tr><th> Name </th><th> Price </th><th> TFLOPS (FP16) </th><th> Memory bandwidth (GB/s)</th><th> Value (TFLOPS·GB/s/€) </th>
+  <tr><th> Name </th><th> Price </th><th> TFLOPS (FP16) </th><th> Memory bandwidth (GB/s)</th><th> RAM (GB) </th><th> TFLOPS/€ </th><th> Value (TFLOPS·GB·MB/s/€³) </th>
   <tr><td> <a href="https://www.nvidia.com/en-us/geforce/graphics-cards/compare/#sectionenhanced_copy_54756033603dff4c2_db18_46bd_9cc1_e7ad0debbbd0">RTX 4090</a> </td>
-      <td> €1770 </td><td> 330 </td><td> 1008 </td><td> 188 </td>
-  <tr><td> <a href="https://www.amd.com/en/products/graphics/amd-radeon-rx-7900xtx">RX 7900 XTX</a> </td>
-      <td> €1110 </td><td> 123 </td><td> 960 </td><td> 106 </td>
-  <tr><td> <a href="https://www.nvidia.com/en-us/geforce/graphics-cards/compare/#sectionenhanced_copy_44862952d932bba4_58ad_4ca4_a3d3_84a2295d2b85">RTX 3080</a> </td>
-      <td>  €905 </td><td> 119 </td><td> 760 </td><td> 100 </td>
-  <tr><td> <a href="https://www.nvidia.com/en-us/geforce/graphics-cards/compare/#sectionenhanced_copy_44862952d932bba4_58ad_4ca4_a3d3_84a2295d2b85">RTX 3090</a> </td>
-      <td> €1500 </td><td> 143 </td><td> 936 </td><td> 89 </td>
-  <tr><td> <a href="https://www.amd.com/en/products/graphics/amd-radeon-rx-7900xt">RX 7900 XT</a> </td>
-      <td>  €942 </td><td> 103 </td><td> 800 </td><td> 87 </td>
+      <td> €1770 </td><td> 330 </td><td> 1008 </td><td> 24 </td><td> .186 </td><td> 1.4 </td>
   <tr><td> <a href="https://www.nvidia.com/en-us/geforce/graphics-cards/compare/#sectionenhanced_copy_44862952d932bba4_58ad_4ca4_a3d3_84a2295d2b85">RTX 3060</a> </td>
-      <td>  €314 </td><td> 51 </td><td> 360 </td><td> 58 </td>
+      <td>  €314 </td><td> 51 </td><td> 360 </td><td> 12 </td><td> .162 </td><td> 7.1 </td>
+  <tr><td> <a href="https://www.nvidia.com/en-us/geforce/graphics-cards/compare/#sectionenhanced_copy_44862952d932bba4_58ad_4ca4_a3d3_84a2295d2b85">RTX 3080</a> </td>
+      <td>  €905 </td><td> 119 </td><td> 760 </td><td> 10 </td><td> .131 </td><td> 1.2 </td>
+  <tr><td> <a href="https://www.amd.com/en/products/graphics/amd-radeon-rx-7900xtx">RX 7900 XTX</a> </td>
+      <td> €1110 </td><td> 123 </td><td> 960 </td><td> 24 </td><td> .111 </td><td> 2.1 </td>
+  <tr><td> <a href="https://www.amd.com/en/products/graphics/amd-radeon-rx-7900xt">RX 7900 XT</a> </td>
+      <td>  €942 </td><td> 103 </td><td> 800 </td><td> 20 </td><td> .109 </td><td> 2.0 </td>
+  <tr><td> <a href="https://www.nvidia.com/en-us/geforce/graphics-cards/compare/#sectionenhanced_copy_44862952d932bba4_58ad_4ca4_a3d3_84a2295d2b85">RTX 3090</a> </td>
+      <td> €1500 </td><td> 143 </td><td> 936 </td><td> 24 </td><td> .095 </td><td> 1.0 </td>
 </table>
+
+*(The value unit was edited per [Scheurneus’ suggestion][reddit1].)*
 
 Thus the RX 7900 XTX is not technically the best TFLOPS per price,
 as was presumed in Hotz’s [raise announcement][Hotz raised $5M].
@@ -202,6 +204,7 @@ which is mindboggling coming from NVIDIA’s superior CUDA support.)
 [NVIDIA GEMM]: https://docs.nvidia.com/deeplearning/performance/dl-performance-matrix-multiplication/index.html
 [AMD wiki]: https://en.wikipedia.org/wiki/RDNA_3#Desktop
 [microbenchmark]: https://chipsandcheese.com/2023/01/07/microbenchmarking-amds-rdna-3-graphics-architecture/
+[reddit1]: https://www.reddit.com/r/espadrine/comments/156bbmj/comment/kcozddn/
 
 ---
 
