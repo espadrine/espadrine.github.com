@@ -4,12 +4,12 @@
   <link rel="alternate" type="text/html" href="https://espadrine.github.io/blog/"/>
   <link rel="self" type="application/atom+xml" href="https://espadrine.github.io/blog/feed.xml"/>
   <id>https://espadrine.github.io/blog/feed.xml</id>
-  <updated>2024-02-23T13:52:51Z</updated>
+  <updated>2024-03-07T18:07:23Z</updated>
       <entry>
         <id>https://espadrine.github.io/blog/posts/wordle-perfect-play-with-generic-methods.html</id>
         <link rel="alternate" type="text/html" href="https://espadrine.github.io/blog/posts/wordle-perfect-play-with-generic-methods.html"/>
         <title>Wordle Perfect Play with Generic Methods</title>
-        <published>2024-02-23T13:52:51Z</published>
+        <published>2024-03-07T18:07:23Z</published>
         <category term="ml"/>
 <category term="julia"/>
 <category term="optimization"/>
@@ -17,7 +17,7 @@
           <![CDATA[ <h1 id="Wordle_Perfect_Play_with_Generic_Methods">Wordle Perfect Play with Generic Methods <a href="#Wordle_Perfect_Play_with_Generic_Methods" class="autolink-clicker" aria-hidden="true">§</a></h1>
 <p>Two years ago, the game of <a href="https://www.nytimes.com/games/wordle/index.html">Wordle</a> was released.
 As we strove to solve it optimally,
-<a href="https://organisons.com/blog/posts/faster-wordle-estimators.html">we built fast estimators for the expected score in our previous article</a>.
+<a href="https://espadrine.github.io/blog/posts/faster-wordle-estimators.html">we built fast estimators for the expected score in our previous article</a>.
 Used as heuristics, it got us good scores, but not optimal play.</p>
 <p>This time, using the estimators we devised,
 let’s achieve perfection,
@@ -129,7 +129,7 @@ and from that, we can execute the optimal policy.</p>
 <span class="hljs-keyword">end</span>
 </pre>
 <p>Notice we use <code>estimate_action_value()</code>,
-which is implemented by the <a href="https://organisons.com/blog/posts/faster-wordle-estimators.html">entropic estimator
+which is implemented by the <a href="https://espadrine.github.io/blog/posts/faster-wordle-estimators.html">entropic estimator
 we described in the previous article</a>.
 That weaker estimator, hidden within the stronger MCTS estimator,
 like a Russian doll of estimations, helps bootstrap its accuracy.
@@ -570,7 +570,7 @@ Whenever we want the variance,
 we divide it by the number of actions that reached this number of simulations.</p>
 <p>That in turn fully allows us to remove action value histories,
 and the RAM thanks us for it!</p>
-<p><a href="https://github.com/espadrine/optimal-wordle/blob/master/play-optimally.jl">The algorithm’s code is open-source</a>.</p>
+<p><a href="https://github.com/espadrine/optimal-wordle/blob/a132c028eeba64ab0311be69b6f73029638cd712/play-optimally.jl">The algorithm’s code is open-source</a>.</p>
 <h2 id="A_new_entry_in_a_large_tent">A new entry in a large tent <a href="#A_new_entry_in_a_large_tent" class="autolink-clicker" aria-hidden="true">§</a></h2>
 <p>A major aspect of this optimizer is how generic it is.
 All it needs is an action value predictor,
@@ -643,7 +643,7 @@ without exhaustively estimating policies.</p>
 <script type="application/ld+json">
 { "@context": "http://schema.org",
   "@type": "BlogPosting",
-  "datePublished": "2024-02-23T13:52:51Z",
+  "datePublished": "2024-03-07T18:07:23Z",
   "keywords": "ml, julia, optimization" }
 </script> ]]>
         </content>

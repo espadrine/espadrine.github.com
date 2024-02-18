@@ -742,8 +742,7 @@ without exhaustively estimating policies.
 - [<span id=GMZ>\[GMZ\]</span>: Danihelka, I., Guez, A., Schrittwieser, J. and Silver, D., 2021, October. Policy improvement by planning with Gumbel. In International Conference on Learning Representations.][GumbelMuZero]
 
 [Wordle]: https://www.nytimes.com/games/wordle/index.html
-[art2]: https://organisons.com/blog/posts/faster-wordle-estimators.html
-[art2p]: https://espadrine.github.io/blog/posts/faster-wordle-estimators.html
+[art2]: https://espadrine.github.io/blog/posts/faster-wordle-estimators.html
 [RLBook]: http://incompleteideas.net/book/RLbook2020.pdf
 [MDP]: https://apps.dtic.mil/sti/pdfs/AD0606367.pdf
 [MCTS]: https://inria.hal.science/inria-00116992/document
@@ -761,11 +760,11 @@ without exhaustively estimating policies.
 [MITWordle]: https://auction-upload-files.s3.amazonaws.com/Wordle_Paper_Final.pdf
 [Thompson]: https://academic.oup.com/biomet/article-abstract/25/3-4/285/200862
 [GumbelMuZero]: https://openreview.net/pdf?id=bERaNdoegnO
-[Code]: https://github.com/espadrine/optimal-wordle/blob/master/play-optimally.jl
+[Code]: https://github.com/espadrine/optimal-wordle/blob/a132c028eeba64ab0311be69b6f73029638cd712/play-optimally.jl
 
 <script type="application/ld+json">
 { "@context": "http://schema.org",
   "@type": "BlogPosting",
-  "datePublished": "2024-02-23T13:52:51Z",
+  "datePublished": "2024-03-07T18:07:23Z",
   "keywords": "ml, julia, optimization" }
 </script>
