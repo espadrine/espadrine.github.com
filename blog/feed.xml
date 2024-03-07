@@ -577,7 +577,8 @@ All it needs is an action value predictor,
 and it will converge to optimal play on its own.
 Overall, the structure of this optimizer is like this:</p>
 <p><img src="../assets/perfect-play-with-generic-methods/diagram.png" alt="Diagram of our MCTS optimizer" /></p>
-<p>It is far from the first generic MDP optimizer.
+<p>I call it the Action Value Tree Search (AVTS).
+It is far from the first generic MDP optimizer.
 AlphaGo is a famous example, although I’d argue it is a bit more complex,
 as it hinges on plugging in both a policy estimator and a value estimator
 (whereas for us, we only plug in an action value estimator):</p>

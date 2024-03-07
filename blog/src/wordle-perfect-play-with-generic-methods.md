@@ -667,6 +667,7 @@ Overall, the structure of this optimizer is like this:
 
 ![Diagram of our MCTS optimizer](../assets/perfect-play-with-generic-methods/diagram.png)
 
+I call it the Action Value Tree Search (AVTS).
 It is far from the first generic MDP optimizer.
 AlphaGo is a famous example, although I’d argue it is a bit more complex,
 as it hinges on plugging in both a policy estimator and a value estimator
