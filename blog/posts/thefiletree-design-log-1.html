@@ -8,14 +8,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <main>
   <nav class=social-links>
-    <object type='image/svg+xml' data='https://img.shields.io/badge/blog-49-green?style=social&logo=rss&logoColor=e5732f&link=https://espadrine.github.io/blog/&link=https://espadrine.github.io/blog/feed.xml'></object>
+    <object type='image/svg+xml' data='https://img.shields.io/badge/blog-51-green?style=social&logo=rss&logoColor=e5732f&link=https://espadrine.github.io/blog/&link=https://espadrine.github.io/blog/feed.xml'></object>
     <object type='image/svg+xml' data='https://img.shields.io/github/followers/espadrine?label=Github&style=social&link=https%3A%2F%2Fgithub.com%2Fespadrine&link=https%3A%2F%2Fgithub.com%2Fespadrine%3Ftab%3Dfollowers'></object>
     <object type='image/svg+xml' data='https://img.shields.io/twitter/follow/espadrine?label=Twitter&style=social'></object>
   </nav>
   <article class=relative>
-<h1 id="TheFileTree_Design_Log_1_Metadata">TheFileTree Design Log 1: Metadata <a href="#TheFileTree_Design_Log_1_Metadata" class="autolink-clicker" aria-hidden="true">§</a></h1>
+    <h1> TheFileTree Design Log 1: Metadata </h1>
+    <footer>
+      Published by <a href='https://espadrine.github.io'>Thaddée Tyl</a>
+      on <time itemprop=datePublished datetime="2016-12-20T21:39:00Z">20 December 2016</time>
+      on the <a href='https://espadrine.github.io/blog/'>espadrine blog</a>.
+      <br>
+      Keywords: <a class=tag href="../index.html?tags=tree">tree</a>.
+    </footer>
 <p>I intend to rethink the ideas behind <a href="https://thefiletree.com">TheFileTree</a>.</p>
-<h1 id="Files">Files <a href="#Files" class="autolink-clicker" aria-hidden="true">§</a></h1>
 <p>Easy storage has a lot of competition, but the contenders often miss two important points.</p>
 <ol>
 <li>Content needs to be edited, and since this is online, it needs seemless intent-preserving synchronization.</li>
@@ -28,12 +34,10 @@
 <p><img src="http://i.imgur.com/SCUT5om.png" alt="Folder data sizes at various depth" /></p>
 <p>Unsurprisingly, the download size scales exponentially with the requested depth.</p>
 <p>I’ll talk about other basics we must support in future logs.</p>
-<h1 id="Collaboration">Collaboration <a href="#Collaboration" class="autolink-clicker" aria-hidden="true">§</a></h1>
 <p>The simple fact that a file online can be opened in multiple tabs means that we need edition synchronization.</p>
 <p>I have plans to make <a href="https://github.com/espadrine/jsonsync">jsonsync</a> the first non-Operation Transformation, non-CRDT peer-to-peer synchronization system for JSON with index preservation. It has the benefits of both approaches: implementation simplicity, richness of operations and intention preservation of CRDT, and query speed and memory bounds of OT.</p>
 <p>Any apps can probably maintain its content in a JSON structure, and update its UI according to changes in its data. Is that not reminiscent of the MVC pattern? I expect virtually any application to be built on top of those primitives.</p>
 <p>I am unsure of whether I will rely on it to allow for offline edition. Whatever I do after an offline editing session, it will involve showing the user a diff of the content; as a user, I would not trust a blind merge for long, multiple-second simultaneous edition. But will I use jsonsync’s algorithm, requiring it to hold on to its history for ever, or a cold three-way merge? Maybe something in-between?</p>
-<h1 id="Extension">Extension <a href="#Extension" class="autolink-clicker" aria-hidden="true">§</a></h1>
 <p>Shops are the economy’s blood. Marketplaces are its heart.</p>
 <p>I must ensure that anybody can create a new app. They can store it in a folder anywhere, and develop it from within TheFileTree. Anyone can open anything with any app. There is a tricky matter of trust there: we must warn users that they’re about to use an app they hav never used before, to avoid information stealing from malicious app developers. It cannot happen from within the folder app, since they may land on a page from a crafted link sent to them. Still, it can be done; I am not too worried.</p>
 <p>Something I am more worried about is whether I should allow apps to execute code on the server. I am leaning towards a “no”, as I don’t like taking that security risk. What if they find a way to gain shell access to the server?</p>
@@ -45,10 +49,5 @@
   "datePublished": "2016-12-20T21:39:00Z",
   "keywords": "tree" }
 </script>
-    <footer>
-      Published <time itemprop=datePublished datetime="2016-12-20T21:39:00Z">20 December 2016</time>.
-      <br>
-      Tags: <a class=tag href="../index.html?tags=tree">tree</a>.
-    </footer>
   </article>
 </main>

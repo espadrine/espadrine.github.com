@@ -8,24 +8,28 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <main>
   <nav class=social-links>
-    <object type='image/svg+xml' data='https://img.shields.io/badge/blog-49-green?style=social&logo=rss&logoColor=e5732f&link=https://espadrine.github.io/blog/&link=https://espadrine.github.io/blog/feed.xml'></object>
+    <object type='image/svg+xml' data='https://img.shields.io/badge/blog-51-green?style=social&logo=rss&logoColor=e5732f&link=https://espadrine.github.io/blog/&link=https://espadrine.github.io/blog/feed.xml'></object>
     <object type='image/svg+xml' data='https://img.shields.io/github/followers/espadrine?label=Github&style=social&link=https%3A%2F%2Fgithub.com%2Fespadrine&link=https%3A%2F%2Fgithub.com%2Fespadrine%3Ftab%3Dfollowers'></object>
     <object type='image/svg+xml' data='https://img.shields.io/twitter/follow/espadrine?label=Twitter&style=social'></object>
   </nav>
   <article class=relative>
-<h1 id="Aulx_The_Tricks">Aulx: The Tricks <a href="#Aulx_The_Tricks" class="autolink-clicker" aria-hidden="true">§</a></h1>
+    <h1> Aulx: The Tricks </h1>
+    <footer>
+      Published by <a href='https://espadrine.github.io'>Thaddée Tyl</a>
+      on <time itemprop=datePublished datetime="2013-08-20T19:41:00Z">20 August 2013</time>
+      on the <a href='https://espadrine.github.io/blog/'>espadrine blog</a>.
+      <br>
+      Keywords: <a class=tag href="../index.html?tags=js">js</a>.
+    </footer>
 <p>Aulx is an autocompletion engine for the Web. It is ongoing work, but you can look at it <a href="https://github.com/espadrine/aulx">here</a> and try it <a href="http://espadrine.github.io/aulx/">there</a>. Here, I am going to focus on JS autocompletion, and talk about two specific tricks I implemented.</p>
-<h1 id="The_Contextualizer">The Contextualizer <a href="#The_Contextualizer" class="autolink-clicker" aria-hidden="true">§</a></h1>
 <p>One of the challenges of writing an autocompletion system is that we need to learn from partially written code, since it is still being edited. A common approach is to write a separate parser that is able to recover from missing parentheses, unmatched braces, any incorrect syntax. For example, Tern’s Acorn parser relies on indentation to derive the correct braces. This costs some performance in the parser, and there is no “silver bullet” implementation, no royal algorithm that works intuitively in all cases.</p>
 <p>Falling that, I decided to do the obvious heuristic. It turns out that, in most of the code you write, newlines are significant. They mean that you are going from one procedural statement to the next. Even when they are mid-statement, your code probably is readable by a simple parser when you write the code. If your code really isn’t parseable, we simply keep the latest information. Then, we keep it up-to-date when we can.</p>
 <p>However, given that, how would you know where the cursor is? How would you determine when to suggest what, without an abstract syntax tree? For that purpose, I create a contextualizer which only relies on a lexer. Based on the list of tokens produced, we can find the position of the cursor. Then, depending on which token precedes it, we obtain all the information we would need. We know when we have dot completion, we know all the identifiers defining the successive properties to suggest from, and so on. A remarkable advantage of this technique is that you can figure out where the cursor is (“contextualize”) even with very improper code, and give some good suggestions nonetheless. Indeed, the lexer will succeed with any code which the error-tolerant JS parser can eat, and then some.</p>
 <p>So, I wrote Esprima’s lexer. The one, famous pain point there is that in JS, it is notably hard to discriminate the use of <code>/</code> (slash) as a division symbol and as a regular expression marker. The usual method is to rely on the parser, running on the side, for hints. That, however, means that we need to run the parser when running the lexer, which both has a performance cost, and may throw if the code isn’t syntactically correct. Fortunately, Tim Disney from Mozilla <a href="http://disnetdev.com/blog/2012/12/20/how-to-read-macros/">discovered</a> a way to properly lex code without the use of a parser. I implemented his algorithm in Esprima, and it is now merged upstream.</p>
 <p>That said, the lexer has a performance cost of itself. I wanted to minimize that as much as possible. It turns out that, again, the idea that JS code has implicitly significant newlines turns out to be great. Indeed, that has an impact on the tokenizing rules. Newlines are not allowed in single-line comments, nor in regular expressions, which means that I could cut corners quite a bit. In the end, I proved that we only really need to lex the line the cursor is on, and go through a “shortcut” algorithm for all the code leading to that line. That shortcut only needs to keep track of string literals and multiline comments. Indeed, the productions that can include a line terminator are MultilineNotAsteriskChar, MultilineNotForwardSlashOrAsteriskChar, LineContinuation (for strings), and InputElementDiv and InputElementRegExp, those last two being only used to distinguish between the <code>/</code> for division and for regular expressions, which we are not concerned with. That makes the contextualizer remarkably fast in common situations.</p>
-<h1 id="Type_as_in_Interface">Type as in Interface <a href="#Type_as_in_Interface" class="autolink-clicker" aria-hidden="true">§</a></h1>
 <p>Another thing I wanted to try was a design that absorbed information wherever it could. Useful data, I reasoned, is twofold. One may either wish to search for a specific property / variable name / symbol, to type it faster, or may wish to look up all properties available in an object, for exploratory purposes. Never underestimate the power of exploratory programming. There’s always something you stumble upon and that will make you go “heh, that looks sweet!” The other day, I noticed that Firefox had <code>navigator.mozSms</code>, on the desktop version. I looked it up, it turns out that it has been deprecated in favor of <code>navigator.mozMobileMessage</code>. And boom, you find <a href="http://www.w3.org/2012/sysapps/messaging/">this spec draft</a> dealing with mobile messaging, with editors from Telefonica and Intel. Fumbling through APIs with your eyes wide open can give you accidental ideas, and refresh your memory. Hey, I had forgotten about <code>navigator.onLine</code>!</p>
 <p>As a language tool, you can either be very strict about types, and require a lot of written type information from the developer with the implicit promise that this strictness will bring her more tooling information, or you can eat every piece of information you find lying on the floor, and use that. Aulx’ approach is the hoover one.</p>
 <p>Of course, no matter what approach you take, you need to organize the information you aggregate, and for that purpose, in JS, you benefit from having some concept of types. In my case, I gather data from every function call, from every assignment, from every property access. Therefore, I have defined my types as being the <em>union of all information related to functions</em>. If a variable was used as a second parameter to a function, that is stored in that variable’s type. If we learned that it is an instance of some constructor, that too is stored. Then, on the other side of the fence, each function accumulates information about properties hold by each of their parameter, by their return value, and by their instances (if it is a constructor). That way, when completing properties, all this information is combined to draw the largest and most accurate picture we can.</p>
-<h1 id="Not_just_JS">Not just JS <a href="#Not_just_JS" class="autolink-clicker" aria-hidden="true">§</a></h1>
 <p>Aulx is meant for the Web, not just JS. That was the goal from the start. It now has a world-class CSS autocompletion system, which Girish Sharma of <a href="https://hacks.mozilla.org/2013/08/new-features-of-firefox-developer-tools-episode-25/">Firefox fame</a> contributed. Expect work on HTML autocompletion too. Imagine receiving autocompletion even for inlined JS and CSS! Imagine combining that information so as to provide some DOM / CSS information in your JS!</p>
 <script type="application/ld+json">
 { "@context": "http://schema.org",
@@ -33,9 +37,5 @@
   "datePublished": "2013-08-20T19:41:00Z",
   "keywords": "js" }
 </script>
-    <footer>
-      Published <time itemprop=datePublished datetime="2013-08-20T19:41:00Z">20 August 2013</time>.
-      <br>
-    </footer>
   </article>
 </main>

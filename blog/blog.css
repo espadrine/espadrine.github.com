@@ -171,8 +171,8 @@ article figure > figcaption {
 article footer {
   font-style: italic;
   font-size: small;
-  margin-top: 3rem;
-  text-align: right;
+  margin-bottom: 2rem;
+  text-align: center;
 }
 article table {
   table-layout: fixed;

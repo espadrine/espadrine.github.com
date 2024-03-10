@@ -41,7 +41,7 @@ echo "$publications" | {
       echo "Generating $name"
       # The file has an update; otherwise skip its generation.
       markdown=${markdown:-$(cat "$mdfile")}
-      content=$(echo "$markdown" | latexmarkdown --body)
+      content=$(echo "$markdown" | sed '/^# /d' | latexmarkdown --body)
       echo "$content" >"$htmlcachefile"
       html_tags=$(for k in $tags; do
         echo " <a class=tag href=\"../index.html?tags=$k\">$k</a>";
@@ -50,7 +50,7 @@ echo "$publications" | {
         | sed '
           /TAGS/ {
             r '<(if [[ "$html_tags" ]]; then
-                echo '      Tags:'"$html_tags".;
+                echo '      Keywords:'"$html_tags".;
               fi)'
             d
           }

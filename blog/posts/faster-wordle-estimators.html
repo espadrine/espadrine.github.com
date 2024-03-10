@@ -13,7 +13,16 @@
     <object type='image/svg+xml' data='https://img.shields.io/twitter/follow/espadrine?label=Twitter&style=social'></object>
   </nav>
   <article class=relative>
-<h1 id="Faster_Wordle_Estimators">Faster Wordle Estimators <a href="#Faster_Wordle_Estimators" class="autolink-clicker" aria-hidden="true">§</a></h1>
+    <h1> Faster Wordle Estimators </h1>
+    <footer>
+      Published by <a href='https://espadrine.github.io'>Thaddée Tyl</a>
+      on <time itemprop=datePublished datetime="2024-02-17T10:24:32Z">17 February 2024</time>
+      on the <a href='https://espadrine.github.io/blog/'>espadrine blog</a>.
+      <br>
+      Keywords: <a class=tag href="../index.html?tags=ml">ml</a>,
+ <a class=tag href="../index.html?tags=julia">julia</a>,
+ <a class=tag href="../index.html?tags=optimization">optimization</a>.
+    </footer>
 <p>Two years ago, the game of <a href="https://www.nytimes.com/games/wordle/index.html">Wordle</a> was released.
 I wrote <a href="https://espadrine.github.io/blog/posts/sometimes-rewriting-in-another-language-works.html">an article back then on finding good words to solve it</a>,
 but I focused on implementing a good-enough algorithm,
@@ -65,8 +74,7 @@ What used to take <span class="katex"><span class="katex-mathml"><math xmlns="ht
 now takes <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">∣</mi><mi mathvariant="script">S</mi><mi mathvariant="normal">∣</mi><mo>+</mo><mi mathvariant="normal">∣</mi><mi mathvariant="script">C</mi><mi mathvariant="normal">∣</mi></mrow><annotation encoding="application/x-tex">|\mathscr{S}| + |\mathscr{C}|</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">∣</span><span class="mord"><span class="mord mathscr" style="margin-right:0.19189em;">S</span></span><span class="mord">∣</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">∣</span><span class="mord"><span class="mord mathscr" style="margin-right:0.1689em;">C</span></span><span class="mord">∣</span></span></span></span>.
 The computation that used to take hours in the previous article,
 now takes a mere second:</p>
-<pre><span class="hljs-comment"># Compute the average remaining solutions for each guess.</span>
-<span class="hljs-keyword">function</span> average_remaining_solutions_after_guess(guess::<span class="hljs-built_in">Vector</span>{<span class="hljs-built_in">UInt8</span>}, solutions::<span class="hljs-built_in">Vector</span>{<span class="hljs-built_in">Vector</span>{<span class="hljs-built_in">UInt8</span>}})::<span class="hljs-built_in">Float64</span>
+<pre><span class="hljs-keyword">function</span> average_remaining_solutions_after_guess(guess::<span class="hljs-built_in">Vector</span>{<span class="hljs-built_in">UInt8</span>}, solutions::<span class="hljs-built_in">Vector</span>{<span class="hljs-built_in">Vector</span>{<span class="hljs-built_in">UInt8</span>}})::<span class="hljs-built_in">Float64</span>
   counts = zeros(<span class="hljs-built_in">Int</span>, <span class="hljs-number">243</span>)
   <span class="hljs-keyword">for</span> solution <span class="hljs-keyword">in</span> solutions
     <span class="hljs-meta">@inbounds</span> counts[constraints(guess, solution) + <span class="hljs-number">1</span>] += <span class="hljs-number">1</span>
@@ -84,8 +92,7 @@ So before the last guess, we had <span class="katex"><span class="katex-mathml">
 and before the guess before that, we had <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>ρ</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">\rho^2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.008548em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord mathnormal">ρ</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span>…
 All the way back to now, where we have <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>ρ</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msup><mo>=</mo><mi mathvariant="normal">∣</mi><mi mathvariant="script">S</mi><mi mathvariant="normal">∣</mi></mrow><annotation encoding="application/x-tex">\rho^{n-1} = |\mathscr{S}|</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.008548em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord mathnormal">ρ</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">∣</span><span class="mord"><span class="mord mathscr" style="margin-right:0.19189em;">S</span></span><span class="mord">∣</span></span></span></span>.
 Hence <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>=</mo><mn>1</mn><mo>+</mo><mfrac><mrow><mi>log</mi><mo>⁡</mo><mi mathvariant="normal">∣</mi><mi mathvariant="script">S</mi><mi mathvariant="normal">∣</mi></mrow><mrow><mi>log</mi><mo>⁡</mo><mo stretchy="false">(</mo><mi>ρ</mi><mo stretchy="false">)</mo></mrow></mfrac></mrow><annotation encoding="application/x-tex">n = 1 + \frac{\log|\mathscr{S}|}{\log(\rho)}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.53em;vertical-align:-0.52em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.01em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mop mtight"><span class="mtight">l</span><span class="mtight">o</span><span class="mtight" style="margin-right:0.01389em;">g</span></span><span class="mopen mtight">(</span><span class="mord mathnormal mtight">ρ</span><span class="mclose mtight">)</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.485em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mop mtight"><span class="mtight">l</span><span class="mtight">o</span><span class="mtight" style="margin-right:0.01389em;">g</span></span><span class="mspace mtight" style="margin-right:0.19516666666666668em;"></span><span class="mord mtight">∣</span><span class="mord mtight"><span class="mord mathscr mtight" style="margin-right:0.19189em;">S</span></span><span class="mord mtight">∣</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.52em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span>.</p>
-<pre><span class="hljs-comment"># Including this guess, how many guesses remain until we win?</span>
-<span class="hljs-keyword">function</span> estimate_guesses_remaining_statistically(guess::<span class="hljs-built_in">Vector</span>{<span class="hljs-built_in">UInt8</span>}, solutions::<span class="hljs-built_in">Vector</span>{<span class="hljs-built_in">Vector</span>{<span class="hljs-built_in">UInt8</span>}})::<span class="hljs-built_in">Float64</span>
+<pre><span class="hljs-keyword">function</span> estimate_guesses_remaining_statistically(guess::<span class="hljs-built_in">Vector</span>{<span class="hljs-built_in">UInt8</span>}, solutions::<span class="hljs-built_in">Vector</span>{<span class="hljs-built_in">Vector</span>{<span class="hljs-built_in">UInt8</span>}})::<span class="hljs-built_in">Float64</span>
   avg_remaining = average_remaining_solutions_after_guess(guess, solutions)
   nsols = length(solutions)
   <span class="hljs-comment"># Probability that the guess wins directly,</span>
@@ -128,8 +135,7 @@ Hence we obtain:</p>
 <p>This approach is <a href="https://www.youtube.com/watch?v=v68zYyaEmEA">inspired by Grant Sanderson</a>,
 and has the redeeming quality of being efficient to compute
 even without casting mathematical spells on the formula:</p>
-<pre><span class="hljs-comment"># Including this guess, how many guesses remain until we win?</span>
-<span class="hljs-keyword">function</span> estimate_guesses_remaining_entropically(guess::<span class="hljs-built_in">Vector</span>{<span class="hljs-built_in">UInt8</span>}, solutions::<span class="hljs-built_in">Vector</span>{<span class="hljs-built_in">Vector</span>{<span class="hljs-built_in">UInt8</span>}})::<span class="hljs-built_in">Float64</span>
+<pre><span class="hljs-keyword">function</span> estimate_guesses_remaining_entropically(guess::<span class="hljs-built_in">Vector</span>{<span class="hljs-built_in">UInt8</span>}, solutions::<span class="hljs-built_in">Vector</span>{<span class="hljs-built_in">Vector</span>{<span class="hljs-built_in">UInt8</span>}})::<span class="hljs-built_in">Float64</span>
   counts = zeros(<span class="hljs-built_in">Int</span>, <span class="hljs-number">243</span>)  <span class="hljs-comment"># Number of times the constraint appears across solutions.</span>
   <span class="hljs-keyword">for</span> solution <span class="hljs-keyword">in</span> solutions
     <span class="hljs-meta">@inbounds</span> counts[constraints(guess, solution) + <span class="hljs-number">1</span>] += <span class="hljs-number">1</span>
@@ -248,12 +254,5 @@ using the entropic estimator as a foundation.</p>
   "datePublished": "2024-02-17T10:24:32Z",
   "keywords": "ml, julia, optimization" }
 </script>
-    <footer>
-      Published <time itemprop=datePublished datetime="2024-02-17T10:24:32Z">17 February 2024</time>.
-      <br>
-      Tags: <a class=tag href="../index.html?tags=ml">ml</a>,
- <a class=tag href="../index.html?tags=julia">julia</a>,
- <a class=tag href="../index.html?tags=optimization">optimization</a>.
-    </footer>
   </article>
 </main>
