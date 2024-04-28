@@ -6,7 +6,7 @@
 <style>
 html {
  margin: 1cm;
- font-family: "Open Sans", sans-serif;
+ font-family: Marianne, "Open Sans", sans-serif;
  font-size: 0.8em;
  color: #555;
  max-width: 600px;
@@ -94,9 +94,12 @@ section {
   padding: 10px 15px;
   background-color: #fafafa;
 }
-ul { list-style-type: none; padding-left:0px; margin:0px; }
-ul li:before { content: "- "; }
+/*ul { list-style-type: none; padding-left:0px; margin:0px; }
+ul li:before { content: "• "; }
 ul li { text-indent: -5px; }
+ */
+ul { padding-left:10px; margin:0px; }
+ul li { list-style-type: disc; }
 </style>
 
 <body itemscope itemtype="http://schema.org/Person">
@@ -105,7 +108,7 @@ ul li { text-indent: -5px; }
 <nav>
   <p>
     <span class=emoji>☏</span> <span itemprop=telephone>+33 6 85 74 50 31</span><br>
-    <span class=emoji>🔖</span> <a href='https://espadrine.github.io/'>https://espadrine.github.io</a><br>
+    <span class=emoji>🔖</span> <a href='https://espadrine.github.io/blog'>https://espadrine.github.io/blog</a><br>
     <span class=emoji>✉</span> <a href="mailto:thaddee.tyl@gmail.com"
       itemprop="email">thaddee.tyl@gmail.com</a><br>
   </p>
@@ -114,7 +117,7 @@ ul li { text-indent: -5px; }
   <p>
     <a href="https://www.linkedin.com/in/thadd%C3%A9e-y-tyl-2a524b2b/">LinkedIn:
     Thaddée Y. TYL</a><br>
-    <a href="https://twitter.com/espadrine/">Twitter: @espadrine</a><br>
+    <a href="https://twitter.com/espadrine/">𝕏: @espadrine</a><br>
     <a href="https://github.com/espadrine/">GitHub: espadrine</a>
   </p>
 </div>
@@ -124,32 +127,51 @@ ul li { text-indent: -5px; }
 <h2>EXPERIENCE</h2>
 <section class=box>
   <ul>
-    <li>Interest in <strong>computer language tooling</strong>,
-      <strong>synchronization</strong>, <strong>distributed networks</strong>
-      and <strong>machine learning</strong>.
-    <li>Fan of JS' event loop, Ruby's metaprogramming, C's BYOBuffer
-      efficiency, Lisp's interactivity.
-    <li>The <strong>HTML / JS / CSS</strong> combination works admirably.
-    <li>The Web's APIs are my bedtime stories:
-      <a href=https://platform.html5.org/>platform.html5.org</a>
-    <li>Dev is eased by <strong>orthogonal cooperative tools</strong>.
-    <li>Contributed to CodeMirror, Esprima, ShareJS, TabAtkins' CSS
-      parser, node-canvas, Emscripten, Firefox' DevTools, …
+    <li><strong>Machine Learning</strong>. Experience writing CUDA kernels.
+    <li><strong>Cryptography &amp; randomness generators</strong>.
+      Author of <a href='https://espadrine.github.io/blog/posts/shishua-the-fastest-prng-in-the-world.html'>fastest PRNG</a>;
+      experience with SIMD intrinsics.
+    <li><a href=https://platform.html5.org/><strong>Web platform</strong></a>
+      (past involvements in WHATWG/W3C/TC39 discussions).
+    <li><strong>Computer language tooling</strong> (worked on JS parsing, Scala
+      compiler).
+    <li><strong>Synchronization algorithms</strong> &amp; <strong>distributed systems</strong>.
+    <li>Advocate for <strong>orthogonal cooperative tools</strong>.
   </ul>
 </section>
 <table><tbody>
-  <tr><th>Present<br>2018
-      <td>Lead backend, Core Banking expert at
+  <tr><th>Present<br>2019
+      <td>Senior staff engineer, Core Banking expert at
         <a href='https://qonto.eu/'>Qonto</a>.<br>
-        <strong>Lead the creation of Qonto’s Core Banking System.</strong><br>
+        <p>Involved in <strong>major projects</strong>
+        (local IBANs, SWIFT transfers, Apple Pay, pricing changes,
+        country-specific payment system integrations, financing solutions, …)
+        and drove <strong>architectural improvements</strong>
+        (payment-agnostic ledger, direct integration of frontend-facing payment
+        services to core banking systems, common interfacing to nostro
+        accounts, per-service data store separation, interservice
+        communication…) across dozens of teams totalling over a hundred
+        engineers.
+
+        <p>Managed the company’s <strong>backend hiring</strong> tests
+        and trained dozens of interviewers. <br>
+        Standardized <strong>partner integration</strong> investigations in
+        tech. <br>
+        Managed the <strong>tech blog</strong>.
+
+        <p>Helped leads, staff and senior staff engineers achieve better
+        quality and velocity through systematized self-improvement.
+  <tr><th>2019<br>2018
+      <td>Lead backend at <a href='https://qonto.eu/'>Qonto</a>.
+        <p><strong>Lead the creation of Qonto’s Core Banking System.</strong><br>
         Worked on the ledger: authorizations, accounting, automated cash
-        management and regulatory reporting, local IBANs.<br>
-        Payment systems integration: SEPA, Mastercard, Apple Pay, cheques, SWIFT.
+        management and regulatory reporting.
+        Payment systems integration: SEPA, Mastercard, cheques.
   <tr><th>2018<br>2017
       <td>Full-stack developer at
         <a href='https://qonto.eu/'>Qonto</a>.<br>
-        Microservice construction, API design, authentication, building features
-        such as VAT handling and the registration flow.
+        Microservice construction, API design, authentication, building
+        features such as VAT handling and the registration flow.
   <tr><th>2017<br>2014
       <td>Full-stack developer at
         <a href='https://www.trainline.eu/'>Trainline</a> (previously Captain
@@ -160,31 +182,28 @@ ul li { text-indent: -5px; }
         <br>
         Ember.js website, Ruby on Rails server.
   <tr><th>2014
-      <td>Started and wrote the
+      <td>Initial author and maintainer of the
         <a href='https://github.com/badges/shields'><strong>Shields.io</strong></a>
         API,
         providing badges (esp. in SVG) for Travis CI, Coveralls,
-        Gemnasium, many others. &gt;100 contributors, &gt;20M users / month.
-  <tr><th>Q4 2013
-      <td>INSA. Management classes.
-        Front-end Web development with d3.js to visualize optimal patterns in
-        RTS games through PrefixSpan.
+        Gemnasium, many others. <br>
+        Grew to &gt;100 contributors, &gt;20M users / month.
   <tr><th>2013<br>2012
       <td>Master project at EPFL on Supervised learning of
         <strong>Scala</strong> coding style. Machine Learning and compiler
         work.
-  <tr><th>May - Aug. 2012
+  <tr><th>2012
       <td>Software Intern at <strong>Mozilla</strong> on the
         <strong>DevTools</strong> team.
        Worked on autocompletion of JS and CSS.
   <tr><th>2013<br>2010
-     <td>Project leader of <a
+     <td>Project lead of <a
          href="https://github.com/espadrine/tree">TheFileTree</a>, a
        collaborative, web-based file system in node. <br>
        Team of 6. <br>
        Wrote <a href=https://github.com/espadrine/sc>ScoutCamp</a>,
-       a full-stack node framework.
-  <tr><th>Jul./Aug. 2011
+       a full-stack Node.js framework.
+  <tr><th>2011
      <td>Intern at Esker Corp. Wrote an <strong>iPad app</strong> as a new
        front-end product.
   <tr><th>2011
@@ -195,10 +214,6 @@ ul li { text-indent: -5px; }
      <td>Wrote iDoc (<strong>Google Chrome extension</strong>
        that edits hypertext documents inside the browser).
        1000 registered users.
-  <tr><th>2008
-      <td>Built the website ze-artboutique.com
-        (now <a href="http://zeartgalerie.com">zeartgalerie.com</a>)
-        for an art company.
   </tr>
 </tbody></table>
 
@@ -231,16 +246,10 @@ ul li { text-indent: -5px; }
   <h3 class=sechead>LANGUAGES</h3>
   <ul>
     <li>English &ndash; FCE, IELTS, TOEFLI, TOEIC.
+      Daily use at work and in open-source interactions for a decade.
     <li>French (mother tongue).
-    <li>Spanish: written and spoken.
+    <li>Spanish: written and spoken, although dusty.
   </ul>
-</section>
-
-<h2>EXTRA-CURRICULAR ACTIVITIES</h2>
-<section>
-<p>Tennis (7 years), Volley Ball (4 years), Hiking (4 years, mainly in the
-Alps).
-</p>
 </section>
 
 </body>
