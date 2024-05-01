@@ -54,7 +54,7 @@ echo "$publications" | {
               fi)'
             d
           }
-          sTITLE'"$titlehtml"'
+          sTITLE'"${titlehtml/&/\\&}"'
           sPUBCOUNT'"$pubcount"'
           sISOTIME'"$isotime"'
           sTIME'"$time"'
